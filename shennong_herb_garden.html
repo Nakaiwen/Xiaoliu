@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>神農藥草園 V3.0｜固定6格地圖版｜小六命理網</title>
+    <link rel="stylesheet" href="shennong_style.css">
+
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand brand-home-link" href="index.html" aria-label="返回小六命理網首頁" title="返回小六命理網首頁">
+        <img class="brand-logo-img" src="assets/icons/01_brand_emblem_logo.png" alt="小六命理網 Logo" />
+        <div class="brand-text">
+          <strong>小六命理網</strong>
+          <small>靜心 · 養生 · 好運來</small>
+        </a>
+      </div>
+
+      <div class="game-title">
+        <h1>神農藥草園</h1>
+        <p>靜心種植小遊戲</p>
+      </div>
+
+      <div class="player-card" aria-label="玩家資訊">
+        <div class="stat">
+          <small>等級</small>
+          <b><span id="level">1</span> 級</b>
+        </div>
+        <div class="stat">
+          <small>金幣</small>
+          <b>🪙 <span id="coins">0</span></b>
+        </div>
+        <div class="stat">
+          <small>經驗值</small>
+          <b><span id="exp">0</span>/<span id="expNeed">100</span></b>
+          <div class="exp-bar"><i id="expFill" class="exp-fill"></i></div>
+        </div>
+      </div>
+    </header>
+
+    <main class="main-grid">
+      <div class="game-column">
+<section class="garden-card">
+        <div class="section-title">
+          <div>
+            <h2>我的藥草園</h2>
+            <span>點擊成熟藥草即可收穫；尚未成熟時，可修心養性獲得小獎勵。</span>
+          </div>
+          <button id="resetBtn" class="btn btn-soft" title="清除本機遊戲紀錄">重置</button>
+        </div>
+        <div class="garden-map-tabs" aria-label="藥園地圖切頁">
+          <button class="map-tab active" type="button" data-map-id="map1">初階藥園 <small>Lv.1</small></button>
+          <button class="map-tab locked" type="button" disabled>山谷藥圃 <small>Lv.8 解鎖</small></button>
+          <button class="map-tab locked" type="button" disabled>靈泉藥田 <small>Lv.15 解鎖</small></button>
+        </div>
+        <div class="garden-scene">
+          <div class="garden-scene-bg" aria-hidden="true"></div>
+          <div class="garden-scroll" aria-label="固定顯示六片藥田的藥園區域">
+            <div id="gardenGrid" class="garden-grid"></div>
+          </div>
+        </div>
+      </section>
+
+<section class="activity-card">
+          <div class="section-title">
+            <h2>修心養性</h2>
+            <span>等待藥草成熟時可進行</span>
+          </div>
+
+          <div class="activity-grid">
+            <button class="activity-option active" data-activity="meditate">
+              <span class="activity-icon"><img class="activity-thumb" src="assets/shennong/activities/activity-meditation.png" alt="打坐冥想"></span>
+              <strong>打坐冥想</strong>
+              <small>調息靜心，獲得經驗</small>
+            </button>
+            <button class="activity-option" data-activity="sutra">
+              <span class="activity-icon"><img class="activity-thumb" src="assets/shennong/activities/activity-sutra.png" alt="抄經"></span>
+              <strong>抄經</strong>
+              <small>照句輸入，積累功德</small>
+            </button>
+            <button class="activity-option" data-activity="tour">
+              <span class="activity-icon"><img class="activity-thumb" src="assets/shennong/activities/activity-tour.png" alt="參觀藥園"></span>
+              <strong>參觀藥園</strong>
+              <small>隨機學習養生知識</small>
+            </button>
+          </div>
+
+          <div id="activityPanel" class="activity-panel"></div>
+        </section>
+      </div>
+
+      <aside class="side-stack">
+<section class="detail-card">
+          <div class="section-title">
+            <h2>本草札記</h2>
+            <span id="selectedStatus">尚未選取</span>
+          </div>
+          <div class="herb-portrait">
+            <div>
+              <div id="detailEmoji" class="portrait-emoji">🌿</div>
+              <h3 id="detailName" class="herb-name">藥草</h3>
+              <div id="detailTags" class="herb-tags"></div>
+            </div>
+          </div>
+          <p id="detailText" class="detail-text">請點擊藥園中的藥草，查看成長狀態與本草介紹。</p>
+          <div class="tiny-actions">
+            <button id="plantFirstBtn" class="btn btn-green">種下一株藥草</button>
+          </div>
+        </section>
+
+<section class="log-card">
+          <div class="section-title">
+            <h2>最新訊息</h2>
+            <span>福自長來</span>
+          </div>
+          <div id="logList" class="log-list"></div>
+        </section>
+      </aside>
+    </main>
+
+    <div class="footer-note">
+      小提醒：這是單一 HTML V3.0 固定 6 格地圖版，資料會暫存在瀏覽器 localStorage，不需要後端資料庫。
+    </div>
+  </div>
+
+  <div id="plantModal" class="modal" aria-hidden="true">
+    <div class="modal-card">
+      <h3>選擇要種植的藥草</h3>
+      <p class="detail-text">不同藥草的成熟時間、解鎖等級與收穫獎勵不同。V2 版本已加入 8 種藥草植物。</p>
+      <div id="plantMenu" class="plant-menu"></div>
+      <div class="modal-actions">
+        <button id="closeModalBtn" class="btn btn-outline">取消</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+    <script src="shennong_game.js"></script>
+
+</body>
+</html>

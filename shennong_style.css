@@ -1,0 +1,3073 @@
+/*
+  神農藥草園 V3.0 Final
+  Clean CSS bundle
+
+  整理內容：
+  - 將原本內嵌於 shennong_herb_garden.html 的 CSS 移出成獨立檔案
+  - 保留 V3.0.13 Final 的所有版面、土地位置、互動與動畫設定
+  - 不改動遊戲功能，只整理檔案結構，方便後續維護
+*/
+
+
+/*
+  V3.1 CSS Clean 整理備註：
+  - 移除已被後續版本覆蓋的舊座標、生長條、獎勵文字初版設定。
+  - 合併 V3.0.13 的生長資訊區 bottom 設定回 V3.0.12 錨定區。
+  - 保留仍會影響目前 V3.1 畫面的基礎樣式，避免破壞既有版面。
+*/
+
+:root {
+      --bg: #f7f1e4;
+      --paper: #fffdf6;
+      --paper-2: #fffaf0;
+      --ink: #283a2f;
+      --ink-soft: #627064;
+      --moss: #516b55;
+      --moss-dark: #283a2f;
+      --sage: #7f927a;
+      --gold: #b99b62;
+      --gold-deep: #9d7b43;
+      --sand: #e9ddc7;
+      --tea: #d7c29b;
+      --soil: #5d4531;
+      --soil-dark: #3f2f22;
+      --danger: #b86b3f;
+      --shadow-soft: 0 18px 50px rgba(73, 62, 40, 0.10);
+      --shadow-card: 0 10px 30px rgba(73, 62, 40, 0.08);
+      --radius-xl: 28px;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --container: 1180px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      font-family: "Noto Serif TC", "PingFang TC", "Microsoft JhengHei", serif;
+      background:
+        radial-gradient(circle at 15% 12%, rgba(185,155,98,.13) 0 1px, transparent 1.3px),
+        radial-gradient(circle at 80% 20%, rgba(81,107,85,.10) 0 1px, transparent 1.2px),
+        linear-gradient(180deg, #fffdf6 0%, #f7f1e4 100%);
+      background-size: 36px 36px, 52px 52px, auto;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      pointer-events: none;
+      opacity: .34;
+      background:
+        radial-gradient(circle at 18% 20%, rgba(185,155,98,.10), transparent 24%),
+        radial-gradient(circle at 84% 76%, rgba(81,107,85,.10), transparent 28%);
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: -10px;
+      height: 280px;
+      z-index: -1;
+      pointer-events: none;
+      opacity: .36;
+      background:
+        linear-gradient(160deg, transparent 0 58%, rgba(81,107,85,.16) 59% 61%, transparent 62%),
+        linear-gradient(150deg, transparent 0 52%, rgba(81,107,85,.12) 53% 56%, transparent 57%),
+        linear-gradient(170deg, transparent 0 64%, rgba(81,107,85,.10) 65% 68%, transparent 69%);
+      filter: blur(.2px);
+    }
+
+    button, input, textarea, select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+      border: none;
+    }
+
+    .app-shell {
+      width: min(calc(100% - 32px), var(--container));
+      margin: 0 auto;
+      padding: 26px 0 32px;
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: 1.1fr 1.3fr auto;
+      gap: 18px;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      width: 54px;
+      height: 54px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: var(--moss);
+      background:
+        radial-gradient(circle at 35% 32%, rgba(255,255,255,.9), rgba(255,253,246,.62)),
+        linear-gradient(135deg, rgba(185,155,98,.20), rgba(81,107,85,.12));
+      border: 2px solid rgba(185,155,98,.55);
+      box-shadow: 0 12px 24px rgba(73,62,40,.10);
+      font-size: 1.6rem;
+    }
+
+    .brand-logo-img {
+      width: 58px;
+      height: 58px;
+      object-fit: contain;
+      display: block;
+      filter: drop-shadow(0 10px 18px rgba(73,62,40,.14));
+      flex: 0 0 auto;
+    }
+
+    .brand-text strong {
+      display: block;
+      font-size: 1.35rem;
+      letter-spacing: .08em;
+      color: var(--ink);
+      line-height: 1.15;
+    }
+
+    .brand-text small {
+      display: block;
+      margin-top: 4px;
+      color: rgba(40,58,47,.62);
+      font-size: .78rem;
+      letter-spacing: .12em;
+    }
+
+    .game-title {
+      text-align: center;
+    }
+
+    .game-title h1 {
+      margin: 0;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      line-height: 1;
+      letter-spacing: .18em;
+      color: var(--moss-dark);
+      text-shadow: 0 8px 22px rgba(73,62,40,.08);
+      font-weight: 800;
+    }
+
+    .game-title p {
+      margin: 10px 0 0;
+      color: var(--gold-deep);
+      letter-spacing: .32em;
+      font-weight: 700;
+    }
+
+    .player-card {
+      display: grid;
+      grid-template-columns: repeat(3, auto);
+      gap: 0;
+      border-radius: 999px;
+      background: rgba(255,253,246,.82);
+      border: 1px solid rgba(185,155,98,.24);
+      box-shadow: var(--shadow-card);
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .stat {
+      min-width: 118px;
+      padding: 12px 18px;
+      border-right: 1px solid rgba(185,155,98,.20);
+      text-align: center;
+    }
+
+    .stat:last-child { border-right: 0; }
+
+    .stat small {
+      display: block;
+      margin-bottom: 4px;
+      color: rgba(40,58,47,.55);
+      font-size: .76rem;
+      letter-spacing: .08em;
+    }
+
+    .stat b {
+      color: var(--moss-dark);
+      font-size: 1.08rem;
+    }
+
+    .exp-bar {
+      width: 94px;
+      height: 8px;
+      margin: 7px auto 0;
+      border-radius: 999px;
+      background: rgba(185,155,98,.22);
+      overflow: hidden;
+      border: 1px solid rgba(185,155,98,.18);
+    }
+
+    .exp-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--sage), var(--moss));
+      transition: width .3s ease;
+    }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.65fr) minmax(320px, .85fr);
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .garden-card,
+    .detail-card,
+    .activity-card,
+    .log-card,
+    .modal-card {
+      border-radius: var(--radius-xl);
+      background: rgba(255,253,246,.78);
+      border: 1px solid rgba(185,155,98,.22);
+      box-shadow: var(--shadow-card);
+      backdrop-filter: blur(14px);
+    }
+
+    .garden-card {
+      padding: 18px;
+      overflow: hidden;
+      position: relative;
+      background:
+        linear-gradient(180deg, rgba(255,253,246,.90), rgba(255,251,243,.88));
+    }
+
+    .garden-card::after {
+      content: "";
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      top: 74px;
+      bottom: 18px;
+      border-radius: 24px;
+      background: url('assets/shennong/biggarden.png') center bottom / cover no-repeat;
+      opacity: .28;
+      pointer-events: none;
+      filter: saturate(.94);
+    }
+
+    .garden-card::before,
+    .detail-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: .28;
+      background:
+        radial-gradient(circle at 10% 10%, rgba(81,107,85,.13), transparent 28%),
+        radial-gradient(circle at 90% 88%, rgba(185,155,98,.16), transparent 30%);
+    }
+
+    .section-title {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+      z-index: 1;
+    }
+
+    .section-title h2 {
+      margin: 0;
+      color: var(--moss-dark);
+      font-size: 1.35rem;
+      letter-spacing: .12em;
+    }
+
+    .section-title span {
+      color: rgba(40,58,47,.56);
+      font-size: .86rem;
+    }
+
+    .garden-grid {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .plot {
+      position: relative;
+      min-height: 206px;
+      border-radius: 22px;
+      padding: 14px;
+      background:
+        linear-gradient(135deg, rgba(120,120,100,.25), rgba(245,238,220,.30)),
+        radial-gradient(circle at 50% 48%, rgba(120,80,45,.35), transparent 62%);
+      border: 1px solid rgba(185,155,98,.24);
+      box-shadow:
+        inset 0 0 0 7px rgba(120,130,100,.11),
+        0 10px 24px rgba(73,62,40,.08);
+      overflow: hidden;
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+
+    .plot:hover {
+      transform: translateY(-2px);
+      box-shadow:
+        inset 0 0 0 7px rgba(120,130,100,.11),
+        0 18px 34px rgba(73,62,40,.13);
+    }
+
+    .plot.locked {
+      opacity: .62;
+    }
+
+    .plot.harvestable {
+      box-shadow:
+        0 0 0 1px rgba(185,155,98,.28),
+        0 0 28px rgba(185,155,98,.34),
+        0 18px 34px rgba(73,62,40,.10);
+    }
+
+    .plot-inner {
+      height: 100%;
+      min-height: 178px;
+      border-radius: 18px;
+      padding: 12px;
+      background:
+        linear-gradient(135deg, rgba(75,54,36,.86), rgba(92,66,42,.86)),
+        radial-gradient(circle at 30% 35%, rgba(255,255,255,.09), transparent 26%);
+      border: 6px solid rgba(151,150,124,.62);
+      position: relative;
+      color: #fffdf6;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 8px;
+      overflow: hidden;
+    }
+
+    .plot-inner::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: .25;
+      background:
+        radial-gradient(circle at 15% 30%, rgba(255,255,255,.12) 0 2px, transparent 3px),
+        radial-gradient(circle at 70% 62%, rgba(0,0,0,.22) 0 2px, transparent 3px),
+        radial-gradient(circle at 44% 82%, rgba(255,255,255,.10) 0 1.5px, transparent 2.5px);
+      background-size: 40px 40px;
+    }
+
+    .plot-tag {
+      position: relative;
+      z-index: 1;
+      justify-self: start;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      color: var(--moss-dark);
+      background: rgba(255,253,246,.88);
+      border: 1px solid rgba(185,155,98,.44);
+      font-weight: 700;
+      font-size: .82rem;
+      box-shadow: 0 6px 12px rgba(0,0,0,.08);
+    }
+
+    .herb-stage {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      place-items: center;
+      min-height: 82px;
+      text-align: center;
+      user-select: none;
+    }
+
+    .herb-emoji {
+      font-size: 3.2rem;
+      filter: drop-shadow(0 8px 12px rgba(0,0,0,.18));
+      transition: transform .3s ease;
+    }
+
+    .plot.harvestable .herb-emoji {
+      animation: herbGlow 1.8s ease-in-out infinite;
+    }
+
+    @keyframes herbGlow {
+      0%, 100% { transform: translateY(0) scale(1); filter: drop-shadow(0 8px 12px rgba(0,0,0,.18)); }
+      50% { transform: translateY(-3px) scale(1.05); filter: drop-shadow(0 0 16px rgba(255,220,120,.8)); }
+    }
+
+    .empty-sprout {
+      font-size: 2.4rem;
+      opacity: .32;
+      color: rgba(255,253,246,.7);
+    }
+
+    .plot-info {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: 8px;
+    }
+
+    .progress {
+      height: 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,253,246,.60);
+      background: rgba(255,253,246,.54);
+      overflow: hidden;
+    }
+
+    .progress > i {
+      display: block;
+      height: 100%;
+      width: 0%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #94aa65, var(--moss));
+      transition: width .3s ease;
+    }
+
+    .plot-time {
+      font-size: .82rem;
+      color: rgba(255,253,246,.86);
+      text-align: center;
+      letter-spacing: .04em;
+    }
+
+    .plot-actions {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 42px;
+      padding: 0 16px;
+      border-radius: 999px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      border: 1px solid transparent;
+      transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 24px rgba(73,62,40,.14);
+    }
+
+    .btn:active { transform: translateY(0); }
+
+    .btn:disabled {
+      cursor: not-allowed;
+      opacity: .52;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .btn-green {
+      color: #fff;
+      background: linear-gradient(135deg, var(--moss), var(--moss-dark));
+    }
+
+    .btn-gold {
+      color: #fff;
+      background: linear-gradient(135deg, #c7a365, var(--gold-deep));
+    }
+
+    .btn-outline {
+      color: var(--moss);
+      background: rgba(255,253,246,.78);
+      border-color: rgba(185,155,98,.45);
+    }
+
+    .btn-soft {
+      color: var(--moss-dark);
+      background: rgba(247,241,228,.86);
+      border-color: rgba(185,155,98,.26);
+    }
+
+    .side-stack {
+      display: grid;
+      gap: 18px;
+      align-content: start;
+    }
+
+    .detail-card,
+    .activity-card,
+    .log-card {
+      position: relative;
+      padding: 18px;
+      overflow: hidden;
+    }
+
+    .herb-portrait {
+      position: relative;
+      z-index: 1;
+      min-height: 250px;
+      display: grid;
+      place-items: center;
+      border-radius: 22px;
+      margin: 8px 0 14px;
+      background:
+        radial-gradient(circle, rgba(255,253,246,.85), rgba(247,241,228,.56)),
+        linear-gradient(180deg, rgba(255,255,255,.2), rgba(185,155,98,.08));
+      border: 1px solid rgba(185,155,98,.22);
+      color: var(--moss);
+      text-align: center;
+    }
+
+    .portrait-emoji {
+      font-size: 5.2rem;
+      filter: drop-shadow(0 14px 20px rgba(73,62,40,.16));
+    }
+
+    .herb-name {
+      margin: 0;
+      color: var(--moss-dark);
+      text-align: center;
+      font-size: 1.7rem;
+      letter-spacing: .16em;
+    }
+
+    .herb-tags {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 10px 0 12px;
+    }
+
+    .tag {
+      padding: 5px 10px;
+      border-radius: 999px;
+      color: var(--gold-deep);
+      background: rgba(233,221,199,.55);
+      border: 1px solid rgba(185,155,98,.28);
+      font-size: .78rem;
+      font-weight: 700;
+    }
+
+    .detail-text {
+      color: rgba(40,58,47,.72);
+      line-height: 1.8;
+      font-size: .96rem;
+      margin: 0;
+    }
+
+    .activity-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .activity-option {
+      min-height: 152px;
+      display: grid;
+      gap: 8px;
+      align-content: start;
+      justify-items: center;
+      padding: 12px 8px;
+      border-radius: 18px;
+      color: var(--ink);
+      background: rgba(255,253,246,.76);
+      border: 1px solid rgba(185,155,98,.20);
+      transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+    }
+
+    .activity-option:hover,
+    .activity-option.active {
+      transform: translateY(-2px);
+      background: rgba(247,241,228,.92);
+      box-shadow: var(--shadow-card);
+    }
+
+    .activity-option.active {
+      outline: 2px solid rgba(81,107,85,.28);
+    }
+
+    .activity-icon {
+      display: grid;
+      place-items: center;
+      width: 74px;
+      height: 74px;
+      border-radius: 20px;
+      background: rgba(255,252,246,.78);
+      box-shadow: inset 0 0 0 1px rgba(185,155,98,.18), 0 8px 16px rgba(73,62,40,.08);
+    }
+
+    .activity-thumb {
+      width: 62px;
+      height: 62px;
+      object-fit: contain;
+      display: block;
+      filter: drop-shadow(0 8px 12px rgba(73,62,40,.12));
+    }
+
+    .activity-option strong {
+      color: var(--moss-dark);
+      letter-spacing: .08em;
+    }
+
+    .activity-option small {
+      color: rgba(40,58,47,.58);
+      font-size: .74rem;
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    .activity-panel {
+      margin-top: 12px;
+      padding: 14px;
+      border-radius: 18px;
+      background: rgba(255,250,240,.80);
+      border: 1px solid rgba(185,155,98,.18);
+      min-height: 172px;
+    }
+
+    .activity-panel h3 {
+      margin: 0 0 8px;
+      color: var(--moss-dark);
+      letter-spacing: .10em;
+    }
+
+    .meditation-step {
+      color: rgba(40,58,47,.74);
+      line-height: 1.8;
+      font-size: 1rem;
+      min-height: 82px;
+    }
+
+    .breath-orb {
+      width: 100px;
+      height: 100px;
+      margin: 12px auto;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: var(--moss);
+      background:
+        radial-gradient(circle, rgba(255,253,246,.94), rgba(185,155,98,.12)),
+        conic-gradient(from 0deg, rgba(81,107,85,.26), rgba(185,155,98,.18), rgba(81,107,85,.26));
+      box-shadow: 0 0 0 12px rgba(81,107,85,.06), inset 0 0 0 1px rgba(185,155,98,.20);
+      animation: breathe 5s ease-in-out infinite;
+      font-weight: 800;
+      letter-spacing: .12em;
+    }
+
+    @keyframes breathe {
+      0%, 100% { transform: scale(.94); opacity: .86; }
+      50% { transform: scale(1.08); opacity: 1; }
+    }
+
+    .sutra-guide {
+      padding: 14px;
+      border-radius: 14px;
+      color: rgba(40,58,47,.28);
+      background: rgba(255,253,246,.62);
+      border: 1px dashed rgba(185,155,98,.35);
+      font-size: 1.05rem;
+      line-height: 1.7;
+      letter-spacing: .08em;
+      margin-bottom: 10px;
+      min-height: 68px;
+    }
+
+    .sutra-input {
+      width: 100%;
+      min-height: 46px;
+      resize: vertical;
+      border-radius: 14px;
+      padding: 12px 14px;
+      color: var(--ink);
+      background: rgba(255,253,246,.86);
+      border: 1px solid rgba(81,107,85,.28);
+      outline: none;
+      line-height: 1.6;
+    }
+
+    .sutra-input:focus {
+      box-shadow: 0 0 0 3px rgba(81,107,85,.12);
+      border-color: rgba(81,107,85,.55);
+    }
+
+    .tour-fact {
+      line-height: 1.85;
+      color: rgba(40,58,47,.74);
+      min-height: 92px;
+      padding: 12px;
+      border-radius: 14px;
+      background: rgba(255,253,246,.66);
+      border: 1px solid rgba(185,155,98,.18);
+    }
+
+    .log-list {
+      display: grid;
+      gap: 8px;
+      max-height: 180px;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .log-item {
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(255,250,240,.72);
+      border: 1px solid rgba(185,155,98,.16);
+      color: rgba(40,58,47,.72);
+      line-height: 1.55;
+      font-size: .9rem;
+    }
+
+    .log-item b {
+      color: var(--moss-dark);
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      z-index: 80;
+      transform: translateX(-50%) translateY(18px);
+      opacity: 0;
+      pointer-events: none;
+      min-width: min(calc(100% - 32px), 360px);
+      padding: 14px 18px;
+      border-radius: 999px;
+      text-align: center;
+      color: var(--moss-dark);
+      background: rgba(255,253,246,.92);
+      border: 1px solid rgba(185,155,98,.35);
+      box-shadow: var(--shadow-soft);
+      transition: transform .25s ease, opacity .25s ease;
+      backdrop-filter: blur(16px);
+      font-weight: 800;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 70;
+      display: none;
+      place-items: center;
+      padding: 20px;
+      background: rgba(40,58,47,.24);
+      backdrop-filter: blur(6px);
+    }
+
+    .modal.show { display: grid; }
+
+    .modal-card {
+      width: min(100%, 560px);
+      padding: 22px;
+      background: rgba(255,253,246,.94);
+    }
+
+    .modal-card h3 {
+      margin: 0 0 14px;
+      color: var(--moss-dark);
+      font-size: 1.35rem;
+      letter-spacing: .12em;
+    }
+
+    .herb-select {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(81,107,85,.28);
+      background: rgba(255,250,240,.90);
+      color: var(--ink);
+      outline: none;
+      margin-bottom: 12px;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    .footer-note {
+      margin: 20px auto 0;
+      padding: 14px 18px;
+      text-align: center;
+      color: rgba(40,58,47,.60);
+      font-size: .88rem;
+      letter-spacing: .08em;
+    }
+
+    .tiny-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .tiny-actions .btn {
+      min-height: 36px;
+      font-size: .86rem;
+    }
+
+    .plant-menu {
+      display: grid;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .plant-choice {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 12px;
+      border-radius: 16px;
+      background: rgba(255,250,240,.72);
+      border: 1px solid rgba(185,155,98,.18);
+    }
+
+    .plant-choice span {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .plant-choice b {
+      color: var(--moss-dark);
+    }
+
+    .plant-choice small {
+      color: rgba(40,58,47,.56);
+    }
+
+    @media (max-width: 980px) {
+      .topbar {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .brand {
+        justify-content: center;
+      }
+
+      .player-card {
+        justify-content: center;
+        width: min(100%, 560px);
+        margin: 0 auto;
+      }
+
+      .main-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .app-shell {
+        width: min(calc(100% - 22px), var(--container));
+        padding-top: 18px;
+      }
+
+      .game-title h1 {
+        font-size: 2.85rem;
+        letter-spacing: .10em;
+      }
+
+      .game-title p {
+        letter-spacing: .18em;
+      }
+
+      .player-card {
+        grid-template-columns: 1fr 1fr;
+        border-radius: 22px;
+      }
+
+      .stat {
+        min-width: 0;
+        padding: 11px 12px;
+      }
+
+      .stat:nth-child(2) {
+        border-right: 0;
+      }
+
+      .stat:nth-child(3) {
+        grid-column: 1 / -1;
+        border-top: 1px solid rgba(185,155,98,.20);
+      }
+
+      .garden-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .plot {
+        min-height: 188px;
+        padding: 10px;
+      }
+
+      .plot-inner {
+        min-height: 164px;
+      }
+
+      .herb-emoji {
+        font-size: 2.65rem;
+      }
+
+      .activity-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .activity-option {
+        grid-template-columns: auto 1fr;
+        justify-items: start;
+        text-align: left;
+        min-height: 74px;
+      }
+
+      .activity-option small {
+        text-align: left;
+      }
+    }
+
+    @media (max-width: 460px) {
+      .garden-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .brand-text strong {
+        font-size: 1.14rem;
+      }
+
+      .game-title h1 {
+        font-size: 2.35rem;
+      }
+    }
+  
+    /* ======================================================
+       V2：套用第一批去背素材
+       - 薄荷、艾草改為 4 階段圖片
+       - 土地格改為 plot-empty.png
+    ====================================================== */
+    .plot {
+      background: rgba(255, 253, 246, .36);
+      box-shadow: 0 10px 24px rgba(73,62,40,.08);
+    }
+
+    .plot-inner {
+      min-height: 178px;
+      padding: 8px;
+      background: transparent !important;
+      border: 0 !important;
+      overflow: visible;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+    }
+
+    .plot-inner::before {
+      display: none;
+    }
+
+    .plot-tag {
+      z-index: 4;
+      margin-left: 2px;
+      background: rgba(255,253,246,.86);
+    }
+
+    .herb-stage {
+      min-height: 108px;
+      overflow: visible;
+    }
+
+    .plot-art {
+      position: relative;
+      width: 100%;
+      height: 132px;
+      display: grid;
+      place-items: center;
+      overflow: visible;
+    }
+
+    .plot-base-img {
+      position: absolute;
+      z-index: 1;
+      width: 104%;
+      max-width: none;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      object-fit: contain;
+      filter: drop-shadow(0 10px 14px rgba(73,62,40,.12));
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .herb-plant-img {
+      position: absolute;
+      z-index: 2;
+      object-fit: contain;
+      pointer-events: none;
+      user-select: none;
+      filter: drop-shadow(0 12px 12px rgba(73,62,40,.16));
+      transform-origin: center bottom;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .herb-plant-img.mint {
+      width: 48%;
+      max-height: 128px;
+    }
+
+    .herb-plant-img.mugwort {
+      width: 52%;
+      max-height: 136px;
+    }
+
+    .plot.harvestable .herb-plant-img {
+      animation: herbImageGlow 1.8s ease-in-out infinite;
+      filter:
+        drop-shadow(0 12px 12px rgba(73,62,40,.16))
+        drop-shadow(0 0 18px rgba(255,216,104,.75));
+    }
+
+    @keyframes herbImageGlow {
+      0%, 100% { transform: translateX(-50%) translateY(0) scale(1); }
+      50% { transform: translateX(-50%) translateY(-4px) scale(1.035); }
+    }
+
+    .plot .empty-sprout {
+      z-index: 2;
+      color: rgba(255,253,246,.72);
+      text-shadow: 0 2px 6px rgba(73,62,40,.24);
+    }
+
+    .plot-info {
+      color: var(--moss-dark);
+    }
+
+    .plot-time {
+      color: rgba(40,58,47,.72);
+      font-weight: 700;
+    }
+
+    .progress {
+      background: rgba(255,253,246,.78);
+      border-color: rgba(185,155,98,.36);
+    }
+
+    .detail-herb-img {
+      width: min(92%, 280px);
+      height: min(92%, 280px);
+      object-fit: contain;
+      display: block;
+      margin: 0 auto;
+      filter: drop-shadow(0 16px 20px rgba(73,62,40,.13));
+    }
+
+    .detail-main-img {
+      width: min(94%, 360px);
+      max-height: 290px;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto;
+      filter: drop-shadow(0 18px 22px rgba(73,62,40,.12));
+      opacity: .96;
+    }
+
+    .plant-choice-thumb {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+      flex: 0 0 auto;
+      filter: drop-shadow(0 8px 10px rgba(73,62,40,.12));
+    }
+
+    @media (max-width: 720px) {
+      .plot-art {
+        height: 122px;
+      }
+
+      .herb-plant-img.mint {
+        width: 46%;
+        max-height: 118px;
+      }
+
+      .herb-plant-img.mugwort {
+        width: 50%;
+        max-height: 126px;
+      }
+    }
+
+  
+    /* ======================================================
+       V3：六個土地格每秒抖動修正
+       原因：倒數每秒重新 render，滑鼠停留時 hover 位移會被反覆觸發。
+       修正：取消土地格本身的 transform / translateY / transition，只保留穩定陰影。
+    ====================================================== */
+    .garden-grid .plot,
+    .garden-grid .plot:hover,
+    .garden-grid .plot:focus,
+    .garden-grid .plot:focus-within,
+    .garden-grid .plot.harvestable,
+    .garden-grid .plot.harvestable:hover {
+      transform: none !important;
+      transition: box-shadow .18s ease, border-color .18s ease, background .18s ease !important;
+    }
+
+    .garden-grid .plot:hover {
+      box-shadow:
+        0 10px 24px rgba(73,62,40,.08),
+        0 0 0 1px rgba(185,155,98,.18) !important;
+    }
+
+    .garden-grid .plot.harvestable,
+    .garden-grid .plot.harvestable:hover {
+      box-shadow:
+        0 0 0 1px rgba(185,155,98,.28),
+        0 0 28px rgba(185,155,98,.34),
+        0 18px 34px rgba(73,62,40,.10) !important;
+    }
+
+    .garden-grid .plot * {
+      backface-visibility: hidden;
+    }
+
+  
+    /* ======================================================
+       V5：頁首三層排列修正
+       - 第一行：小六命理網 Logo 與名稱
+       - 第二行：神農藥草園
+       - 第三行：靜心種植小遊戲
+       - 玩家資訊列移到標題下方置中
+    ====================================================== */
+    .topbar {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 12px !important;
+      margin-bottom: 22px !important;
+      text-align: center !important;
+    }
+
+    .brand {
+      justify-content: center !important;
+      gap: 10px !important;
+      margin-bottom: 2px !important;
+    }
+
+    .brand-logo-img {
+      width: 52px !important;
+      height: 52px !important;
+    }
+
+    .brand-text {
+      text-align: left;
+    }
+
+    .brand-text strong {
+      font-size: 1.26rem !important;
+      letter-spacing: .08em !important;
+    }
+
+    .brand-text small {
+      font-size: .72rem !important;
+      letter-spacing: .12em !important;
+    }
+
+    .game-title {
+      width: 100%;
+      text-align: center !important;
+    }
+
+    .game-title h1 {
+      font-size: clamp(2.35rem, 4.6vw, 3.85rem) !important;
+      line-height: 1.08 !important;
+      letter-spacing: .16em !important;
+      margin: 2px 0 0 !important;
+    }
+
+    .game-title p {
+      margin: 8px 0 0 !important;
+      font-size: clamp(.95rem, 1.6vw, 1.16rem) !important;
+      letter-spacing: .30em !important;
+    }
+
+    .player-card {
+      margin-top: 8px !important;
+      justify-self: center !important;
+    }
+
+    @media (max-width: 720px) {
+      .topbar {
+        gap: 10px !important;
+        margin-bottom: 18px !important;
+      }
+
+      .brand-logo-img {
+        width: 48px !important;
+        height: 48px !important;
+      }
+
+      .brand-text strong {
+        font-size: 1.12rem !important;
+      }
+
+      .brand-text small {
+        font-size: .68rem !important;
+      }
+
+      .game-title h1 {
+        font-size: clamp(2.05rem, 11vw, 2.85rem) !important;
+        letter-spacing: .10em !important;
+      }
+
+      .game-title p {
+        font-size: .9rem !important;
+        letter-spacing: .22em !important;
+      }
+
+      .player-card {
+        width: min(100%, 560px) !important;
+      }
+    }
+
+    @media (max-width: 460px) {
+      .brand {
+        flex-direction: row !important;
+      }
+
+      .game-title h1 {
+        font-size: 2.18rem !important;
+        letter-spacing: .08em !important;
+      }
+
+      .game-title p {
+        letter-spacing: .18em !important;
+      }
+    }
+
+  
+
+    /* ======================================================
+       V6：6塊土地直接疊放在大底圖上
+       - 大底圖固定呈現於藥園區
+       - 土地格獨立左右捲動，背景不跟著移動
+       - 若後續增加土地數量，可直接橫向擴充
+    ====================================================== */
+    .main-grid {
+      grid-template-columns: minmax(0, 1.92fr) minmax(320px, .78fr) !important;
+      align-items: start !important;
+    }
+
+    .garden-card {
+      padding: 18px !important;
+      background: linear-gradient(180deg, rgba(255,253,246,.92), rgba(255,251,243,.90)) !important;
+    }
+
+    .garden-card::after {
+      display: none !important;
+    }
+
+    .garden-scene {
+      position: relative;
+      z-index: 1;
+      min-height: 660px;
+      border-radius: 28px;
+      overflow: hidden;
+      border: 1px solid rgba(185,155,98,.18);
+      background: linear-gradient(180deg, rgba(255,250,241,.42), rgba(246,238,220,.16));
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.36);
+      isolation: isolate;
+    }
+
+    .garden-scene-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(255,251,243,.18), rgba(255,251,243,.10)),
+        url('assets/shennong/biggarden.png') center center / cover no-repeat;
+      filter: saturate(.98) contrast(1.02);
+      transform: scale(1.02);
+      z-index: 0;
+    }
+
+    .garden-scene::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(180deg, rgba(255,251,243,.06) 0%, rgba(255,251,243,.02) 18%, rgba(255,251,243,.03) 58%, rgba(244,235,217,.10) 100%),
+        radial-gradient(circle at 10% 12%, rgba(81,107,85,.10), transparent 28%),
+        radial-gradient(circle at 92% 86%, rgba(185,155,98,.12), transparent 26%);
+      z-index: 1;
+    }
+
+    .garden-scroll {
+      position: absolute;
+      inset: 0;
+      overflow-x: auto;
+      overflow-y: hidden;
+      z-index: 3;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(81,107,85,.38) rgba(255,253,246,.35);
+    }
+
+    .garden-scroll::-webkit-scrollbar {
+      height: 12px;
+    }
+
+    .garden-scroll::-webkit-scrollbar-track {
+      background: rgba(255,253,246,.36);
+      border-radius: 999px;
+    }
+
+    .garden-scroll::-webkit-scrollbar-thumb {
+      background: linear-gradient(90deg, rgba(111,136,96,.84), rgba(81,107,85,.92));
+      border-radius: 999px;
+      border: 2px solid rgba(255,253,246,.46);
+    }
+
+    .garden-grid {
+      position: absolute !important;
+      left: 0;
+      right: auto;
+      bottom: 58px;
+      z-index: 3;
+      display: flex !important;
+      align-items: flex-end;
+      gap: 18px !important;
+      min-width: max-content;
+      padding: 0 28px 12px 28px !important;
+      width: max-content;
+      grid-template-columns: none !important;
+    }
+
+    .garden-grid::after {
+      content: "";
+      flex: 0 0 14px;
+    }
+
+    .plot {
+      flex: 0 0 210px;
+      min-height: auto !important;
+      padding: 0 !important;
+      background: none !important;
+      border: 0 !important;
+      box-shadow: none !important;
+      overflow: visible !important;
+      transition: transform .16s ease !important;
+      animation: none !important;
+    }
+
+    .plot:hover,
+    .plot:focus,
+    .plot:focus-within,
+    .plot.harvestable,
+    .plot.harvestable:hover {
+      box-shadow: none !important;
+      animation: none !important;
+    }
+
+    .plot:hover {
+      transform: none !important;
+    }
+
+    .plot-inner {
+      min-height: 352px !important;
+      padding: 8px 8px 0 !important;
+      background: transparent !important;
+      border: 0 !important;
+      box-shadow: none !important;
+      overflow: visible !important;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 8px;
+    }
+
+    .plot-inner::before {
+      display: none !important;
+    }
+
+    .plot-tag {
+      justify-self: flex-start;
+      margin-left: 2px;
+      background: rgba(255,253,246,.92) !important;
+      box-shadow: 0 6px 12px rgba(73,62,40,.10);
+    }
+
+    .herb-stage {
+      min-height: 176px !important;
+      overflow: visible !important;
+    }
+
+    .plot-art {
+      position: relative;
+      width: 100%;
+      height: 228px !important;
+      overflow: visible !important;
+      display: grid;
+      place-items: center;
+    }
+
+    .plot-base-img {
+      width: 112% !important;
+      bottom: 0 !important;
+      filter: drop-shadow(0 12px 18px rgba(73,62,40,.16));
+    }
+
+    .herb-plant-img {
+      bottom: 42px !important;
+      filter: drop-shadow(0 12px 18px rgba(73,62,40,.20));
+    }
+
+    .herb-plant-img.mint {
+      width: 56% !important;
+      max-height: 150px !important;
+    }
+
+    .herb-plant-img.mugwort {
+      width: 58% !important;
+      max-height: 160px !important;
+    }
+
+    .plot .empty-sprout {
+      font-size: 2.8rem !important;
+      color: rgba(255,248,232,.68) !important;
+      text-shadow: 0 2px 10px rgba(73,62,40,.28);
+      margin-top: 32px;
+    }
+
+    .plot-info {
+      position: relative;
+      z-index: 4;
+      gap: 8px !important;
+      padding: 10px 12px 12px;
+      border-radius: 18px;
+      background: rgba(255,252,246,.88);
+      border: 1px solid rgba(185,155,98,.30);
+      box-shadow: 0 12px 20px rgba(73,62,40,.08);
+      backdrop-filter: blur(4px);
+      margin-top: -4px;
+    }
+
+    .plot-time {
+      color: var(--moss-dark) !important;
+      font-weight: 700;
+    }
+
+    .progress {
+      border-color: rgba(185,155,98,.42) !important;
+      background: rgba(255,253,246,.88) !important;
+      box-shadow: inset 0 2px 5px rgba(73,62,40,.06);
+    }
+
+    .garden-scroll-hint {
+      position: absolute;
+      left: 50%;
+      bottom: 14px;
+      transform: translateX(-50%);
+      z-index: 4;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 14px;
+      border-radius: 999px;
+      background: rgba(255,253,246,.82);
+      border: 1px solid rgba(185,155,98,.24);
+      color: rgba(40,58,47,.68);
+      font-size: .82rem;
+      letter-spacing: .08em;
+      white-space: nowrap;
+      box-shadow: 0 10px 16px rgba(73,62,40,.08);
+      backdrop-filter: blur(6px);
+    }
+
+    .garden-scroll-hint::before,
+    .garden-scroll-hint::after {
+      content: "↔";
+      color: rgba(81,107,85,.75);
+      font-weight: 700;
+    }
+
+    @media (max-width: 1120px) {
+      .main-grid {
+        grid-template-columns: 1fr !important;
+      }
+
+      .garden-scene {
+        min-height: 618px;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .garden-scene {
+        min-height: 580px;
+      }
+
+      .garden-grid {
+        gap: 14px !important;
+        padding: 0 20px 12px 20px !important;
+      }
+
+      .plot {
+        flex-basis: 188px;
+      }
+
+      .plot-inner {
+        min-height: 324px !important;
+      }
+
+      .plot-art {
+        height: 208px !important;
+      }
+
+      .herb-plant-img {
+        bottom: 38px !important;
+      }
+
+      .garden-scroll-hint {
+        font-size: .76rem;
+        padding: 6px 12px;
+      }
+    }
+
+  
+    /* ======================================================
+       V7：直覺採收與土地格透明化
+       - 可採收藥草可直接點擊土地／藥草採收
+       - 移除每塊田外層淡淡格子框感
+    ====================================================== */
+    .garden-grid .plot {
+      cursor: default;
+      background: transparent !important;
+      border: 0 !important;
+      outline: 0 !important;
+      box-shadow: none !important;
+    }
+
+    .garden-grid .plot.harvestable {
+      cursor: pointer;
+    }
+
+    .garden-grid .plot.harvestable .plot-art {
+      cursor: pointer;
+    }
+
+    .plot-info {
+      background: transparent !important;
+      border: 0 !important;
+      box-shadow: none !important;
+      backdrop-filter: none !important;
+      padding: 4px 12px 8px !important;
+      margin-top: -10px !important;
+    }
+
+    .plot-time {
+      color: rgba(40,58,47,.78) !important;
+      text-shadow:
+        0 1px 0 rgba(255,253,246,.86),
+        0 2px 8px rgba(255,253,246,.70);
+    }
+
+    .plot-actions {
+      margin-top: 2px;
+    }
+
+    .plot-actions .btn {
+      min-height: 36px;
+      box-shadow: 0 8px 16px rgba(73,62,40,.12);
+    }
+
+    .plot:not(.harvestable) .plot-actions .btn-outline {
+      background: rgba(255,253,246,.66);
+    }
+
+    .plot.harvestable .plot-actions .btn-gold::before {
+      content: "點藥草也可";
+      font-size: .72rem;
+      opacity: .78;
+      margin-right: 2px;
+      letter-spacing: .04em;
+    }
+
+    .progress {
+      box-shadow: 0 3px 10px rgba(73,62,40,.08) !important;
+    }
+
+    .plot-tag {
+      border: 0 !important;
+      background: rgba(255,253,246,.76) !important;
+      box-shadow: 0 6px 12px rgba(73,62,40,.08) !important;
+    }
+
+  
+    /* ======================================================
+       V8：徹底移除每塊田的淡淡格子框感
+       - 取消 plot / plot-inner / herb-stage / plot-art 所有框線、底色、陰影
+       - 土地圖與藥草直接浮在大地圖上
+    ====================================================== */
+    .garden-grid .plot,
+    .garden-grid .plot:hover,
+    .garden-grid .plot:focus,
+    .garden-grid .plot:focus-within,
+    .garden-grid .plot.harvestable,
+    .garden-grid .plot.harvestable:hover {
+      background: transparent !important;
+      background-image: none !important;
+      border: none !important;
+      outline: none !important;
+      box-shadow: none !important;
+      border-radius: 0 !important;
+      overflow: visible !important;
+    }
+
+    .garden-grid .plot-inner,
+    .garden-grid .plot-inner:hover,
+    .garden-grid .plot-inner:focus,
+    .garden-grid .plot-inner:focus-within {
+      background: transparent !important;
+      background-image: none !important;
+      border: none !important;
+      outline: none !important;
+      box-shadow: none !important;
+      border-radius: 0 !important;
+      overflow: visible !important;
+    }
+
+    .garden-grid .plot-inner::before,
+    .garden-grid .plot-inner::after,
+    .garden-grid .plot::before,
+    .garden-grid .plot::after,
+    .garden-grid .herb-stage::before,
+    .garden-grid .herb-stage::after,
+    .garden-grid .plot-art::before,
+    .garden-grid .plot-art::after {
+      content: none !important;
+      display: none !important;
+      background: none !important;
+      border: 0 !important;
+      box-shadow: none !important;
+    }
+
+    .garden-grid .herb-stage,
+    .garden-grid .plot-art {
+      background: transparent !important;
+      background-image: none !important;
+      border: none !important;
+      outline: none !important;
+      box-shadow: none !important;
+      border-radius: 0 !important;
+      overflow: visible !important;
+    }
+
+    .garden-grid .plot-tag {
+      border: none !important;
+      outline: none !important;
+      box-shadow: none !important;
+      background: rgba(255,253,246,.62) !important;
+      backdrop-filter: blur(3px);
+    }
+
+    .garden-grid .plot-info {
+      background: transparent !important;
+      background-image: none !important;
+      border: none !important;
+      outline: none !important;
+      box-shadow: none !important;
+      border-radius: 0 !important;
+      backdrop-filter: none !important;
+    }
+
+    .garden-grid .progress {
+      background: rgba(255,253,246,.74) !important;
+      border: 1px solid rgba(185,155,98,.26) !important;
+      box-shadow: none !important;
+    }
+
+    .garden-grid .plot-actions .btn {
+      box-shadow: 0 8px 14px rgba(73,62,40,.10) !important;
+    }
+
+  
+    /* ======================================================
+       V9：空土地點擊種植與提示字修正
+       - 空土地可直接點擊開啟種植選單
+       - 空土地提示字改為淺米白，避免被背景吃掉
+       - 移除空土地中央淡淡符號
+    ====================================================== */
+    .garden-grid .plot.empty {
+      cursor: pointer;
+    }
+
+    .garden-grid .plot.empty .plot-art {
+      cursor: pointer;
+    }
+
+    .garden-grid .plot.empty .empty-sprout {
+      display: none !important;
+      content: none !important;
+    }
+
+    .garden-grid .plot.empty .plot-time {
+      color: #fff8e8 !important;
+      font-weight: 800 !important;
+      text-shadow:
+        0 1px 0 rgba(77, 59, 38, .45),
+        0 2px 8px rgba(77, 59, 38, .38),
+        0 0 14px rgba(255, 253, 246, .42) !important;
+      letter-spacing: .08em;
+    }
+
+    .garden-grid .plot.empty .plot-info {
+      margin-top: -10px !important;
+    }
+
+    .garden-grid .plot.empty .progress {
+      opacity: .42;
+    }
+
+
+    /* ======================================================
+       V2.1：八種藥草植物尺寸校正
+       - 新增白蘿蔔、紫蘇、甘草、枸杞、丹蔘、靈芝的顯示尺寸
+       - 避免新增植物使用原圖尺寸造成畫面過大
+    ====================================================== */
+    .herb-plant-img {
+      width: 56% !important;
+      max-height: 160px !important;
+    }
+
+    .herb-plant-img.mint {
+      width: 56% !important;
+      max-height: 150px !important;
+    }
+
+    .herb-plant-img.mugwort {
+      width: 58% !important;
+      max-height: 160px !important;
+    }
+
+    .herb-plant-img.radish {
+      width: 62% !important;
+      max-height: 148px !important;
+    }
+
+    .herb-plant-img.perilla {
+      width: 58% !important;
+      max-height: 162px !important;
+    }
+
+    .herb-plant-img.licorice {
+      width: 58% !important;
+      max-height: 164px !important;
+    }
+
+    .herb-plant-img.goji {
+      width: 60% !important;
+      max-height: 164px !important;
+    }
+
+    .herb-plant-img.danshen {
+      width: 60% !important;
+      max-height: 166px !important;
+    }
+
+    .herb-plant-img.lingzhi {
+      width: 54% !important;
+      max-height: 156px !important;
+    }
+
+    @media (max-width: 720px) {
+      .herb-plant-img {
+        width: 54% !important;
+        max-height: 142px !important;
+      }
+
+      .herb-plant-img.radish {
+        width: 60% !important;
+        max-height: 136px !important;
+      }
+
+      .herb-plant-img.lingzhi {
+        width: 52% !important;
+        max-height: 138px !important;
+      }
+    }
+
+
+    /* ======================================================
+       V2.2：種植呼吸感與成熟光芒強化
+       - 移除土地底圖在不同狀態下的任何位移
+       - 1~3 階段植物加入微微呼吸縮放感
+       - 第 4 階段放大、強化光芒，加入十字閃光
+    ====================================================== */
+    .garden-grid .plot-base-img,
+    .garden-grid .plot.empty .plot-base-img,
+    .garden-grid .plot.planted .plot-base-img,
+    .garden-grid .plot.harvestable .plot-base-img {
+      position: absolute !important;
+      left: 50% !important;
+      bottom: -10px !important;
+      width: 112% !important;
+      max-width: none !important;
+      display: block !important;
+      margin: 0 !important;
+      transform: translateX(-50%) !important;
+      animation: none !important;
+      transition: none !important;
+      will-change: auto !important;
+    }
+
+    .garden-grid .plot-art {
+      isolation: isolate;
+      position: relative;
+      transition: none !important;
+    }
+
+    .garden-grid .plot-art.has-herb .plot-base-img {
+      z-index: 1;
+    }
+
+    .garden-grid .herb-plant-img {
+      z-index: 3;
+      will-change: transform, filter, opacity;
+    }
+
+    .garden-grid .herb-plant-img.stage-1:not(.harvest-ready) {
+      animation: herbBreathStage1 2.4s ease-in-out infinite;
+    }
+
+    .garden-grid .herb-plant-img.stage-2:not(.harvest-ready) {
+      animation: herbBreathStage2 2.2s ease-in-out infinite;
+    }
+
+    .garden-grid .herb-plant-img.stage-3:not(.harvest-ready) {
+      animation: herbBreathStage3 2.0s ease-in-out infinite;
+    }
+
+    @keyframes herbBreathStage1 {
+      0%   { transform: translateX(-50%) scale(.985); }
+      50%  { transform: translateX(-50%) scale(1.015); }
+      100% { transform: translateX(-50%) scale(.985); }
+    }
+
+    @keyframes herbBreathStage2 {
+      0%   { transform: translateX(-50%) scale(.995); }
+      50%  { transform: translateX(-50%) scale(1.03); }
+      100% { transform: translateX(-50%) scale(.995); }
+    }
+
+    @keyframes herbBreathStage3 {
+      0%   { transform: translateX(-50%) scale(1.01); }
+      50%  { transform: translateX(-50%) scale(1.045); }
+      100% { transform: translateX(-50%) scale(1.01); }
+    }
+
+    .garden-grid .herb-plant-img.stage-4.harvest-ready {
+      animation: herbRipeAura 2.05s ease-in-out infinite;
+      filter:
+        drop-shadow(0 14px 18px rgba(73,62,40,.20))
+        drop-shadow(0 0 9px rgba(255,236,160,1))
+        drop-shadow(0 0 16px rgba(255,223,110,1))
+        drop-shadow(0 0 24px rgba(255,192,54,.96));
+    }
+
+    @keyframes herbRipeAura {
+      0%, 100% {
+        transform: translateX(-50%) scale(1.10);
+        opacity: .98;
+      }
+      50% {
+        transform: translateX(-50%) scale(1.17);
+        opacity: 1;
+      }
+    }
+
+    .garden-grid .plot.harvestable .plot-art::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 46%;
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      background:
+        radial-gradient(circle, rgba(255,252,230,1) 0%, rgba(255,241,166,1) 16%, rgba(255,220,86,1) 32%, rgba(255,194,42,.82) 46%, rgba(255,184,34,.26) 58%, rgba(255,184,34,0) 68%);
+      filter: blur(1.5px);
+      opacity: 1;
+      z-index: 2;
+      animation: ripeHaloPulse 1.55s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    .garden-grid .plot.harvestable .plot-art::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 46%;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      background:
+        radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,250,214,1) 24%, rgba(255,231,120,1) 42%, rgba(255,214,86,.42) 58%, rgba(255,214,86,0) 72%);
+      filter: blur(.4px);
+      opacity: 1;
+      z-index: 2;
+      animation: ripeHaloPulseInner 1.25s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes ripeHaloPulse {
+      0%, 100% {
+        transform: translate(-50%, -50%) scale(.99);
+        opacity: .96;
+      }
+      50% {
+        transform: translate(-50%, -50%) scale(1.025);
+        opacity: 1;
+      }
+    }
+
+    @keyframes ripeHaloPulseInner {
+      0%, 100% {
+        transform: translate(-50%, -50%) scale(.99);
+        opacity: .97;
+      }
+      50% {
+        transform: translate(-50%, -50%) scale(1.02);
+        opacity: 1;
+      }
+    }
+
+    .garden-grid .harvest-sparkles,
+    .garden-grid .preview-sparkles {
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      pointer-events: none;
+    }
+
+    .garden-grid .harvest-sparkles .sparkle,
+    .garden-grid .preview-sparkles .sparkle {
+      position: absolute;
+      color: rgba(255,255,244,1);
+      text-shadow:
+        0 0 3px rgba(255,250,224,1),
+        0 0 8px rgba(255,231,120,1),
+        0 0 14px rgba(255,204,76,.96);
+      line-height: 1;
+      opacity: 0;
+      transform: scale(.68);
+      animation: sparkleBlink 1.65s ease-in-out infinite;
+    }
+
+    .garden-grid .harvest-sparkles .sparkle {
+      font-size: 19px;
+      filter: contrast(1.08) saturate(1.08);
+    }
+
+    .garden-grid .harvest-sparkles .s1 { top: 24%; left: 34%; animation-delay: -0.10s; }
+    .garden-grid .harvest-sparkles .s2 { top: 30%; right: 29%; animation-delay: -0.55s; }
+    .garden-grid .harvest-sparkles .s3 { top: 40%; left: 24%; animation-delay: -0.95s; }
+    .garden-grid .harvest-sparkles .s4 { top: 44%; right: 24%; animation-delay: -1.25s; }
+    .garden-grid .harvest-sparkles .s5 { top: 18%; left: 48%; animation-delay: -1.55s; }
+
+    .garden-grid .preview-sparkles {
+      z-index: 3;
+    }
+
+    .garden-grid .preview-sparkles .sparkle {
+      font-size: 15px;
+      animation-duration: 1.9s;
+      opacity: 0;
+      filter: contrast(1.05);
+    }
+
+    .garden-grid .preview-sparkles .p1 { top: 28%; left: 36%; animation-delay: -0.25s; }
+    .garden-grid .preview-sparkles .p2 { top: 34%; right: 34%; animation-delay: -1.05s; }
+
+    @keyframes sparkleBlink {
+      0%, 100% {
+        opacity: .10;
+        transform: scale(.62) rotate(0deg);
+      }
+      18% {
+        opacity: .78;
+        transform: scale(.95) rotate(10deg);
+      }
+      40% {
+        opacity: 1;
+        transform: scale(1.18) rotate(0deg);
+      }
+      62% {
+        opacity: .72;
+        transform: scale(.90) rotate(-10deg);
+      }
+      82% {
+        opacity: .18;
+        transform: scale(.68) rotate(0deg);
+      }
+    }
+
+
+    /* ======================================================
+       V3.0：固定 6 格地圖版
+       - 移除左右滑動查看更多土地
+       - 一張地圖固定顯示 6 片土地
+       - 預留上方地圖切頁與每格獨立土地圖
+    ====================================================== */
+    .garden-map-tabs {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: -2px 0 14px;
+      padding: 8px;
+      border-radius: 999px;
+      background: rgba(255,253,246,.58);
+      border: 1px solid rgba(185,155,98,.18);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.38);
+    }
+
+    .map-tab {
+      min-height: 38px;
+      padding: 0 18px;
+      border-radius: 999px;
+      color: rgba(40,58,47,.66);
+      background: rgba(255,253,246,.72);
+      border: 1px solid rgba(185,155,98,.24);
+      font-weight: 800;
+      letter-spacing: .08em;
+      box-shadow: 0 8px 14px rgba(73,62,40,.06);
+    }
+
+    .map-tab small {
+      margin-left: 6px;
+      color: rgba(157,123,67,.78);
+      font-size: .72rem;
+      letter-spacing: .04em;
+    }
+
+    .map-tab.active {
+      color: #fffdf6;
+      background: linear-gradient(135deg, rgba(111,136,96,.96), rgba(81,107,85,.98));
+      border-color: rgba(81,107,85,.26);
+      box-shadow: 0 10px 18px rgba(73,62,40,.12);
+    }
+
+    .map-tab.active small {
+      color: rgba(255,253,246,.78);
+    }
+
+    .map-tab.locked {
+      cursor: not-allowed;
+      opacity: .62;
+      filter: grayscale(.18);
+    }
+
+    .garden-card .section-title span {
+      max-width: 620px;
+      display: inline-block;
+    }
+
+    .garden-scene {
+      min-height: 620px !important;
+      overflow: hidden !important;
+    }
+
+    .garden-scroll {
+      position: absolute !important;
+      inset: 0 !important;
+      overflow: visible !important;
+      scrollbar-width: none !important;
+    }
+
+    .garden-scroll::-webkit-scrollbar,
+    .garden-scroll::-webkit-scrollbar-track,
+    .garden-scroll::-webkit-scrollbar-thumb {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+    }
+
+    .garden-grid {
+      position: absolute !important;
+      left: 3.4% !important;
+      right: 3.4% !important;
+      top: 8% !important;
+      bottom: 6.5% !important;
+      z-index: 3 !important;
+      display: grid !important;
+      grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+      grid-template-rows: repeat(2, minmax(0, 1fr)) !important;
+      gap: 3.2% 4.2% !important;
+      align-items: end !important;
+      justify-items: stretch !important;
+      min-width: 0 !important;
+      width: auto !important;
+      padding: 0 !important;
+      transform: none !important;
+    }
+
+    .garden-grid::after {
+      content: none !important;
+      display: none !important;
+    }
+
+    .garden-grid .plot {
+      flex: initial !important;
+      width: 100% !important;
+      min-width: 0 !important;
+      height: 100% !important;
+      display: grid !important;
+      align-items: end !important;
+      justify-items: stretch !important;
+      transform: none !important;
+    }
+
+    .garden-grid .plot-inner {
+      width: 100% !important;
+      min-height: 100% !important;
+      height: 100% !important;
+      display: grid !important;
+      grid-template-rows: auto minmax(0, 1fr) auto !important;
+      gap: 4px !important;
+      padding: 4px 4px 0 !important;
+    }
+
+    .garden-grid .plot-tag {
+      justify-self: start !important;
+      margin-left: 4px !important;
+      padding: 4px 9px !important;
+      font-size: .78rem !important;
+      background: rgba(255,253,246,.74) !important;
+    }
+
+    .garden-grid .herb-stage {
+      min-height: 0 !important;
+      display: grid !important;
+      align-items: end !important;
+      justify-items: center !important;
+      overflow: visible !important;
+    }
+
+    .garden-grid .plot-art {
+      width: 100% !important;
+      height: clamp(152px, 15.5vw, 210px) !important;
+      min-height: 142px !important;
+      display: grid !important;
+      place-items: center !important;
+      overflow: visible !important;
+    }
+
+    .garden-grid .plot-base-img,
+    .garden-grid .plot.empty .plot-base-img,
+    .garden-grid .plot.planted .plot-base-img,
+    .garden-grid .plot.harvestable .plot-base-img {
+      bottom: -6px !important;
+      width: 106% !important;
+    }
+
+    .garden-grid .herb-plant-img {
+      bottom: 38px !important;
+    }
+
+    .garden-grid .plot-info {
+      margin-top: -8px !important;
+      padding: 2px 10px 4px !important;
+      gap: 5px !important;
+    }
+
+    .garden-grid .plot-time {
+      font-size: .82rem !important;
+    }
+
+    .garden-grid .progress {
+      height: 11px !important;
+    }
+
+    .garden-grid .plot-actions .btn {
+      min-height: 34px !important;
+      padding: 0 12px !important;
+      font-size: .86rem !important;
+    }
+
+    .garden-scroll-hint {
+      bottom: 10px !important;
+      padding: 6px 13px !important;
+      background: rgba(255,253,246,.72) !important;
+    }
+
+    .garden-scroll-hint::before,
+    .garden-scroll-hint::after {
+      content: "✦" !important;
+    }
+
+    @media (max-width: 1120px) {
+      .garden-scene {
+        min-height: 620px !important;
+      }
+
+      .garden-grid {
+        left: 3% !important;
+        right: 3% !important;
+        gap: 3% 3.6% !important;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .garden-map-tabs {
+        border-radius: 20px;
+        justify-content: flex-start;
+        overflow: hidden;
+      }
+
+      .map-tab {
+        flex: 1 1 100%;
+        min-height: 36px;
+        padding: 0 12px;
+      }
+
+      .garden-scene {
+        min-height: 760px !important;
+      }
+
+      .garden-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        grid-template-rows: repeat(3, minmax(0, 1fr)) !important;
+        left: 4% !important;
+        right: 4% !important;
+        top: 4.8% !important;
+        bottom: 6% !important;
+        gap: 2.4% 4.4% !important;
+      }
+
+      .garden-grid .plot-art {
+        height: clamp(132px, 31vw, 174px) !important;
+        min-height: 126px !important;
+      }
+
+      .garden-grid .plot-base-img,
+      .garden-grid .plot.empty .plot-base-img,
+      .garden-grid .plot.planted .plot-base-img,
+      .garden-grid .plot.harvestable .plot-base-img {
+        width: 104% !important;
+        bottom: -5px !important;
+      }
+
+      .garden-grid .herb-plant-img {
+        bottom: 32px !important;
+      }
+
+      .garden-grid .plot-tag {
+        font-size: .72rem !important;
+        padding: 3px 8px !important;
+      }
+
+      .garden-grid .plot-info {
+        padding: 1px 8px 3px !important;
+      }
+
+      .garden-grid .plot-actions .btn {
+        min-height: 32px !important;
+      }
+    }
+
+    @media (max-width: 460px) {
+      .garden-scene {
+        min-height: 720px !important;
+      }
+
+      .garden-grid .plot-art {
+        height: 126px !important;
+      }
+
+      .garden-grid .plot-time {
+        font-size: .76rem !important;
+      }
+    }
+
+
+    /* ======================================================
+       V3.0.2：版面微調，不調整土地座標
+       - 生長條下移，避免遮住土地下緣
+       - 倒數資訊改為非時間文字
+       - 修心養性移到藥園下方
+       - 最新訊息接在本草札記下方
+    ====================================================== */
+    .game-column {
+      display: grid;
+      gap: 18px;
+      align-content: start;
+    }
+
+    .game-column .activity-card {
+      width: 100%;
+    }
+
+    .garden-grid .plot-info {
+      margin-top: 12px !important;
+    }
+
+    .garden-grid .plot-time {
+      min-height: 1.1em;
+    }
+
+    .side-stack .log-card {
+      margin-top: 0;
+    }
+
+    @media (max-width: 980px) {
+      .game-column {
+        gap: 16px;
+      }
+    }
+
+
+    /* ======================================================
+       V3.0.9：土地位置更新版
+       - 依照使用者提供的最新座標更新 6 格土地位置
+       - 修正第 2 格 translate(10, 115px) 為合法 CSS：translate(10px, 115px)
+       - hover / focus / harvestable 狀態皆維持同一位置，避免跳位
+    ====================================================== */
+
+    .garden-grid .plot:nth-child(1),
+    .garden-grid .plot:nth-child(1):hover,
+    .garden-grid .plot:nth-child(1):focus,
+    .garden-grid .plot:nth-child(1):focus-within,
+    .garden-grid .plot:nth-child(1).harvestable,
+    .garden-grid .plot:nth-child(1).harvestable:hover {
+      transform: translate(20px, 115px) !important;
+    }
+
+    .garden-grid .plot:nth-child(2),
+    .garden-grid .plot:nth-child(2):hover,
+    .garden-grid .plot:nth-child(2):focus,
+    .garden-grid .plot:nth-child(2):focus-within,
+    .garden-grid .plot:nth-child(2).harvestable,
+    .garden-grid .plot:nth-child(2).harvestable:hover {
+      transform: translate(10px, 115px) !important;
+    }
+
+    .garden-grid .plot:nth-child(3),
+    .garden-grid .plot:nth-child(3):hover,
+    .garden-grid .plot:nth-child(3):focus,
+    .garden-grid .plot:nth-child(3):focus-within,
+    .garden-grid .plot:nth-child(3).harvestable,
+    .garden-grid .plot:nth-child(3).harvestable:hover {
+      transform: translate(0px, 115px) !important;
+    }
+
+    .garden-grid .plot:nth-child(4),
+    .garden-grid .plot:nth-child(4):hover,
+    .garden-grid .plot:nth-child(4):focus,
+    .garden-grid .plot:nth-child(4):focus-within,
+    .garden-grid .plot:nth-child(4).harvestable,
+    .garden-grid .plot:nth-child(4).harvestable:hover {
+      transform: translate(20px, 25px) !important;
+    }
+
+    .garden-grid .plot:nth-child(5),
+    .garden-grid .plot:nth-child(5):hover,
+    .garden-grid .plot:nth-child(5):focus,
+    .garden-grid .plot:nth-child(5):focus-within,
+    .garden-grid .plot:nth-child(5).harvestable,
+    .garden-grid .plot:nth-child(5).harvestable:hover {
+      transform: translate(10px, 25px) !important;
+    }
+
+    .garden-grid .plot:nth-child(6),
+    .garden-grid .plot:nth-child(6):hover,
+    .garden-grid .plot:nth-child(6):focus,
+    .garden-grid .plot:nth-child(6):focus-within,
+    .garden-grid .plot:nth-child(6).harvestable,
+    .garden-grid .plot:nth-child(6).harvestable:hover {
+      transform: translate(0px, 25px) !important;
+    }
+
+
+    .garden-grid .plot-inner {
+      position: relative !important;
+    }
+
+    .garden-grid .plot-tag {
+      position: absolute !important;
+      left: 8px !important;
+      top: 54px !important;
+      z-index: 8 !important;
+      writing-mode: vertical-rl !important;
+      text-orientation: upright !important;
+      line-height: 1.15 !important;
+      letter-spacing: .08em !important;
+      min-width: auto !important;
+      max-width: none !important;
+      min-height: 64px !important;
+      margin: 0 !important;
+      padding: 9px 5px !important;
+      border-radius: 12px !important;
+      font-size: .8rem !important;
+      background: rgba(255,253,246,.86) !important;
+      border: 1px solid rgba(185,155,98,.32) !important;
+      box-shadow:
+        0 5px 12px rgba(73,62,40,.10),
+        inset 0 0 0 1px rgba(255,255,255,.42) !important;
+      backdrop-filter: blur(4px);
+      transform: none !important;
+      pointer-events: none !important;
+    }
+
+    .garden-grid .plot.empty .plot-tag {
+      top: 70px !important;
+      opacity: .92;
+    }
+
+    .garden-grid .plot.harvestable .plot-tag {
+      top: 50px !important;
+    }
+
+    @media (max-width: 720px) {
+      .garden-grid .plot-tag {
+        left: 6px !important;
+        top: 48px !important;
+        min-height: 54px !important;
+        padding: 7px 4px !important;
+        font-size: .72rem !important;
+      }
+
+      .garden-grid .plot.empty .plot-tag {
+        top: 58px !important;
+      }
+    }
+
+
+    /* ======================================================
+       V3.0.10：安靜藥園互動修正
+       - 移除空土地上的大型「種植」按鈕
+       - 空土地仍可直接點擊開啟種植選單
+       - 固定土地直式牌籤位置，避免種植後牌籤位移
+    ====================================================== */
+
+    .garden-grid .plot.empty .plot-actions {
+      display: none !important;
+    }
+
+    .garden-grid .plot.empty .plot-info {
+      pointer-events: none !important;
+    }
+
+    .garden-grid .plot,
+    .garden-grid .plot.empty,
+    .garden-grid .plot.planted {
+      cursor: pointer;
+    }
+
+    .garden-grid .plot-tag,
+    .garden-grid .plot.empty .plot-tag,
+    .garden-grid .plot.planted .plot-tag,
+    .garden-grid .plot.harvestable .plot-tag {
+      top: 70px !important;
+      transform: none !important;
+      transition: none !important;
+    }
+
+    @media (max-width: 720px) {
+      .garden-grid .plot-tag,
+      .garden-grid .plot.empty .plot-tag,
+      .garden-grid .plot.planted .plot-tag,
+      .garden-grid .plot.harvestable .plot-tag {
+        top: 58px !important;
+      }
+    }
+
+
+    /* ======================================================
+       V3.0.12：生長資訊錨定修正
+       - 修正點擊種植後「藥草靜靜生長中」與生長條往下跳動
+       - 原因：plot-info 仍參與土地格內部排版，空地 / 種植狀態切換時會被內容高度影響
+       - 做法：將 plot-info 固定錨定在每格土地底部，並讓所有狀態共用同一位置
+    ====================================================== */
+
+    .garden-grid .plot-inner {
+      position: relative !important;
+    }
+
+    .garden-grid .plot-info,
+    .garden-grid .plot.empty .plot-info,
+    .garden-grid .plot.planted .plot-info,
+    .garden-grid .plot.harvestable .plot-info {
+      position: absolute !important;
+      left: 50% !important;
+      bottom: -17px !important;
+      width: min(170px, 88%) !important;
+      height: 82px !important;
+      min-height: 82px !important;
+      margin: 0 !important;
+      padding: 2px 10px 4px !important;
+      transform: translateX(-50%) !important;
+      display: grid !important;
+      grid-template-rows: 1.1em 11px 34px !important;
+      align-content: start !important;
+      gap: 7px !important;
+      overflow: visible !important;
+      pointer-events: auto !important;
+    }
+
+    .garden-grid .plot.empty .plot-info,
+    .garden-grid .plot.planted .plot-info {
+      pointer-events: none !important;
+    }
+
+    .garden-grid .plot-time,
+    .garden-grid .plot.empty .plot-time,
+    .garden-grid .plot.planted .plot-time,
+    .garden-grid .plot.harvestable .plot-time {
+      min-height: 1.1em !important;
+      height: 1.1em !important;
+      line-height: 1.1 !important;
+      margin: 0 !important;
+      transform: none !important;
+    }
+
+    .garden-grid .progress,
+    .garden-grid .plot.empty .progress,
+    .garden-grid .plot.planted .progress,
+    .garden-grid .plot.harvestable .progress {
+      height: 11px !important;
+      align-self: start !important;
+      margin: 0 !important;
+      transform: none !important;
+    }
+
+    .garden-grid .plot:not(.harvestable) .plot-actions {
+      visibility: hidden !important;
+      display: block !important;
+      pointer-events: none !important;
+    }
+
+    .garden-grid .plot.harvestable .plot-actions {
+      visibility: visible !important;
+      display: block !important;
+      pointer-events: auto !important;
+    }
+
+
+    /* ======================================================
+   V3.0 Final micro 01：狀態文字與提示資訊微調
+   - 移除藥園下方「目前地圖固定顯示 6 片土地」提示
+   - 成長中文字改為亮綠色 #e5fc8b
+   - 可收穫文字改為亮黃色 #fff723
+====================================================== */
+
+.garden-grid .plot.planted:not(.harvestable) .plot-time {
+  color: #e5fc8b !important;
+  text-shadow:
+    0 1px 0 rgba(25, 54, 31, .46),
+    0 0 8px rgba(229, 252, 139, .42) !important;
+}
+
+.garden-grid .plot.harvestable .plot-time {
+  color: #fff723 !important;
+  text-shadow:
+    0 1px 0 rgba(99, 77, 17, .52),
+    0 0 10px rgba(255, 247, 35, .42) !important;
+}
+
+
+/* ======================================================
+   V3.1：採收按鈕隱藏
+   - 可採收時不顯示收穫按鈕，直接點藥草／土地即可採收
+====================================================== */
+
+.garden-grid .plot.harvestable .plot-actions {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+
+/* ======================================================
+   V3.0 Final micro 03：採收慶祝特效
+   - 採收瞬間出現十字光煙火爆炸效果
+   - 顯示浮動獎勵文字：金幣 +X、經驗值 +Y
+   - 從藥草消失中心往上漂浮後漸淡消失
+====================================================== */
+
+.harvest-fx-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  overflow: visible;
+}
+
+.harvest-burst {
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.harvest-burst-core {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 24px;
+  height: 24px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,250,213,1) 34%, rgba(255,223,95,.95) 58%, rgba(255,191,49,.18) 78%, rgba(255,191,49,0) 100%);
+  box-shadow:
+    0 0 14px rgba(255,241,166,.95),
+    0 0 26px rgba(255,213,90,.65);
+  animation: harvestCoreBurst .72s ease-out forwards;
+}
+
+
+.harvest-float-text {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+  pointer-events: none;
+}
+
+.harvest-reward {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 104px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: .02em;
+  white-space: nowrap;
+  color: #fffdf5;
+  text-shadow: 0 1px 0 rgba(74, 59, 22, .45);
+  border: 1px solid rgba(255,255,255,.28);
+  backdrop-filter: blur(4px);
+  box-shadow:
+    0 10px 18px rgba(54, 42, 10, .18),
+    inset 0 1px 0 rgba(255,255,255,.28);
+  opacity: 0;
+}
+
+.harvest-reward.coins {
+  background: linear-gradient(180deg, rgba(255,243,163,.96) 0%, rgba(255,216,79,.96) 100%);
+  color: #6f5604;
+  animation: harvestRewardFloatCoins .95s ease-out forwards;
+}
+
+.harvest-reward.exp {
+  background: linear-gradient(180deg, rgba(236,255,188,.96) 0%, rgba(182,238,84,.96) 100%);
+  color: #3d5c07;
+  animation: harvestRewardFloatExp .95s ease-out forwards;
+  animation-delay: .08s;
+}
+
+@keyframes harvestCoreBurst {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(.2);
+  }
+  30% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.3);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(2);
+  }
+}
+
+
+@keyframes harvestRewardFloatCoins {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 6px) scale(.86);
+  }
+  15% {
+    opacity: 1;
+    transform: translate(-50%, -4px) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -58px) scale(1.02);
+  }
+}
+
+@keyframes harvestRewardFloatExp {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 22px) scale(.86);
+  }
+  15% {
+    opacity: 1;
+    transform: translate(-50%, 12px) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -42px) scale(1.02);
+  }
+}
+
+
+/* ======================================================
+   V3.0 Final micro 04：採收十字光散射強化
+   - 使用大量第四階段風格十字光
+   - 從藥草圖中心點往外散開
+   - 漸淡消失，形成採收煙火感
+====================================================== */
+
+.harvest-burst {
+  z-index: 10000;
+}
+
+.harvest-spark-burst {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.harvest-fx-sparkle {
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: rgba(255, 255, 244, 1);
+  font-size: var(--size, 21px);
+  line-height: 1;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(.3) rotate(0deg);
+  text-shadow:
+    0 0 4px rgba(255, 255, 238, 1),
+    0 0 10px rgba(255, 239, 156, 1),
+    0 0 18px rgba(255, 214, 78, .92),
+    0 0 28px rgba(255, 188, 42, .58);
+  filter: contrast(1.12) saturate(1.1);
+  animation: harvestSparkleScatter var(--dur, 1s) cubic-bezier(.15,.72,.2,1) forwards;
+  animation-delay: var(--delay, 0s);
+  will-change: transform, opacity;
+}
+
+.harvest-burst-core {
+  width: 32px;
+  height: 32px;
+  animation: harvestCoreFlash .52s ease-out forwards;
+}
+
+.harvest-burst-ray {
+  display: none !important;
+}
+
+@keyframes harvestSparkleScatter {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(.2) rotate(0deg);
+  }
+  10% {
+    opacity: 1;
+    transform: translate(calc(-50% + var(--x) * .12), calc(-50% + var(--y) * .12)) scale(var(--scale, 1)) rotate(18deg);
+  }
+  58% {
+    opacity: .95;
+    transform: translate(calc(-50% + var(--x) * .82), calc(-50% + var(--y) * .82)) scale(calc(var(--scale, 1) * .92)) rotate(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(.18) rotate(-20deg);
+  }
+}
+
+@keyframes harvestCoreFlash {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(.2);
+  }
+  18% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.45);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(2.2);
+  }
+}
+
+
+/* ======================================================
+   V3.0 Final micro 04.1 修正版：獎勵文字真正從中心點出現
+   - 延續 micro 04.1
+   - 修正 reward 動畫使用 translateY，而不是 translate(-50%, ...)
+   - 保持十字光效果完全不變
+====================================================== */
+
+.harvest-burst {
+  transform: translate(-50%, -50%);
+}
+
+
+.harvest-float-text {
+  left: 0 !important;
+  top: 0 !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 5 !important;
+  justify-items: center !important;
+}
+
+.harvest-reward {
+  min-width: 118px;
+  transform-origin: center center !important;
+}
+
+.harvest-reward.coins {
+  animation: harvestRewardFloatCoinsCenterFix 1.02s ease-out forwards !important;
+}
+
+.harvest-reward.exp {
+  animation: harvestRewardFloatExpCenterFix 1.02s ease-out forwards !important;
+  animation-delay: .08s !important;
+}
+
+@keyframes harvestRewardFloatCoinsCenterFix {
+  0% {
+    opacity: 0;
+    transform: translateY(2px) scale(.82);
+  }
+  16% {
+    opacity: 1;
+    transform: translateY(-10px) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-74px) scale(1.02);
+  }
+}
+
+@keyframes harvestRewardFloatExpCenterFix {
+  0% {
+    opacity: 0;
+    transform: translateY(18px) scale(.82);
+  }
+  16% {
+    opacity: 1;
+    transform: translateY(6px) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-56px) scale(1.02);
+  }
+}
+
+
+/* ======================================================
+   V3.0 Final micro 04.1b：全部狀態文字下移一致化
+   - 以 micro 04.1a 為基礎
+   - 將三種狀態文字統一往下移
+   - 包含：
+     1. 點擊種植藥草
+     2. 藥草靜靜生長中
+     3. 可收穫
+====================================================== */
+
+.garden-grid .plot.empty .plot-time,
+.garden-grid .plot.planted:not(.harvestable) .plot-time,
+.garden-grid .plot.harvestable .plot-time {
+  transform: translateY(6px) !important;
+}
+
+
+/* ======================================================
+   V3.1.1：藥草深呼吸縮放循環
+   - 第 1～4 階藥草改為「由小變大，再由大變小」循環
+   - 時間控制在 2s～3s 之間，營造接近真實深呼吸的靜心節奏
+   - 保留成熟第 4 階的發光與可採收效果
+====================================================== */
+
+.garden-grid .herb-plant-img.stage-1:not(.harvest-ready) {
+  animation: herbCalmBreathStage1 2.9s ease-in-out infinite !important;
+}
+
+.garden-grid .herb-plant-img.stage-2:not(.harvest-ready) {
+  animation: herbCalmBreathStage2 2.7s ease-in-out infinite !important;
+}
+
+.garden-grid .herb-plant-img.stage-3:not(.harvest-ready) {
+  animation: herbCalmBreathStage3 2.5s ease-in-out infinite !important;
+}
+
+.garden-grid .herb-plant-img.stage-4.harvest-ready {
+  animation: herbCalmBreathStage4 2.3s ease-in-out infinite !important;
+}
+
+@keyframes herbCalmBreathStage1 {
+  0%   { transform: translateX(-50%) scale(.985); }
+  50%  { transform: translateX(-50%) scale(1.018); }
+  100% { transform: translateX(-50%) scale(.985); }
+}
+
+@keyframes herbCalmBreathStage2 {
+  0%   { transform: translateX(-50%) scale(.995); }
+  50%  { transform: translateX(-50%) scale(1.035); }
+  100% { transform: translateX(-50%) scale(.995); }
+}
+
+@keyframes herbCalmBreathStage3 {
+  0%   { transform: translateX(-50%) scale(1.01); }
+  50%  { transform: translateX(-50%) scale(1.052); }
+  100% { transform: translateX(-50%) scale(1.01); }
+}
+
+@keyframes herbCalmBreathStage4 {
+  0%   {
+    transform: translateX(-50%) scale(1.10);
+    opacity: .98;
+  }
+  50%  {
+    transform: translateX(-50%) scale(1.17);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-50%) scale(1.10);
+    opacity: .98;
+  }
+}
+
+
+/* ======================================================
+   V3.1.2：呼吸動畫不中斷修正
+   - V3.1.1 已將第 1～4 階改為小→大→小
+   - 本版進一步修正每秒 renderGarden 重建 DOM 導致動畫重新開始的問題
+   - CSS 動畫設定維持 2s～3s 深呼吸節奏
+====================================================== */
+
+
+/* ======================================================
+   V3.1.4：藥草園大背景圖顯示度調整
+   - 以 V3.1.3 六格透視土地圖更新版為基礎
+   - 將藥草園大背景圖設定為 100% 顯示度
+   - 移除大背景圖層可能存在的半透明淡化
+====================================================== */
+
+.garden-scene,
+.garden-scene::before,
+.garden-scene::after,
+.garden-map,
+.garden-map::before,
+.garden-map::after {
+  opacity: 1 !important;
+}
+
+.garden-scene {
+  background-blend-mode: normal !important;
+}
+
+.garden-scene .scene-bg,
+.garden-scene img.scene-bg,
+.garden-scene .garden-bg,
+.garden-scene img.garden-bg,
+.garden-bg,
+.scene-bg {
+  opacity: 1 !important;
+  filter: none !important;
+  mix-blend-mode: normal !important;
+}
+
+
+/* ======================================================
+   V3.1.5：藥草園大背景移除淡白遮罩
+   - V3.1.4 已設定 opacity: 1，但背景本身仍疊了淡白色 gradient
+   - 本版移除 .garden-scene-bg 上的白色 linear-gradient 疊層
+   - 同時關閉 .garden-scene::after 的淡色遮罩
+====================================================== */
+
+.garden-scene-bg {
+  background: url('assets/shennong/biggarden.png') center center / cover no-repeat !important;
+  opacity: 1 !important;
+  filter: none !important;
+  mix-blend-mode: normal !important;
+}
+
+.garden-scene::after {
+  display: none !important;
+  opacity: 0 !important;
+  background: none !important;
+}
+
+.garden-card::after {
+  display: none !important;
+  opacity: 0 !important;
+  background: none !important;
+}
+
+
+/* ======================================================
+   V3.1.7：頁首品牌連回首頁
+   - shennong_herb_garden.html 上方 Logo / 品牌區可點擊回 index.html
+   - 維持原本品牌區視覺，不顯示連結底線
+====================================================== */
+
+.brand-home-link {
+  color: inherit !important;
+  text-decoration: none !important;
+  cursor: pointer;
+}
+
+.brand-home-link:hover {
+  text-decoration: none !important;
+  filter: brightness(1.03);
+}
+
+.brand-home-link:focus-visible {
+  outline: 2px solid rgba(185,155,98,.62);
+  outline-offset: 4px;
+  border-radius: 14px;
+}
