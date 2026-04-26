@@ -3071,3 +3071,180 @@
   outline-offset: 4px;
   border-radius: 14px;
 }
+
+
+/* ======================================================
+   V3.1.8：手機直式藥園 3×2 版面修正
+   - 手機直式不再改成 2 欄 × 3 排
+   - 維持與桌機相同的 [1][2][3] / [4][5][6] 視覺邏輯
+   - 讓 6 格土地在手機版仍保持兩排排列，避免畫面混亂
+====================================================== */
+
+@media (max-width: 720px) {
+  .garden-scene {
+    min-height: 560px !important;
+  }
+
+  .garden-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    grid-template-rows: repeat(2, minmax(0, 1fr)) !important;
+    left: 2.5% !important;
+    right: 2.5% !important;
+    top: 7% !important;
+    bottom: 5% !important;
+    gap: 2.5% 1.6% !important;
+    padding: 0 !important;
+  }
+
+  .garden-grid .plot {
+    min-width: 0 !important;
+    width: 100% !important;
+    flex-basis: auto !important;
+  }
+
+  .garden-grid .plot-inner {
+    min-height: 230px !important;
+    padding: 0 !important;
+  }
+
+  .garden-grid .plot-art {
+    height: 150px !important;
+  }
+
+  .garden-grid .plot-ground {
+    width: 142px !important;
+    max-width: 142px !important;
+  }
+
+  .garden-grid .herb-plant-img {
+    max-width: 74px !important;
+    bottom: 34px !important;
+  }
+
+  .garden-grid .plot-tag {
+    font-size: .66rem !important;
+    padding: 3px 7px !important;
+    left: 2px !important;
+  }
+
+  .garden-grid .plot-info,
+  .garden-grid .plot.empty .plot-info,
+  .garden-grid .plot.planted .plot-info,
+  .garden-grid .plot.harvestable .plot-info {
+    width: min(124px, 94%) !important;
+    height: 72px !important;
+    min-height: 72px !important;
+    bottom: -12px !important;
+    padding: 1px 6px 3px !important;
+    gap: 5px !important;
+    grid-template-rows: 1.1em 9px 28px !important;
+  }
+
+  .garden-grid .plot-time {
+    font-size: .68rem !important;
+    letter-spacing: .02em !important;
+  }
+
+  .garden-grid .progress,
+  .garden-grid .plot.empty .progress,
+  .garden-grid .plot.planted .progress,
+  .garden-grid .plot.harvestable .progress {
+    height: 9px !important;
+  }
+
+  .garden-grid .plot:nth-child(1),
+  .garden-grid .plot:nth-child(1):hover,
+  .garden-grid .plot:nth-child(1):focus,
+  .garden-grid .plot:nth-child(1):focus-within,
+  .garden-grid .plot:nth-child(1).harvestable,
+  .garden-grid .plot:nth-child(1).harvestable:hover {
+    transform: translate(10px, 76px) !important;
+  }
+
+  .garden-grid .plot:nth-child(2),
+  .garden-grid .plot:nth-child(2):hover,
+  .garden-grid .plot:nth-child(2):focus,
+  .garden-grid .plot:nth-child(2):focus-within,
+  .garden-grid .plot:nth-child(2).harvestable,
+  .garden-grid .plot:nth-child(2).harvestable:hover {
+    transform: translate(0px, 76px) !important;
+  }
+
+  .garden-grid .plot:nth-child(3),
+  .garden-grid .plot:nth-child(3):hover,
+  .garden-grid .plot:nth-child(3):focus,
+  .garden-grid .plot:nth-child(3):focus-within,
+  .garden-grid .plot:nth-child(3).harvestable,
+  .garden-grid .plot:nth-child(3).harvestable:hover {
+    transform: translate(-10px, 76px) !important;
+  }
+
+  .garden-grid .plot:nth-child(4),
+  .garden-grid .plot:nth-child(4):hover,
+  .garden-grid .plot:nth-child(4):focus,
+  .garden-grid .plot:nth-child(4):focus-within,
+  .garden-grid .plot:nth-child(4).harvestable,
+  .garden-grid .plot:nth-child(4).harvestable:hover {
+    transform: translate(10px, 10px) !important;
+  }
+
+  .garden-grid .plot:nth-child(5),
+  .garden-grid .plot:nth-child(5):hover,
+  .garden-grid .plot:nth-child(5):focus,
+  .garden-grid .plot:nth-child(5):focus-within,
+  .garden-grid .plot:nth-child(5).harvestable,
+  .garden-grid .plot:nth-child(5).harvestable:hover {
+    transform: translate(0px, 10px) !important;
+  }
+
+  .garden-grid .plot:nth-child(6),
+  .garden-grid .plot:nth-child(6):hover,
+  .garden-grid .plot:nth-child(6):focus,
+  .garden-grid .plot:nth-child(6):focus-within,
+  .garden-grid .plot:nth-child(6).harvestable,
+  .garden-grid .plot:nth-child(6).harvestable:hover {
+    transform: translate(-10px, 10px) !important;
+  }
+}
+
+@media (max-width: 460px) {
+  .garden-scene {
+    min-height: 520px !important;
+  }
+
+  .garden-grid {
+    left: 1.5% !important;
+    right: 1.5% !important;
+    top: 6.5% !important;
+    gap: 2.2% 1.1% !important;
+  }
+
+  .garden-grid .plot-inner {
+    min-height: 210px !important;
+  }
+
+  .garden-grid .plot-art {
+    height: 136px !important;
+  }
+
+  .garden-grid .plot-ground {
+    width: 128px !important;
+    max-width: 128px !important;
+  }
+
+  .garden-grid .herb-plant-img {
+    max-width: 68px !important;
+    bottom: 31px !important;
+  }
+
+  .garden-grid .plot-info,
+  .garden-grid .plot.empty .plot-info,
+  .garden-grid .plot.planted .plot-info,
+  .garden-grid .plot.harvestable .plot-info {
+    width: min(112px, 96%) !important;
+  }
+
+  .garden-grid .plot-time {
+    font-size: .62rem !important;
+  }
+}
