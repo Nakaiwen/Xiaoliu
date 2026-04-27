@@ -21,7 +21,8 @@ const HERBS = [
         unlockLevel: 1,
         tags: ["清涼", "醒神", "新手草"],
         desc: "薄荷清新舒爽，常用於茶飲與料理。種下薄荷，能為藥園帶來一陣清涼之氣。",
-        imagePrefix: "mint"
+        imagePrefix: "mint",
+        mapId: "map1"
       },
       {
         id: "mugwort",
@@ -35,7 +36,8 @@ const HERBS = [
         unlockLevel: 1,
         tags: ["溫和", "辟穢", "養生"],
         desc: "艾草氣味溫厚，常見於民俗與養生應用。等待它成長，也像是在等待心緒安定。",
-        imagePrefix: "mugwort"
+        imagePrefix: "mugwort",
+        mapId: "map1"
       },
       {
         id: "radish",
@@ -49,7 +51,8 @@ const HERBS = [
         unlockLevel: 2,
         tags: ["居家", "食材", "二級解鎖"],
         desc: "白蘿蔔是親切的居家食材，清爽平和，象徵日常生活中的調養與安定。",
-        imagePrefix: "radish"
+        imagePrefix: "radish",
+        mapId: "map1"
       },
       {
         id: "perilla",
@@ -63,7 +66,8 @@ const HERBS = [
         unlockLevel: 3,
         tags: ["食養", "芳香", "三級解鎖"],
         desc: "紫蘇香氣獨特，常見於食材搭配。它提醒你，日常飲食之中，也藏著調養的智慧。",
-        imagePrefix: "perilla"
+        imagePrefix: "perilla",
+        mapId: "map1"
       },
       {
         id: "licorice",
@@ -77,7 +81,8 @@ const HERBS = [
         unlockLevel: 4,
         tags: ["調和", "甘味", "四級解鎖"],
         desc: "甘草味甘，有調和之意。藥園中的甘草象徵圓融與平衡。",
-        imagePrefix: "licorice"
+        imagePrefix: "licorice",
+        mapId: "map1"
       },
       {
         id: "goji",
@@ -91,7 +96,8 @@ const HERBS = [
         unlockLevel: 5,
         tags: ["滋養", "茶飲", "五級解鎖"],
         desc: "枸杞常見於茶飲與湯品，象徵溫和滋養。它成長較慢，但收穫也更豐厚。",
-        imagePrefix: "goji"
+        imagePrefix: "goji",
+        mapId: "map1"
       },
       {
         id: "danshen",
@@ -105,7 +111,8 @@ const HERBS = [
         unlockLevel: 6,
         tags: ["進階", "本草", "六級解鎖"],
         desc: "丹蔘色澤沉穩，是中後期的進階本草。種下丹蔘，象徵藥園主人更成熟的栽培功夫。",
-        imagePrefix: "danshen"
+        imagePrefix: "danshen",
+        mapId: "map1"
       },
       {
         id: "lingzhi",
@@ -119,9 +126,170 @@ const HERBS = [
         unlockLevel: 8,
         tags: ["稀有", "祥瑞", "八級解鎖"],
         desc: "靈芝象徵祥瑞與長養。它需要更長時間成熟，適合耐心等待的園主。",
-        imagePrefix: "lingzhi"
+        imagePrefix: "lingzhi",
+        mapId: "map1"
+      },
+      {
+        id: "honeysuckle",
+        name: "金銀花",
+        emoji: "🌼",
+        growSeconds: 300,
+        coinMin: 18,
+        coinMax: 26,
+        expMin: 18,
+        expMax: 24,
+        unlockLevel: 8,
+        tags: ["花草", "茶飲", "山谷藥圃"],
+        desc: "金銀花花色初白後黃，常見於茶飲與本草文化。它象徵山谷中清潤的氣息，也提醒人保持清明。",
+        imagePrefix: "honeysuckle",
+        mapId: "map2"
+      },
+      {
+        id: "houttuynia",
+        name: "魚腥草",
+        emoji: "🌿",
+        growSeconds: 420,
+        coinMin: 22,
+        coinMax: 30,
+        expMin: 22,
+        expMax: 28,
+        unlockLevel: 8,
+        tags: ["野菜", "青草茶", "醫食同源"],
+        desc: "魚腥草喜濕潤陰地，常見於溪邊與山谷角落。它帶有特殊氣味，提醒人們真正有用之物不一定討喜。",
+        imagePrefix: "houttuynia",
+        mapId: "map2"
+      },
+      {
+        id: "lilybulb",
+        name: "百合",
+        emoji: "🤍",
+        growSeconds: 720,
+        coinMin: 34,
+        coinMax: 46,
+        expMin: 36,
+        expMax: 46,
+        unlockLevel: 9,
+        tags: ["清潤", "甜湯", "醫食同源"],
+        desc: "百合瓣片潔白如玉，可入粥、入湯，也能安定心緒。它是山谷藥圃裡最溫柔的食養植物之一。",
+        imagePrefix: "lilybulb",
+        mapId: "map2"
+      },
+      {
+        id: "angelica",
+        name: "當歸",
+        emoji: "🌱",
+        growSeconds: 900,
+        coinMin: 38,
+        coinMax: 52,
+        expMin: 42,
+        expMax: 54,
+        unlockLevel: 10,
+        tags: ["藥膳", "溫補", "醫食同源"],
+        desc: "當歸根香濃厚，常見於藥膳湯品。其名有「應當歸來」之意，象徵身心回到安定之處。",
+        imagePrefix: "chuanxiong",
+        mapId: "map2"
+      },
+      {
+        id: "fleeceflower",
+        name: "何首烏",
+        emoji: "🍂",
+        growSeconds: 1500,
+        coinMin: 62,
+        coinMax: 82,
+        expMin: 68,
+        expMax: 88,
+        unlockLevel: 12,
+        tags: ["滋補", "藤蔓", "高階藥材"],
+        desc: "何首烏藤蔓纏繞，根形沉厚，象徵時間沉澱後的生命力，是山谷藥圃後段的珍貴本草。",
+        imagePrefix: "fleeceflower",
+        mapId: "map2"
+      },
+      {
+        id: "snowlotus",
+        name: "天山雪蓮",
+        emoji: "🏔️",
+        growSeconds: 2400,
+        coinMin: 96,
+        coinMax: 128,
+        expMin: 110,
+        expMax: 145,
+        unlockLevel: 15,
+        tags: ["稀有", "靈草", "雪域"],
+        desc: "天山雪蓮生於高寒山域，花色清冷而靈秀。它象徵逆境中仍能盛放的心性。",
+        imagePrefix: "snowlotus",
+        mapId: "map2"
       }
     ];
+
+    const SOLAR_TERMS = [
+      { name: "小寒", date: "01-05", season: "冬藏", message: "寒氣漸深，藥園靜養根氣。" },
+      { name: "大寒", date: "01-20", season: "冬藏", message: "寒至極處，靜待春意回生。" },
+      { name: "立春", date: "02-04", season: "春生", message: "春氣初動，萬物準備甦醒。" },
+      { name: "雨水", date: "02-19", season: "春生", message: "甘霖入土，藥苗舒展新葉。" },
+      { name: "驚蟄", date: "03-05", season: "春生", message: "春雷喚醒沉睡的生命，藥園開始萌動。" },
+      { name: "春分", date: "03-20", season: "春生", message: "晝夜平衡，心也回到中道。" },
+      { name: "清明", date: "04-04", season: "春生", message: "天地清朗，草木向陽而生。" },
+      { name: "穀雨", date: "04-20", season: "春生", message: "雨生百穀，藥園更添生機。" },
+      { name: "立夏", date: "05-05", season: "夏長", message: "夏氣初臨，葉色漸濃。" },
+      { name: "小滿", date: "05-21", season: "夏長", message: "萬物漸盈，藥草靜靜舒展。" },
+      { name: "芒種", date: "06-05", season: "夏長", message: "有芒之種順時而生，勤耕也要安住身心。" },
+      { name: "夏至", date: "06-21", season: "夏長", message: "日光最盛，草木蓄滿生長之力。" },
+      { name: "小暑", date: "07-07", season: "夏長", message: "暑氣漸起，藥園需要一份清涼心。" },
+      { name: "大暑", date: "07-23", season: "夏長", message: "盛暑之中，靜心如蔭。" },
+      { name: "立秋", date: "08-07", season: "秋收", message: "秋意初生，收斂也是一種滋養。" },
+      { name: "處暑", date: "08-23", season: "秋收", message: "暑氣漸退，藥草氣息轉為沉穩。" },
+      { name: "白露", date: "09-07", season: "秋收", message: "晨露滋潤，葉間藏著清明。" },
+      { name: "秋分", date: "09-23", season: "秋收", message: "晝夜再次平衡，收穫與休息同樣重要。" },
+      { name: "寒露", date: "10-08", season: "秋收", message: "露氣轉寒，藥草把力量收回根中。" },
+      { name: "霜降", date: "10-23", season: "秋收", message: "霜意初降，成熟的光芒更顯珍貴。" },
+      { name: "立冬", date: "11-07", season: "冬藏", message: "冬氣初臨，萬物準備收藏。" },
+      { name: "小雪", date: "11-22", season: "冬藏", message: "細雪未深，靜養心氣。" },
+      { name: "大雪", date: "12-07", season: "冬藏", message: "雪意漸盛，藥園安靜沉澱。" },
+      { name: "冬至", date: "12-21", season: "冬藏", message: "一陽來復，深冬裡藏著新生。" }
+    ];
+
+    function solarDateForYear(term, year) {
+      const [month, day] = term.date.split("-").map(Number);
+      return new Date(year, month - 1, day);
+    }
+
+    function getSolarTermInfo(now = new Date()) {
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const year = today.getFullYear();
+      let current = SOLAR_TERMS[SOLAR_TERMS.length - 1];
+      let currentDate = solarDateForYear(current, year - 1);
+      let next = SOLAR_TERMS[0];
+      let nextDate = solarDateForYear(next, year);
+
+      for (let i = 0; i < SOLAR_TERMS.length; i++) {
+        const termDate = solarDateForYear(SOLAR_TERMS[i], year);
+        const following = SOLAR_TERMS[(i + 1) % SOLAR_TERMS.length];
+        const followingDate = i === SOLAR_TERMS.length - 1
+          ? solarDateForYear(following, year + 1)
+          : solarDateForYear(following, year);
+
+        if (today >= termDate) {
+          current = SOLAR_TERMS[i];
+          currentDate = termDate;
+          next = following;
+          nextDate = followingDate;
+        }
+      }
+
+      const daysToNext = Math.max(0, Math.ceil((nextDate - today) / 86400000));
+      return { current, currentDate, next, nextDate, daysToNext };
+    }
+
+    function renderSolarTerm() {
+      const nameEl = $("solarTermName");
+      if (!nameEl) return;
+      const info = getSolarTermInfo();
+      $("solarTermSeason").textContent = info.current.season;
+      $("solarTermName").textContent = info.current.name;
+      $("solarTermMessage").textContent = info.current.message;
+      $("solarTermNext").textContent = `距離下一節氣「${info.next.name}」約 ${info.daysToNext} 天。自然只給祝福，不造成收成損失。`;
+    }
+
 
     const SUTRA_LINES = [
       "觀自在菩薩",
@@ -164,15 +332,44 @@ const HERBS = [
         id: "map1",
         name: "初階藥園",
         unlockLevel: 1,
-        background: "assets/shennong/biggarden.png",
+        background: "assets/shennong/maps/map-starter-garden-background.jpg",
         plots: [
-          { id: 0, name: "左上藥畦", image: "assets/shennong/plots/plot-empty.png" },
-          { id: 1, name: "中上藥畦", image: "assets/shennong/plots/plot-empty.png" },
-          { id: 2, name: "右上藥畦", image: "assets/shennong/plots/plot-empty.png" },
-          { id: 3, name: "左下藥畦", image: "assets/shennong/plots/plot-empty.png" },
-          { id: 4, name: "中下藥畦", image: "assets/shennong/plots/plot-empty.png" },
-          { id: 5, name: "右下藥畦", image: "assets/shennong/plots/plot-empty.png" }
+          { id: 0, name: "左上藥畦", image: "assets/shennong/plots/plot-1-empty.png" },
+          { id: 1, name: "中上藥畦", image: "assets/shennong/plots/plot-2-empty.png" },
+          { id: 2, name: "右上藥畦", image: "assets/shennong/plots/plot-3-empty.png" },
+          { id: 3, name: "左下藥畦", image: "assets/shennong/plots/plot-4-empty.png" },
+          { id: 4, name: "中下藥畦", image: "assets/shennong/plots/plot-5-empty.png" },
+          { id: 5, name: "右下藥畦", image: "assets/shennong/plots/plot-6-empty.png" }
         ]
+      },
+      {
+        id: "map2",
+        name: "山谷藥圃",
+        unlockLevel: 8,
+        background: "assets/shennong/maps/map-valley-grove-background.jpg",
+        plots: [
+          { id: 0, name: "山谷左上藥畦", image: "assets/shennong/plots/plot-1-empty.png" },
+          { id: 1, name: "山谷中上藥畦", image: "assets/shennong/plots/plot-2-empty.png" },
+          { id: 2, name: "山谷右上藥畦", image: "assets/shennong/plots/plot-3-empty.png" },
+          { id: 3, name: "山谷左下藥畦", image: "assets/shennong/plots/plot-4-empty.png" },
+          { id: 4, name: "山谷中下藥畦", image: "assets/shennong/plots/plot-5-empty.png" },
+          { id: 5, name: "山谷右下藥畦", image: "assets/shennong/plots/plot-6-empty.png" }
+        ]
+      },
+      {
+        id: "map3",
+        name: "靈泉藥田",
+        unlockLevel: 15,
+        background: "assets/shennong/maps/map-valley-grove-background.jpg",
+        plots: [
+          { id: 0, name: "靈泉左上藥畦", image: "assets/shennong/plots/plot-1-empty.png" },
+          { id: 1, name: "靈泉中上藥畦", image: "assets/shennong/plots/plot-2-empty.png" },
+          { id: 2, name: "靈泉右上藥畦", image: "assets/shennong/plots/plot-3-empty.png" },
+          { id: 3, name: "靈泉左下藥畦", image: "assets/shennong/plots/plot-4-empty.png" },
+          { id: 4, name: "靈泉中下藥畦", image: "assets/shennong/plots/plot-5-empty.png" },
+          { id: 5, name: "靈泉右下藥畦", image: "assets/shennong/plots/plot-6-empty.png" }
+        ],
+        placeholder: true
       }
     ];
 
@@ -181,6 +378,18 @@ const HERBS = [
 
     const STORAGE_KEY = "xiaoliu_shennong_garden_v2_8_herbs";
 
+    const createEmptyPlots = () => Array.from({ length: 6 }, (_, i) => ({
+      id: i,
+      herbId: null,
+      plantedAt: null,
+      growSeconds: null
+    }));
+
+    const createInitialMapState = () => MAPS.reduce((acc, map) => {
+      acc[map.id] = { plots: createEmptyPlots() };
+      return acc;
+    }, {});
+
     const initialState = () => ({
       level: 1,
       exp: 0,
@@ -188,12 +397,8 @@ const HERBS = [
       harvests: 0,
       sutraIndex: 0,
       activeMapId: DEFAULT_MAP_ID,
-      plots: Array.from({ length: 6 }, (_, i) => ({
-        id: i,
-        herbId: null,
-        plantedAt: null,
-        growSeconds: null
-      })),
+      maps: createInitialMapState(),
+      plots: createEmptyPlots(),
       logs: [
         { time: Date.now(), text: "歡迎來到神農藥草園。先種下一株藥草，等待成熟後即可收穫。" }
       ]
@@ -207,13 +412,36 @@ const HERBS = [
 
     const $ = (id) => document.getElementById(id);
 
+    function normalizeState(parsed) {
+      const base = initialState();
+      const merged = { ...base, ...parsed };
+
+      if (!merged.maps) {
+        merged.maps = createInitialMapState();
+        if (Array.isArray(parsed.plots) && parsed.plots.length === 6) {
+          merged.maps.map1.plots = parsed.plots;
+        }
+      }
+
+      MAPS.forEach(map => {
+        if (!merged.maps[map.id] || !Array.isArray(merged.maps[map.id].plots) || merged.maps[map.id].plots.length !== 6) {
+          merged.maps[map.id] = { plots: createEmptyPlots() };
+        }
+      });
+
+      if (!MAPS.some(map => map.id === merged.activeMapId)) {
+        merged.activeMapId = DEFAULT_MAP_ID;
+      }
+
+      merged.plots = merged.maps[merged.activeMapId]?.plots || merged.maps[DEFAULT_MAP_ID].plots;
+      return merged;
+    }
+
     function loadState() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
         if (!raw) return initialState();
-        const parsed = JSON.parse(raw);
-        if (!parsed.plots || parsed.plots.length !== 6) return initialState();
-        return { ...initialState(), ...parsed };
+        return normalizeState(JSON.parse(raw));
       } catch {
         return initialState();
       }
@@ -268,17 +496,67 @@ const HERBS = [
       return MAPS.find(map => map.id === (state.activeMapId || DEFAULT_MAP_ID)) || MAPS[0];
     }
 
+
+    function getActivePlots() {
+      const map = getActiveMap();
+      if (!state.maps) state.maps = createInitialMapState();
+      if (!state.maps[map.id]) state.maps[map.id] = { plots: createEmptyPlots() };
+      state.plots = state.maps[map.id].plots;
+      return state.plots;
+    }
+
+    function getAvailableHerbs() {
+      const activeMapId = state.activeMapId || DEFAULT_MAP_ID;
+      return HERBS.filter(herb => (herb.mapId || "map1") === activeMapId);
+    }
+
+    function applyMapBackground() {
+      const bg = document.querySelector(".garden-scene-bg");
+      const map = getActiveMap();
+      if (bg && map?.background) {
+        bg.style.backgroundImage = `url('${map.background}')`;
+      }
+    }
+
+    function renderMapTabs() {
+      const tabs = document.querySelector(".garden-map-tabs");
+      if (!tabs) return;
+      tabs.innerHTML = MAPS.map(map => {
+        const locked = state.level < map.unlockLevel || map.placeholder;
+        const active = map.id === (state.activeMapId || DEFAULT_MAP_ID);
+        const label = locked
+          ? `${map.name} <small>Lv.${map.unlockLevel} 解鎖</small>`
+          : `${map.name} <small>Lv.${map.unlockLevel}</small>`;
+        return `<button class="map-tab ${active ? "active" : ""} ${locked ? "locked" : ""}" type="button" data-map-id="${map.id}" ${locked ? "disabled" : ""}>${label}</button>`;
+      }).join("");
+
+      tabs.querySelectorAll("button[data-map-id]:not([disabled])").forEach(btn => {
+        btn.addEventListener("click", () => switchMap(btn.dataset.mapId));
+      });
+    }
+
+    function switchMap(mapId) {
+      const map = MAPS.find(item => item.id === mapId);
+      if (!map) return;
+      if (state.level < map.unlockLevel || map.placeholder) {
+        return toast(`${map.name} 尚未解鎖`);
+      }
+      state.activeMapId = mapId;
+      selectedPlotId = null;
+      getActivePlots();
+      saveState();
+      renderAll();
+      toast(`已前往${map.name}`);
+    }
+
     function getPlotMeta(plotId) {
       const map = getActiveMap();
       return map.plots.find(plot => plot.id === plotId) || null;
     }
 
     function plotImageSrc(plotId) {
-      const plotIndex = Number(plotId) + 1;
-      if (plotIndex >= 1 && plotIndex <= 6) {
-        return `assets/shennong/plots/plot-${plotIndex}-empty.png`;
-      }
-      return "assets/shennong/plots/plot-empty.png";
+      const plotMeta = getPlotMeta(Number(plotId));
+      return plotMeta?.image || DEFAULT_PLOT_IMAGE;
     }
 
 
@@ -320,6 +598,9 @@ const HERBS = [
 
     function renderAll() {
       renderStats();
+      getActivePlots();
+      renderMapTabs();
+      applyMapBackground();
       renderGarden();
       renderDetail();
       renderActivity();
@@ -339,7 +620,7 @@ const HERBS = [
       const grid = $("gardenGrid");
       grid.innerHTML = "";
 
-      state.plots.forEach(plot => {
+      getActivePlots().forEach(plot => {
         const herb = plot.herbId ? getHerb(plot.herbId) : null;
         const progress = plotProgress(plot);
         const harvestable = isHarvestable(plot);
@@ -429,7 +710,7 @@ const HERBS = [
     function updateGardenProgress() {
       let needsFullRender = false;
 
-      state.plots.forEach(plot => {
+      getActivePlots().forEach(plot => {
         const plotEl = document.querySelector(`.plot[data-id="${plot.id}"]`);
         if (!plotEl) {
           needsFullRender = true;
@@ -461,7 +742,8 @@ const HERBS = [
     }
 
     function renderDetail() {
-      const plot = selectedPlotId !== null ? state.plots[selectedPlotId] : state.plots.find(p => p.herbId) || null;
+      const activePlots = getActivePlots();
+      const plot = selectedPlotId !== null ? activePlots[selectedPlotId] : activePlots.find(p => p.herbId) || null;
       const herb = plot?.herbId ? getHerb(plot.herbId) : null;
 
       if (!herb) {
@@ -488,11 +770,11 @@ const HERBS = [
     }
 
     function openPlantModal(plotId = null) {
-      plantTargetPlot = plotId ?? state.plots.find(p => !p.herbId)?.id ?? 0;
+      plantTargetPlot = plotId ?? getActivePlots().find(p => !p.herbId)?.id ?? 0;
       const menu = $("plantMenu");
       menu.innerHTML = "";
 
-      HERBS.forEach(herb => {
+      getAvailableHerbs().forEach(herb => {
         const locked = state.level < herb.unlockLevel;
         const row = document.createElement("div");
         row.className = "plant-choice";
@@ -529,10 +811,11 @@ const HERBS = [
     }
 
     function plantHerb(plotId, herbId) {
-      const plot = state.plots[plotId];
+      const plot = getActivePlots()[plotId];
       const herb = getHerb(herbId);
       if (!plot || !herb) return;
       if (state.level < herb.unlockLevel) return toast("等級尚未解鎖此藥草");
+      if ((herb.mapId || "map1") !== (state.activeMapId || DEFAULT_MAP_ID)) return toast("這株藥草不屬於目前地圖");
       if (plot.herbId) return toast("此地已有藥草");
 
       plot.herbId = herb.id;
@@ -542,7 +825,8 @@ const HERBS = [
       addLog(`你種下了 <b>${herb.name}</b>，靜待它順時而長。`);
       toast(`已種下 ${herb.name}`);
       closePlantModal();
-      renderAll();
+      renderSolarTerm();
+    renderAll();
     }
 
 
@@ -594,7 +878,7 @@ const HERBS = [
     }
 
     function harvest(plotId, anchorEl = null) {
-      const plot = state.plots[plotId];
+      const plot = getActivePlots()[plotId];
       const herb = getHerb(plot.herbId);
       if (!plot || !herb || !isHarvestable(plot)) return;
 
@@ -714,7 +998,7 @@ const HERBS = [
     });
 
     $("plantFirstBtn").addEventListener("click", () => {
-      const empty = state.plots.find(p => !p.herbId);
+      const empty = getActivePlots().find(p => !p.herbId);
       if (!empty) return toast("目前沒有空地，請先收穫成熟藥草");
       openPlantModal(empty.id);
     });
@@ -740,4 +1024,7 @@ const HERBS = [
       renderDetail();
     }, 1000);
 
+    renderAll();
+
+    renderSolarTerm();
     renderAll();

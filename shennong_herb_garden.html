@@ -50,7 +50,7 @@
           </div>
           <button id="resetBtn" class="btn btn-soft" title="清除本機遊戲紀錄">重置</button>
         </div>
-        <div class="garden-map-tabs" aria-label="藥園地圖切頁">
+        <div id="gardenMapTabs" class="garden-map-tabs" aria-label="藥園地圖切頁">
           <button class="map-tab active" type="button" data-map-id="map1">初階藥園 <small>Lv.1</small></button>
           <button class="map-tab locked" type="button" disabled>山谷藥圃 <small>Lv.8 解鎖</small></button>
           <button class="map-tab locked" type="button" disabled>靈泉藥田 <small>Lv.15 解鎖</small></button>
@@ -92,7 +92,21 @@
       </div>
 
       <aside class="side-stack">
-<section class="detail-card">
+<section class="solar-term-card" aria-label="今日節氣">
+          <div class="section-title">
+            <h2>今日節氣</h2>
+            <span id="solarTermSeason">順時養草</span>
+          </div>
+          <div class="solar-term-body">
+            <div class="solar-term-badge" id="solarTermName">節氣</div>
+            <div class="solar-term-copy">
+              <p id="solarTermMessage">順應四時，藥草靜靜生長。</p>
+              <small id="solarTermNext">下一節氣即將到來。</small>
+            </div>
+          </div>
+        </section>
+
+        <section class="detail-card">
           <div class="section-title">
             <h2>本草札記</h2>
             <span id="selectedStatus">尚未選取</span>
