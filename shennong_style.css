@@ -3562,8 +3562,10 @@
 /* 600×600px 藥草圖：畫面顯示尺寸沿用原本比例，避免新圖看起來縮小 */
 .herb-plant-img.honeysuckle,
 .herb-plant-img.houttuynia,
+.herb-plant-img.yam,
 .herb-plant-img.lilybulb,
-.herb-plant-img.angelica,
+.herb-plant-img.astragalus,
+.herb-plant-img.chuanxiong,
 .herb-plant-img.fleeceflower,
 .herb-plant-img.snowlotus {
   width: 54%;
@@ -3578,8 +3580,10 @@
 @media (max-width: 720px) {
   .herb-plant-img.honeysuckle,
   .herb-plant-img.houttuynia,
+  .herb-plant-img.yam,
   .herb-plant-img.lilybulb,
-  .herb-plant-img.angelica,
+  .herb-plant-img.astragalus,
+  .herb-plant-img.chuanxiong,
   .herb-plant-img.fleeceflower,
   .herb-plant-img.snowlotus {
     max-width: 78px !important;
@@ -3673,3 +3677,11 @@
     background-position: center 39% !important;
   }
 }
+
+
+/* ======================================================
+   V3.3.4：山谷藥圃 8 種藥草補齊與川芎命名修正
+   - 補入山藥 yam 與黃耆 astragalus 圖檔
+   - 將上一版「當歸 angelica」改回「川芎 chuanxiong」
+   - 山谷藥圃目前 8 種藥草素材已齊備
+====================================================== */
