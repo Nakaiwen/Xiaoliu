@@ -248,7 +248,128 @@ const HERBS = [
         desc: "天山雪蓮生於高寒山域，花色清冷而靈秀。它象徵逆境中仍能盛放的心性。",
         imagePrefix: "snowlotus",
         mapId: "map2"
+      },
+      {
+        id: "scallion",
+        name: "青蔥",
+        emoji: "🌱",
+        growSeconds: 720,
+        coinMin: 42,
+        coinMax: 56,
+        expMin: 46,
+        expMax: 58,
+        unlockLevel: 15,
+        tags: ["灶香", "辛香", "醫食同源"],
+        desc: "青蔥是灶間常見的辛香食材，細長青葉入鍋，能喚醒一餐的香氣，也象徵日常中的養生智慧。",
+        imagePrefix: "scallion",
+        mapId: "map3"
+      },
+      {
+        id: "garlic",
+        name: "大蒜",
+        emoji: "🧄",
+        growSeconds: 780,
+        coinMin: 44,
+        coinMax: 58,
+        expMin: 48,
+        expMax: 60,
+        unlockLevel: 15,
+        tags: ["灶香", "辛香", "食養"],
+        desc: "大蒜氣味辛烈，是廚房與食養中常見的基礎食材。它提醒玩家，日常飲食也能蘊藏本草之道。",
+        imagePrefix: "garlic",
+        mapId: "map3"
+      },
+      {
+        id: "chive",
+        name: "韭菜",
+        emoji: "🌿",
+        growSeconds: 840,
+        coinMin: 46,
+        coinMax: 62,
+        expMin: 50,
+        expMax: 64,
+        unlockLevel: 16,
+        tags: ["灶香", "家常", "辛香"],
+        desc: "韭菜葉色青翠，常見於家常料理。它帶著灶邊煙火氣，也象徵生命力的綿長生發。",
+        imagePrefix: "chive",
+        mapId: "map3"
+      },
+      {
+        id: "basil",
+        name: "九層塔",
+        emoji: "🌿",
+        growSeconds: 900,
+        coinMin: 50,
+        coinMax: 66,
+        expMin: 54,
+        expMax: 68,
+        unlockLevel: 17,
+        tags: ["香草", "料理", "灶香"],
+        desc: "九層塔葉香濃郁，入菜後香氣鮮明。它讓灶香藥田多了一份活潑的香草氣息。",
+        imagePrefix: "basil",
+        mapId: "map3"
+      },
+      {
+        id: "coriander",
+        name: "香菜",
+        emoji: "🌱",
+        growSeconds: 960,
+        coinMin: 54,
+        coinMax: 70,
+        expMin: 58,
+        expMax: 72,
+        unlockLevel: 18,
+        tags: ["清香", "食材", "醫食同源"],
+        desc: "香菜葉形細緻，氣味清揚，是許多料理最後一筆香氣。它象徵細微而不可忽略的調和之力。",
+        imagePrefix: "coriander",
+        mapId: "map3"
+      },
+      {
+        id: "ginger",
+        name: "生薑",
+        emoji: "🫚",
+        growSeconds: 1080,
+        coinMin: 60,
+        coinMax: 78,
+        expMin: 66,
+        expMax: 82,
+        unlockLevel: 19,
+        tags: ["溫養", "食療", "根莖"],
+        desc: "生薑辛香溫潤，常入湯飲與料理。它代表灶間的暖意，也呼應食養中的調理智慧。",
+        imagePrefix: "ginger",
+        mapId: "map3"
+      },
+      {
+        id: "chili",
+        name: "辣椒",
+        emoji: "🌶️",
+        growSeconds: 1140,
+        coinMin: 64,
+        coinMax: 84,
+        expMin: 70,
+        expMax: 88,
+        unlockLevel: 20,
+        tags: ["辛香", "醒味", "灶香"],
+        desc: "辣椒色澤鮮明，辛香醒味，是灶香藥田中的亮色。它象徵熱度、活力與料理中的一點火候。",
+        imagePrefix: "chili",
+        mapId: "map3"
+      },
+      {
+        id: "corn",
+        name: "玉米",
+        emoji: "🌽",
+        growSeconds: 1320,
+        coinMin: 76,
+        coinMax: 98,
+        expMin: 84,
+        expMax: 104,
+        unlockLevel: 22,
+        tags: ["穀物", "食養", "高階作物"],
+        desc: "玉米穗實飽滿，是日常穀物與食養作物。它讓灶香藥田多了豐收感，也象徵土地的厚實供養。",
+        imagePrefix: "corn",
+        mapId: "map3"
       }
+
     ];
 
     const SOLAR_TERMS = [
@@ -349,6 +470,33 @@ const HERBS = [
       "丹蔘：常見於本草文化中，適合在遊戲中作為進階藥草知識認識。"
     ];
 
+    const SPRING_RAIN_SETTINGS = {
+      lineLength: 20,
+      lineWidth: 1,
+      spreadX: 32,
+      spreadY: 16,
+      streaksPerGroup: 6,
+      backGroupCount: 60,
+      frontGroupCount: 80,
+      backDuration: [2.5, 3.5],
+      frontDuration: [1.0, 2.0]
+    };
+
+    const SPRING_RAIN_RANDOM = {
+      durationMs: 5 * 60 * 1000,
+      firstDelayMinMs: 20 * 1000,
+      firstDelayMaxMs: 80 * 1000,
+      nextDelayMinMs: 6 * 60 * 1000,
+      nextDelayMaxMs: 16 * 60 * 1000
+    };
+
+    const SPRING_RAIN_STORAGE_KEY = "xiaoliu_shennong_spring_rain_v1";
+
+    const POST_RAIN_RAINBOW = {
+      showChance: 1,
+      durationMs: 60 * 1000
+    };
+
     const MEDITATION_STEPS = [
       "放鬆肩膀，讓身體安住。感覺背脊自然挺直，雙手輕放。",
       "慢慢吸氣，感覺氣息從鼻尖進入。不要用力，只是溫柔覺察。",
@@ -388,18 +536,17 @@ const HERBS = [
       },
       {
         id: "map3",
-        name: "靈泉藥田",
+        name: "灶香藥田",
         unlockLevel: 15,
-        background: "assets/shennong/maps/map-valley-grove-background.jpg",
+        background: "assets/shennong/maps/map-stove-herb-field-background.jpg",
         plots: [
-          { id: 0, name: "靈泉左上藥畦", image: "assets/shennong/plots/plot-1-empty.png" },
-          { id: 1, name: "靈泉中上藥畦", image: "assets/shennong/plots/plot-2-empty.png" },
-          { id: 2, name: "靈泉右上藥畦", image: "assets/shennong/plots/plot-3-empty.png" },
-          { id: 3, name: "靈泉左下藥畦", image: "assets/shennong/plots/plot-4-empty.png" },
-          { id: 4, name: "靈泉中下藥畦", image: "assets/shennong/plots/plot-5-empty.png" },
-          { id: 5, name: "靈泉右下藥畦", image: "assets/shennong/plots/plot-6-empty.png" }
-        ],
-        placeholder: true
+          { id: 0, name: "灶香左上藥畦", image: "assets/shennong/plots/plot-1-empty.png" },
+          { id: 1, name: "灶香中上藥畦", image: "assets/shennong/plots/plot-2-empty.png" },
+          { id: 2, name: "灶香右上藥畦", image: "assets/shennong/plots/plot-3-empty.png" },
+          { id: 3, name: "灶香左下藥畦", image: "assets/shennong/plots/plot-4-empty.png" },
+          { id: 4, name: "灶香中下藥畦", image: "assets/shennong/plots/plot-5-empty.png" },
+          { id: 5, name: "灶香右下藥畦", image: "assets/shennong/plots/plot-6-empty.png" }
+        ]
       }
     ];
 
@@ -438,6 +585,9 @@ const HERBS = [
     let selectedPlotId = null;
     let activeActivity = "meditate";
     let meditationIndex = 0;
+    let springRainStartTimer = null;
+    let springRainStopTimer = null;
+    let rainbowTimer = null;
     let plantTargetPlot = null;
 
     const $ = (id) => document.getElementById(id);
@@ -544,8 +694,192 @@ const HERBS = [
       const bg = document.querySelector(".garden-scene-bg");
       const map = getActiveMap();
       if (bg && map?.background) {
-        bg.style.backgroundImage = `url('${map.background}')`;
+        // 舊版 CSS 曾用 background shorthand + !important 固定第一章背景。
+        // 這裡用 inline important 指定 background-image，確保切換地圖時背景圖會同步切換。
+        bg.style.setProperty("background-image", `url('${map.background}')`, "important");
       }
+    }
+
+    function randomBetween(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
+    function createRainStreak(offsetX, offsetY, alpha, isMain) {
+      const streak = document.createElement("span");
+      streak.className = `rain-streak ${isMain ? "main" : "sub"}`;
+      streak.style.setProperty("--offset-x", `${offsetX}px`);
+      streak.style.setProperty("--offset-y", `${offsetY}px`);
+      streak.style.setProperty("--line-alpha", alpha.toFixed(2));
+      streak.style.setProperty("--line-length", `${SPRING_RAIN_SETTINGS.lineLength}px`);
+      streak.style.setProperty("--line-width", `${SPRING_RAIN_SETTINGS.lineWidth}px`);
+      return streak;
+    }
+
+    function populateRainLayer(layerSelector, groupCount, durationRange, opacityRange) {
+      const layer = document.querySelector(layerSelector);
+      if (!layer) return;
+      layer.innerHTML = "";
+
+      for (let i = 0; i < groupCount; i++) {
+        const group = document.createElement("span");
+        group.className = "rain-group";
+        group.style.left = `${randomBetween(-2, 94)}%`;
+        group.style.top = `${randomBetween(-8, 82)}%`;
+        group.style.setProperty("--duration", `${randomBetween(durationRange[0], durationRange[1]).toFixed(2)}s`);
+        group.style.setProperty("--delay", `${(-randomBetween(0, durationRange[1])).toFixed(2)}s`);
+        group.style.setProperty("--travel-x", `${randomBetween(-28, -42).toFixed(1)}px`);
+        group.style.setProperty("--travel-y", `${randomBetween(142, 182).toFixed(1)}px`);
+        group.style.setProperty("--group-opacity", randomBetween(opacityRange[0], opacityRange[1]).toFixed(2));
+        group.style.setProperty("--group-scale", randomBetween(0.92, 1.08).toFixed(2));
+
+        group.appendChild(createRainStreak(0, 0, randomBetween(0.72, 0.92), true));
+        for (let j = 1; j < SPRING_RAIN_SETTINGS.streaksPerGroup; j++) {
+          group.appendChild(createRainStreak(
+            randomBetween(-SPRING_RAIN_SETTINGS.spreadX, SPRING_RAIN_SETTINGS.spreadX),
+            randomBetween(-SPRING_RAIN_SETTINGS.spreadY, SPRING_RAIN_SETTINGS.spreadY),
+            randomBetween(0.34, 0.62),
+            false
+          ));
+        }
+
+        layer.appendChild(group);
+      }
+    }
+
+    function initSpringRain() {
+      populateRainLayer(
+        ".spring-rain-back",
+        SPRING_RAIN_SETTINGS.backGroupCount,
+        SPRING_RAIN_SETTINGS.backDuration,
+        [0.46, 0.72]
+      );
+      populateRainLayer(
+        ".spring-rain-front",
+        SPRING_RAIN_SETTINGS.frontGroupCount,
+        SPRING_RAIN_SETTINGS.frontDuration,
+        [0.56, 0.88]
+      );
+    }
+
+    function setSpringRainActive(active) {
+      const scene = document.querySelector(".garden-scene");
+      if (!scene) return;
+      scene.classList.toggle("rain-active", active);
+    }
+
+    function randomMs(min, max) {
+      return Math.round(randomBetween(min, max));
+    }
+
+    function readSpringRainState() {
+      try {
+        return JSON.parse(localStorage.getItem(SPRING_RAIN_STORAGE_KEY) || "{}");
+      } catch (error) {
+        return {};
+      }
+    }
+
+    function writeSpringRainState(rainState) {
+      try {
+        localStorage.setItem(SPRING_RAIN_STORAGE_KEY, JSON.stringify(rainState));
+      } catch (error) {
+        // localStorage 不可用時，春雨仍可照常以本次頁面計時運作。
+      }
+    }
+
+    function clearSpringRainState() {
+      try {
+        localStorage.removeItem(SPRING_RAIN_STORAGE_KEY);
+      } catch (error) {
+        // ignore
+      }
+    }
+
+    function setPostRainRainbowActive(active) {
+      const rainbow = document.querySelector(".post-rain-rainbow");
+      if (!rainbow) return;
+      rainbow.classList.toggle("rainbow-visible", active);
+    }
+
+    function showPostRainRainbow() {
+      window.clearTimeout(rainbowTimer);
+      setPostRainRainbowActive(true);
+      rainbowTimer = window.setTimeout(() => {
+        setPostRainRainbowActive(false);
+      }, POST_RAIN_RAINBOW.durationMs);
+    }
+
+    function maybeShowPostRainRainbow() {
+      if (Math.random() <= POST_RAIN_RAINBOW.showChance) {
+        showPostRainRainbow();
+      }
+    }
+
+    function startSpringRain(savedEndAt = null) {
+      const now = Date.now();
+      const endAt = savedEndAt && savedEndAt > now
+        ? savedEndAt
+        : now + SPRING_RAIN_RANDOM.durationMs;
+      const remainingMs = Math.max(0, endAt - now);
+
+      window.clearTimeout(springRainStartTimer);
+      window.clearTimeout(springRainStopTimer);
+
+      initSpringRain();
+      setPostRainRainbowActive(false);
+      setSpringRainActive(true);
+      writeSpringRainState({
+        active: true,
+        startedAt: now,
+        endAt
+      });
+
+      springRainStopTimer = window.setTimeout(() => {
+        stopSpringRain();
+      }, remainingMs);
+    }
+
+    function stopSpringRain() {
+      window.clearTimeout(springRainStopTimer);
+      setSpringRainActive(false);
+      maybeShowPostRainRainbow();
+      scheduleNextSpringRain();
+    }
+
+    function scheduleNextSpringRain(isFirst = false, fixedDelay = null) {
+      window.clearTimeout(springRainStartTimer);
+      const delay = Number.isFinite(fixedDelay)
+        ? Math.max(0, fixedDelay)
+        : isFirst
+          ? randomMs(SPRING_RAIN_RANDOM.firstDelayMinMs, SPRING_RAIN_RANDOM.firstDelayMaxMs)
+          : randomMs(SPRING_RAIN_RANDOM.nextDelayMinMs, SPRING_RAIN_RANDOM.nextDelayMaxMs);
+      const nextStartAt = Date.now() + delay;
+
+      writeSpringRainState({
+        active: false,
+        nextStartAt
+      });
+
+      springRainStartTimer = window.setTimeout(() => {
+        startSpringRain();
+      }, delay);
+    }
+
+    function restoreSpringRainAfterRefresh() {
+      const rainState = readSpringRainState();
+      const now = Date.now();
+
+      if (rainState.active && rainState.endAt && rainState.endAt > now) {
+        startSpringRain(rainState.endAt);
+        return;
+      }
+
+      if (!rainState.active && rainState.nextStartAt && rainState.nextStartAt > now) {
+        scheduleNextSpringRain(false, rainState.nextStartAt - now);
+        return;
+      }
+
+      scheduleNextSpringRain(true);
     }
 
     function renderMapTabs() {
@@ -676,10 +1010,8 @@ const HERBS = [
                       ? `<div class="herb-emoji">${herb.emoji}</div>`
                       : `<div class="empty-sprout" aria-hidden="true"></div>`
                 }
-              </div>
-            </div>
-            <div class="plot-info">
-              <div class="plot-time">${
+                <div class="plot-info">
+                  <div class="plot-time">${
                 herb
                   ? harvestable
                     ? "可收穫"
@@ -687,13 +1019,15 @@ const HERBS = [
                   : "點擊種植藥草"
               }</div>
               <div class="progress"><i style="width:${Math.round(progress * 100)}%"></i></div>
-              <div class="plot-actions">
-                ${
-                  herb
-                    ? harvestable
-                      ? `` : ``
-                    : ``
-                }
+                  <div class="plot-actions">
+                    ${
+                      herb
+                        ? harvestable
+                          ? `` : ``
+                        : ``
+                    }
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -1043,10 +1377,19 @@ const HERBS = [
       state = initialState();
       selectedPlotId = null;
       meditationIndex = 0;
+      clearSpringRainState();
+      setSpringRainActive(false);
+      setPostRainRainbowActive(false);
+      window.clearTimeout(springRainStartTimer);
+      window.clearTimeout(springRainStopTimer);
+      window.clearTimeout(rainbowTimer);
+      scheduleNextSpringRain(true);
       saveState();
       renderAll();
       toast("已重置藥草園");
     });
+
+    restoreSpringRainAfterRefresh();
 
     setInterval(() => {
       renderStats();
