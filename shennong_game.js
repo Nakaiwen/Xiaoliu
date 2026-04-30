@@ -592,6 +592,14 @@ const HERBS = [
 
     const $ = (id) => document.getElementById(id);
 
+    function coinIconMarkup(className = "coin-inline-icon") {
+      return `<img class="${className}" src="assets/shennong/icon/coin.png" alt="金幣">`;
+    }
+
+    function normalizeCoinIconInText(text) {
+      return String(text).replaceAll("🪙", coinIconMarkup());
+    }
+
     function normalizeState(parsed) {
       const base = initialState();
       const merged = { ...base, ...parsed };
@@ -1259,7 +1267,7 @@ const HERBS = [
       plot.plantedAt = null;
       plot.growSeconds = null;
 
-      addLog(`恭喜收穫 <b>${herb.name}</b>！獲得 🪙 ${coins}、經驗值 ${exp}。`);
+      addLog(`恭喜收穫 <b>${herb.name}</b>！獲得 ${coinIconMarkup()} ${coins}、經驗值 ${exp}。`);
       toast(`收穫 ${herb.name}：金幣 +${coins}，經驗 +${exp}`);
       renderAll();
     }
@@ -1349,7 +1357,7 @@ const HERBS = [
       list.innerHTML = state.logs.map(log => {
         const d = new Date(log.time);
         const time = `${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`;
-        return `<div class="log-item"><small>${time}</small><br>${log.text}</div>`;
+        return `<div class="log-item"><small>${time}</small><br>${normalizeCoinIconInText(log.text)}</div>`;
       }).join("");
     }
 

@@ -4215,3 +4215,100 @@
     transform: translateY(10px) !important;
   }
 }
+
+
+/* ======================================================
+   V3.3.6.10：手機與平板上排土地下移修正
+   - 問題：手機與平板上排三塊土地偏高，與下排距離過大
+   - 檢查結果：
+     1. 手機版有多段舊規則控制 nth-child(1~6) 個別 transform
+     2. 後面的 V3.2 規則把上排固定為 translateY(60px)，下排為 0px
+     3. V3.3.6.9 的整組 translateY(10px) 只會整組下移，不會縮小上下排距離
+   - 本版做法：
+     1. 平板寬度下，僅把上排三塊土地往下移 32px
+     2. 手機寬度下，把上排三塊土地的 y 位移由 60px 提高到 90px
+     3. 下排維持原位置，讓上下排距離約縮小一半
+====================================================== */
+
+/* 平板版：iPad / 介於桌機與手機之間的寬度 */
+@media (min-width: 721px) and (max-width: 1120px) {
+  .garden-grid .plot:nth-child(1),
+  .garden-grid .plot:nth-child(1):hover,
+  .garden-grid .plot:nth-child(1):focus,
+  .garden-grid .plot:nth-child(1):focus-within,
+  .garden-grid .plot:nth-child(1).harvestable,
+  .garden-grid .plot:nth-child(1).harvestable:hover {
+    transform: translate(0px, 32px) !important;
+  }
+
+  .garden-grid .plot:nth-child(2),
+  .garden-grid .plot:nth-child(2):hover,
+  .garden-grid .plot:nth-child(2):focus,
+  .garden-grid .plot:nth-child(2):focus-within,
+  .garden-grid .plot:nth-child(2).harvestable,
+  .garden-grid .plot:nth-child(2).harvestable:hover {
+    transform: translate(0px, 32px) !important;
+  }
+
+  .garden-grid .plot:nth-child(3),
+  .garden-grid .plot:nth-child(3):hover,
+  .garden-grid .plot:nth-child(3):focus,
+  .garden-grid .plot:nth-child(3):focus-within,
+  .garden-grid .plot:nth-child(3).harvestable,
+  .garden-grid .plot:nth-child(3).harvestable:hover {
+    transform: translate(0px, 32px) !important;
+  }
+}
+
+/* 手機版：維持左右微調，只把上排三塊再往下推 */
+@media (max-width: 720px) {
+  .garden-grid .plot:nth-child(1),
+  .garden-grid .plot:nth-child(1):hover,
+  .garden-grid .plot:nth-child(1):focus,
+  .garden-grid .plot:nth-child(1):focus-within,
+  .garden-grid .plot:nth-child(1).harvestable,
+  .garden-grid .plot:nth-child(1).harvestable:hover {
+    transform: translate(10px, 90px) !important;
+  }
+
+  .garden-grid .plot:nth-child(2),
+  .garden-grid .plot:nth-child(2):hover,
+  .garden-grid .plot:nth-child(2):focus,
+  .garden-grid .plot:nth-child(2):focus-within,
+  .garden-grid .plot:nth-child(2).harvestable,
+  .garden-grid .plot:nth-child(2).harvestable:hover {
+    transform: translate(0px, 90px) !important;
+  }
+
+  .garden-grid .plot:nth-child(3),
+  .garden-grid .plot:nth-child(3):hover,
+  .garden-grid .plot:nth-child(3):focus,
+  .garden-grid .plot:nth-child(3):focus-within,
+  .garden-grid .plot:nth-child(3).harvestable,
+  .garden-grid .plot:nth-child(3).harvestable:hover {
+    transform: translate(-10px, 90px) !important;
+  }
+}
+
+
+/* ======================================================
+   V3.3.6.11：最新消息金幣圖示修正
+   - 最新消息 / 訊息紀錄內的金幣符號改用 coin.png
+   - 同時相容舊紀錄中已存在的 🪙 文字
+====================================================== */
+
+.coin-inline-icon {
+  width: 1.08em;
+  height: 1.08em;
+  object-fit: contain;
+  display: inline-block;
+  vertical-align: -0.18em;
+  margin: 0 .16em;
+  filter: drop-shadow(0 1px 2px rgba(120, 80, 25, .16));
+}
+
+.log-item .coin-inline-icon {
+  width: 1.12em;
+  height: 1.12em;
+  vertical-align: -0.2em;
+}
