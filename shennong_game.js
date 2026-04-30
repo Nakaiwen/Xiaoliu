@@ -372,6 +372,77 @@ const HERBS = [
 
     ];
 
+    const RECIPES = [
+      {
+        id: "scallion-ginger-soup",
+        name: "青蔥薑湯",
+        category: "湯品",
+        unlockLevel: 1,
+        requiredHerbs: ["scallion"],
+        optionalHerbs: ["ginger"],
+        difficulty: 1,
+        timeText: "約 10 分鐘",
+        tools: ["小鍋"],
+        beginnerTags: ["新手友善", "一鍋完成", "不用油"],
+        seasonGroups: ["春生", "冬藏"],
+        solarTerms: ["立春", "雨水", "驚蟄", "立冬", "小雪", "冬至"],
+        benefitLabel: "溫中散寒",
+        suitableText: "適合｜雨後微涼時",
+        ingredients: ["青蔥", "薑", "水", "少許鹽"],
+        gameSteps: [
+          "洗淨青蔥與生薑，讓食材帶著清香醒來。",
+          "將生薑切片，青蔥切段，備在小碟中。",
+          "清水入鍋，小火煮出薑的暖香。",
+          "放入青蔥稍煮，湯氣升起，即可完成。"
+        ],
+        realRecipe: {
+          ingredients: [
+            "青蔥 1～2 支",
+            "生薑 3～5 片",
+            "水 500 ml",
+            "鹽少許，可不加"
+          ],
+          steps: [
+            "青蔥洗淨切段，生薑洗淨切片。",
+            "水煮滾後放入生薑，小火煮 5～8 分鐘。",
+            "加入青蔥，再煮 1～2 分鐘。",
+            "關火後稍微放溫即可飲用。"
+          ]
+        },
+        effects: ["發汗散寒", "暖胃暖身", "舒緩初起受寒不適"],
+        note: "春雨微寒，宜以辛溫輕食養身。",
+        rewardExp: 20,
+        rewardCoins: 12,
+        backgroundImage: "assets/shennong/kitchen/backgrounds/kitchen-bg-main_afternoon.jpg",
+        image: "assets/shennong/kitchen/recipes/recipe-scallion-ginger-soup.jpg",
+        dishImage: "assets/shennong/kitchen/recipes/dish-scallion-ginger-soup.png",
+        ingredientImages: [
+          { id: "scallion", name: "青蔥", image: "assets/shennong/kitchen/ingredients/ingredient-scallion.png" },
+          { id: "ginger", name: "薑", image: "assets/shennong/kitchen/ingredients/ingredient-ginger.png" }
+        ]
+      }
+    ];
+
+    let activeRecipeId = "scallion-ginger-soup";
+    let kitchenStepIndex = 0;
+    let kitchenViewMode = "cook";
+    let kitchenSceneState = createKitchenSceneState();
+
+    function createKitchenSceneState() {
+      return {
+        addedIngredients: [],
+        animatingIngredients: [],
+        potReady: false,
+        bursting: false,
+        dishReady: false
+      };
+    }
+
+    function resetKitchenScene() {
+      kitchenSceneState = createKitchenSceneState();
+    }
+
+
     const SOLAR_TERMS = [
       { name: "小寒", date: "01-05", season: "冬藏", message: "寒氣漸深，藥園靜養根氣。" },
       { name: "大寒", date: "01-20", season: "冬藏", message: "寒至極處，靜待春意回生。" },
@@ -576,6 +647,8 @@ const HERBS = [
       activeMapId: DEFAULT_MAP_ID,
       maps: createInitialMapState(),
       plots: createEmptyPlots(),
+      harvestedHerbs: {},
+      completedRecipes: {},
       logs: [
         { time: Date.now(), text: "歡迎來到神農藥草園。先種下一株藥草，等待成熟後即可收穫。" }
       ]
@@ -619,6 +692,14 @@ const HERBS = [
 
       if (!MAPS.some(map => map.id === merged.activeMapId)) {
         merged.activeMapId = DEFAULT_MAP_ID;
+      }
+
+      if (!merged.harvestedHerbs || typeof merged.harvestedHerbs !== "object" || Array.isArray(merged.harvestedHerbs)) {
+        merged.harvestedHerbs = {};
+      }
+
+      if (!merged.completedRecipes || typeof merged.completedRecipes !== "object" || Array.isArray(merged.completedRecipes)) {
+        merged.completedRecipes = {};
       }
 
       merged.plots = merged.maps[merged.activeMapId]?.plots || merged.maps[DEFAULT_MAP_ID].plots;
@@ -1249,6 +1330,40 @@ const HERBS = [
       }, 1250);
     }
 
+    function getRecipe(id) {
+      return RECIPES.find(recipe => recipe.id === id);
+    }
+
+    function recordRecipeCompleted(recipe) {
+      if (!state.completedRecipes) state.completedRecipes = {};
+      const now = new Date().toISOString();
+      const current = state.completedRecipes[recipe.id];
+      state.completedRecipes[recipe.id] = {
+        count: current ? current.count + 1 : 1,
+        firstCompletedAt: current ? current.firstCompletedAt : now,
+        lastCompletedAt: now
+      };
+    }
+
+    function getRecipeUnlockStatus(recipe) {
+      const byLevel = state.level >= recipe.unlockLevel;
+      const harvested = state.harvestedHerbs || {};
+      const hasRequired = recipe.requiredHerbs.every(id => harvested[id]);
+      // 第一版先讓第一道食譜可直接測試；之後正式版可改回 byLevel && hasRequired。
+      return {
+        unlocked: true,
+        byLevel,
+        hasRequired,
+        missingHerbs: recipe.requiredHerbs.filter(id => !harvested[id])
+      };
+    }
+
+    function formatRecipeDate(iso) {
+      if (!iso) return "尚未完成";
+      const d = new Date(iso);
+      return `${d.getMonth() + 1}/${d.getDate()} ${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+    }
+
     function harvest(plotId, anchorEl = null) {
       const plot = getActivePlots()[plotId];
       const herb = getHerb(plot.herbId);
@@ -1262,6 +1377,8 @@ const HERBS = [
       state.coins += coins;
       addExp(exp);
       state.harvests += 1;
+      if (!state.harvestedHerbs) state.harvestedHerbs = {};
+      state.harvestedHerbs[herb.id] = true;
 
       plot.herbId = null;
       plot.plantedAt = null;
@@ -1274,6 +1391,7 @@ const HERBS = [
 
     function renderActivity() {
       const panel = $("activityPanel");
+      document.body.classList.remove("kitchen-mode");
       document.querySelectorAll(".activity-option").forEach(btn => {
         btn.classList.toggle("active", btn.dataset.activity === activeActivity);
       });
@@ -1323,6 +1441,217 @@ const HERBS = [
           renderAll();
         });
         $("clearSutraBtn").addEventListener("click", () => $("sutraInput").value = "");
+      }
+
+      if (activeActivity === "kitchen") {
+        const recipe = getRecipe(activeRecipeId) || RECIPES[0];
+        const status = getRecipeUnlockStatus(recipe);
+        const completed = state.completedRecipes?.[recipe.id];
+        const stepTotal = recipe.gameSteps.length;
+        const ingredientItems = recipe.ingredientImages || [];
+
+        if (kitchenViewMode === "collection") {
+          const completedRecipes = RECIPES.filter(item => state.completedRecipes?.[item.id]);
+          panel.innerHTML = `
+            <h3>食養廚房</h3>
+            <div class="kitchen-collection-layout kitchen-collection-clean">
+              <section class="kitchen-book-list">
+                <div class="kitchen-book-head">
+                  <h4>我的食譜</h4>
+                  <p>這些是你親手完成過的食養料理卡。</p>
+                </div>
+                <div class="kitchen-book-items">
+                  ${completedRecipes.length ? completedRecipes.map(item => {
+                    const done = state.completedRecipes?.[item.id];
+                    return `
+                      <button type="button" class="kitchen-book-item ${item.id === activeRecipeId ? "active" : ""}" data-recipe-id="${item.id}">
+                        <img src="${item.dishImage || item.image}" alt="${item.name}">
+                        <span class="book-item-name">${item.name}</span>
+                        <small>完成 ${done?.count || 0} 次</small>
+                      </button>
+                    `;
+                  }).join("") : `<div class="kitchen-book-empty">尚未完成食譜，先去煮一鍋暖暖的食養料理吧。</div>`}
+                </div>
+              </section>
+
+              <section class="kitchen-recipe-card-view kitchen-recipe-card-only">
+                <div class="kitchen-card-toolbar">
+                  <span class="recipe-kicker">食譜卡收藏</span>
+                  <button id="backToKitchenCookBtn" class="btn btn-soft">返回廚房</button>
+                </div>
+
+                <div class="kitchen-recipe-card-stage">
+                  <img class="kitchen-recipe-card-large" src="${recipe.image}" alt="${recipe.name}食譜卡">
+                  <div class="kitchen-recipe-card-caption">
+                    <b>${recipe.name}</b>
+                    <small>${completed ? `已完成 ${completed.count} 次｜最近 ${formatRecipeDate(completed.lastCompletedAt)}` : "尚未完成"}</small>
+                  </div>
+                </div>
+              </section>
+            </div>
+          `;
+
+          document.querySelectorAll(".kitchen-book-item[data-recipe-id]").forEach(btn => {
+            btn.addEventListener("click", () => {
+              activeRecipeId = btn.dataset.recipeId;
+              renderActivity();
+            });
+          });
+
+          $("backToKitchenCookBtn")?.addEventListener("click", () => {
+            kitchenViewMode = "cook";
+            kitchenStepIndex = 0;
+            resetKitchenScene();
+            renderActivity();
+          });
+        } else {
+          const isIngredientStep = kitchenStepIndex === 2;
+          const currentStepText = (() => {
+            if (isIngredientStep && !kitchenSceneState.potReady && !kitchenSceneState.dishReady) {
+              return "請點選桌上的青蔥與薑，讓食材從桌面縮小進入鍋內。";
+            }
+            if (isIngredientStep && kitchenSceneState.potReady && !kitchenSceneState.dishReady) {
+              return "食材已入鍋，請點擊鍋子，讓黃光升起並完成料理。";
+            }
+            return recipe.gameSteps[kitchenStepIndex] || recipe.gameSteps[0];
+          })();
+
+          const primaryLabel = (() => {
+            if (kitchenStepIndex < 2) return "下一步";
+            if (kitchenStepIndex === 2) return kitchenSceneState.dishReady ? "前往完成料理" : "請先操作鍋具";
+            return "完成料理";
+          })();
+
+          const primaryDisabled = (kitchenStepIndex === 2 && !kitchenSceneState.dishReady) ? "disabled" : "";
+
+          panel.innerHTML = `
+            <h3>食養廚房</h3>
+            <div class="kitchen-stage-simple" style="--kitchen-bg:url('${recipe.backgroundImage || "assets/shennong/kitchen/backgrounds/kitchen-bg-main_afternoon.jpg"}')">
+              <div class="kitchen-scene-simple ${kitchenSceneState.potReady ? "pot-ready" : ""} ${kitchenSceneState.bursting ? "pot-bursting" : ""} ${kitchenSceneState.dishReady ? "dish-ready" : ""}" aria-label="${recipe.name}料理畫面">
+                <button type="button" id="kitchenPotBtn" class="kitchen-main-pot ${kitchenSceneState.potReady ? "is-ready" : ""} ${kitchenSceneState.bursting ? "is-bursting" : ""} ${kitchenSceneState.dishReady ? "is-hidden" : ""}" aria-label="料理鍋子">
+                  <img src="assets/shennong/kitchen/ui/tool-clay-pot.png" alt="正在煮的鍋子">
+                </button>
+
+                <div class="kitchen-ingredient-row">
+                  ${ingredientItems.map(item => {
+                    const isAnimating = kitchenSceneState.animatingIngredients.includes(item.id);
+                    const isUsed = kitchenSceneState.addedIngredients.includes(item.id);
+                    const canClick = isIngredientStep && !isAnimating && !isUsed && !kitchenSceneState.potReady && !kitchenSceneState.dishReady;
+                    return `
+                      <button type="button" class="kitchen-scene-ingredient kitchen-scene-ingredient-${item.id} ${isAnimating ? "is-animating" : ""} ${isUsed ? "is-used" : ""}" data-ingredient-id="${item.id}" ${canClick ? "" : "disabled"}>
+                        <img src="${item.image}" alt="${item.name}">
+                        <span>${item.name}</span>
+                      </button>
+                    `;
+                  }).join("")}
+                </div>
+
+                <div class="kitchen-cross-burst ${kitchenSceneState.bursting ? "show" : ""}" aria-hidden="true">
+                  ${Array.from({ length: 10 }).map((_, idx) => `<i class="kitchen-cross cross-${idx + 1}"></i>`).join("")}
+                </div>
+
+                <img class="kitchen-finished-dish ${kitchenSceneState.dishReady ? "show" : ""}" src="${recipe.dishImage}" alt="${recipe.name}">
+              </div>
+
+              <div class="kitchen-step-panel-simple">
+                <div class="kitchen-step-main">
+                  <span class="recipe-kicker">${recipe.category}・${recipe.timeText}</span>
+                  <h4>${recipe.name}</h4>
+                  <div class="recipe-benefit">${recipe.benefitLabel}</div>
+                  <p class="kitchen-step-current">步驟 ${Math.min(kitchenStepIndex + 1, stepTotal)} / ${stepTotal}｜${currentStepText}</p>
+                  <div class="recipe-step-progress">
+                    ${recipe.gameSteps.map((_, idx) => `<i class="${idx <= kitchenStepIndex ? "active" : ""}"></i>`).join("")}
+                  </div>
+                  <small class="kitchen-complete-status">${completed ? `已完成 ${completed.count} 次｜最近 ${formatRecipeDate(completed.lastCompletedAt)}` : recipe.suitableText}</small>
+                </div>
+
+                <div class="recipe-actions kitchen-actions-simple">
+                  <button id="prevRecipeStepBtn" class="btn btn-soft" ${kitchenStepIndex <= 0 ? "disabled" : ""}>上一步</button>
+                  <button id="nextRecipeStepBtn" class="btn btn-green" ${primaryDisabled}>${primaryLabel}</button>
+                </div>
+              </div>
+            </div>
+          `;
+
+          document.querySelectorAll(".kitchen-scene-ingredient[data-ingredient-id]").forEach(btn => {
+            btn.addEventListener("click", () => {
+              const ingredientId = btn.dataset.ingredientId;
+              if (!isIngredientStep || kitchenSceneState.potReady || kitchenSceneState.dishReady) return;
+              if (kitchenSceneState.addedIngredients.includes(ingredientId) || kitchenSceneState.animatingIngredients.includes(ingredientId)) return;
+
+              kitchenSceneState.animatingIngredients.push(ingredientId);
+              renderActivity();
+
+              setTimeout(() => {
+                kitchenSceneState.animatingIngredients = kitchenSceneState.animatingIngredients.filter(id => id !== ingredientId);
+                if (!kitchenSceneState.addedIngredients.includes(ingredientId)) {
+                  kitchenSceneState.addedIngredients.push(ingredientId);
+                }
+
+                if (ingredientItems.every(item => kitchenSceneState.addedIngredients.includes(item.id))) {
+                  kitchenSceneState.potReady = true;
+                }
+                renderActivity();
+              }, 700);
+            });
+          });
+
+          $("kitchenPotBtn").addEventListener("click", () => {
+            if (!kitchenSceneState.potReady || kitchenSceneState.dishReady || kitchenSceneState.bursting) return;
+            kitchenSceneState.bursting = true;
+            renderActivity();
+
+            setTimeout(() => {
+              kitchenSceneState.bursting = false;
+              kitchenSceneState.potReady = false;
+              kitchenSceneState.dishReady = true;
+              kitchenStepIndex = Math.max(kitchenStepIndex, stepTotal - 1);
+              renderActivity();
+            }, 760);
+          });
+
+          $("prevRecipeStepBtn").addEventListener("click", () => {
+            if (kitchenStepIndex <= 0) return;
+            kitchenStepIndex = Math.max(0, kitchenStepIndex - 1);
+            if (kitchenStepIndex < 2) resetKitchenScene();
+            renderActivity();
+          });
+
+          $("nextRecipeStepBtn").addEventListener("click", () => {
+            if (!status.unlocked) {
+              toast("這道食譜尚未解鎖");
+              return;
+            }
+
+            if (kitchenStepIndex < 2) {
+              kitchenStepIndex += 1;
+              if (kitchenStepIndex === 2) resetKitchenScene();
+              renderActivity();
+              return;
+            }
+
+            if (kitchenStepIndex === 2 && !kitchenSceneState.dishReady) {
+              toast("請先點選兩樣食材入鍋，再點擊鍋子完成料理");
+              return;
+            }
+
+            if (kitchenStepIndex < stepTotal - 1) {
+              kitchenStepIndex += 1;
+              renderActivity();
+              return;
+            }
+
+            state.coins += recipe.rewardCoins;
+            addExp(recipe.rewardExp);
+            recordRecipeCompleted(recipe);
+            addLog(`完成第一道食養食譜：<b>${recipe.name}</b>。獲得 ${coinIconMarkup()} ${recipe.rewardCoins}、經驗值 ${recipe.rewardExp}。`);
+            toast(`${recipe.name}完成：金幣 +${recipe.rewardCoins}，經驗 +${recipe.rewardExp}`);
+            kitchenViewMode = "collection";
+            kitchenStepIndex = 0;
+            resetKitchenScene();
+            renderAll();
+          });
+        }
       }
 
       if (activeActivity === "tour") {
