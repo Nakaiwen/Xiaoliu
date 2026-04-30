@@ -4312,3 +4312,32 @@
   height: 1.12em;
   vertical-align: -0.2em;
 }
+
+
+/* ======================================================
+   V3.3.6.12：手機 / 平板直立畫面六塊土地整組下移
+   - 問題：手機與平板直立畫面時，6 塊土地仍偏高，遮住背景遠景氛圍
+   - 位置判定：
+     1. 手機直立：max-width: 720px + orientation: portrait
+     2. 平板直立：721px～1120px + orientation: portrait
+   - 修正方式：
+     1. 保留既有手機 3×2 排列與上排 / 下排個別微調
+     2. 只針對直立裝置，把整個 .garden-grid 再往下移
+     3. 不改桌機與橫向畫面
+====================================================== */
+
+/* 手機直立：整組六塊土地往下移，讓上方遠景露出更多 */
+@media (max-width: 720px) and (orientation: portrait) {
+  .garden-scroll .garden-grid,
+  .garden-grid {
+    transform: translateY(58px) !important;
+  }
+}
+
+/* 平板直立 / iPad 直式：整組六塊土地往下移，避免壓住背景遠景 */
+@media (min-width: 721px) and (max-width: 1120px) and (orientation: portrait) {
+  .garden-scroll .garden-grid,
+  .garden-grid {
+    transform: translateY(64px) !important;
+  }
+}
