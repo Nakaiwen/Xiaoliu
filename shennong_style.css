@@ -4344,663 +4344,19 @@
 
 
 /* ======================================================
-   V3.3.6.13：食養廚房入口位置測試
-   - 先將「食養廚房」安插在「修心養性」功能列中
-   - 目前僅作為位置與流程感測試，不接正式食譜系統
+   V3.3.6.22：食養廚房今日基準清理版
+   - 以 V3.3.6.21 的食養廚房進度為準
+   - 移除先前未採用 / 實驗用的 kitchen-mode、三欄資訊面板、舊食材框等樣式
+   - 保留目前採用流程：
+     1. 一般模式，不啟動 kitchen-mode
+     2. 背景圖 + 鍋子 + 青蔥 / 薑
+     3. 第三步點食材入鍋
+     4. 鍋子本體與黃光縮放三次
+     5. 點鍋十字光，完成品出現
+     6. 完成料理後切換成「左：我的食譜 / 右：大張食譜卡」
 ====================================================== */
 
-.activity-grid {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-}
-
-.activity-kitchen-icon {
-  font-size: 2.15rem;
-  color: var(--moss-dark);
-  line-height: 1;
-}
-
-.kitchen-entry-option {
-  background:
-    linear-gradient(180deg, rgba(255,253,246,.84), rgba(247,238,218,.78)),
-    radial-gradient(circle at 50% 0%, rgba(185,155,98,.18), transparent 62%);
-}
-
-.kitchen-preview-panel {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 220px;
-  gap: 14px;
-  align-items: stretch;
-}
-
-.kitchen-preview-copy {
-  padding: 14px;
-  border-radius: 16px;
-  background: rgba(255,253,246,.62);
-  border: 1px solid rgba(185,155,98,.16);
-}
-
-.kitchen-preview-copy strong {
-  display: inline-block;
-  margin-bottom: 6px;
-  color: var(--moss-dark);
-  letter-spacing: .08em;
-}
-
-.kitchen-preview-copy p {
-  margin: 0 0 8px;
-  color: rgba(40,58,47,.72);
-  line-height: 1.75;
-}
-
-.kitchen-preview-copy ul {
-  margin: 0;
-  padding-left: 1.2em;
-  color: rgba(40,58,47,.68);
-  line-height: 1.8;
-}
-
-.kitchen-preview-card {
-  display: grid;
-  align-content: center;
-  justify-items: center;
-  gap: 8px;
-  padding: 16px;
-  border-radius: 18px;
-  text-align: center;
-  background:
-    radial-gradient(circle at 50% 20%, rgba(255,255,255,.72), transparent 52%),
-    linear-gradient(145deg, rgba(245,233,206,.94), rgba(255,251,239,.82));
-  border: 1px solid rgba(185,155,98,.22);
-  box-shadow: 0 10px 20px rgba(73,62,40,.08);
-}
-
-.kitchen-preview-card span {
-  color: rgba(40,58,47,.55);
-  font-size: .82rem;
-  letter-spacing: .08em;
-}
-
-.kitchen-preview-card b {
-  color: var(--moss-dark);
-  font-size: 1.28rem;
-  letter-spacing: .12em;
-}
-
-.kitchen-preview-card small {
-  color: rgba(40,58,47,.62);
-}
-
-@media (max-width: 1120px) {
-  .activity-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .activity-option {
-    min-height: 132px;
-  }
-}
-
-@media (max-width: 720px) {
-  .activity-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
-  }
-
-  .activity-option {
-    min-height: 118px;
-  }
-
-  .kitchen-preview-panel {
-    grid-template-columns: 1fr;
-  }
-
-  .kitchen-preview-card {
-    min-height: 128px;
-  }
-}
-
-
-/* ======================================================
-   V3.3.6.14：食養廚房第一道食譜
-   - 第一道食譜：青蔥薑湯
-   - 使用 kitchen.zip 提供的背景、食譜卡、成品圖與食材圖
-====================================================== */
-
-.kitchen-workbench {
-  position: relative;
-  overflow: hidden;
-  display: grid;
-  grid-template-columns: 220px minmax(0, 1fr) 260px;
-  gap: 14px;
-  min-height: 430px;
-  padding: 14px;
-  border-radius: 22px;
-  background:
-    linear-gradient(90deg, rgba(255,253,246,.92), rgba(255,251,239,.76)),
-    var(--kitchen-bg) center / cover no-repeat;
-  border: 1px solid rgba(185,155,98,.22);
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.34);
-}
-
-.kitchen-workbench::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(circle at 52% 18%, rgba(255,255,255,.22), transparent 34%),
-    linear-gradient(180deg, rgba(40,32,24,.08), rgba(40,32,24,.16));
-  opacity: .75;
-}
-
-.recipe-list-panel,
-.recipe-cooking-panel,
-.recipe-note-panel {
-  position: relative;
-  z-index: 1;
-  border-radius: 18px;
-  background: rgba(255,253,246,.84);
-  border: 1px solid rgba(185,155,98,.20);
-  box-shadow: 0 12px 24px rgba(73,62,40,.10);
-  backdrop-filter: blur(8px);
-}
-
-.recipe-list-panel { padding: 12px; }
-
-.recipe-panel-title {
-  margin-bottom: 10px;
-  color: var(--moss-dark);
-  font-weight: 900;
-  letter-spacing: .12em;
-}
-
-.recipe-mini-card {
-  width: 100%;
-  display: grid;
-  grid-template-columns: 58px 1fr;
-  gap: 10px;
-  align-items: center;
-  padding: 10px;
-  border-radius: 16px;
-  text-align: left;
-  color: var(--ink);
-  background: rgba(255,250,240,.72);
-  border: 1px solid rgba(185,155,98,.16);
-  transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
-}
-
-.recipe-mini-card + .recipe-mini-card { margin-top: 8px; }
-
-.recipe-mini-card:hover,
-.recipe-mini-card.active {
-  transform: translateY(-1px);
-  background: rgba(246,238,218,.92);
-  box-shadow: 0 8px 18px rgba(73,62,40,.10);
-}
-
-.recipe-mini-card img {
-  width: 58px;
-  height: 58px;
-  object-fit: cover;
-  border-radius: 15px;
-  background: rgba(255,255,255,.62);
-}
-
-.recipe-mini-card b,
-.recipe-mini-card small,
-.recipe-mini-card em { display: block; }
-
-.recipe-mini-card b {
-  color: var(--moss-dark);
-  font-size: .95rem;
-}
-
-.recipe-mini-card small {
-  margin-top: 3px;
-  color: rgba(40,58,47,.60);
-  font-size: .74rem;
-}
-
-.recipe-mini-card em {
-  margin-top: 3px;
-  color: rgba(139,105,52,.72);
-  font-style: normal;
-  font-size: .72rem;
-}
-
-.recipe-cooking-panel {
-  display: grid;
-  gap: 12px;
-  align-content: start;
-  padding: 14px;
-}
-
-.recipe-hero-card {
-  display: grid;
-  grid-template-columns: 150px 1fr;
-  gap: 14px;
-  align-items: center;
-  padding: 12px;
-  border-radius: 18px;
-  background: rgba(255,250,240,.72);
-  border: 1px solid rgba(185,155,98,.18);
-}
-
-.recipe-hero-img {
-  width: 150px;
-  height: 118px;
-  object-fit: contain;
-  border-radius: 18px;
-  background:
-    radial-gradient(circle, rgba(255,255,255,.86), rgba(246,236,210,.56));
-}
-
-.recipe-kicker {
-  display: inline-block;
-  margin-bottom: 5px;
-  color: rgba(40,58,47,.56);
-  font-weight: 800;
-  font-size: .76rem;
-  letter-spacing: .10em;
-}
-
-.recipe-hero-card h4 {
-  margin: 0 0 7px;
-  color: var(--moss-dark);
-  font-size: 1.65rem;
-  letter-spacing: .14em;
-}
-
-.recipe-benefit {
-  display: inline-flex;
-  padding: 5px 12px;
-  border-radius: 999px;
-  color: #fffdf6;
-  background: linear-gradient(145deg, var(--moss), var(--moss-dark));
-  box-shadow: 0 6px 12px rgba(73,62,40,.10);
-  font-weight: 900;
-  letter-spacing: .10em;
-}
-
-.recipe-hero-card p {
-  margin: 8px 0 0;
-  color: rgba(40,58,47,.66);
-}
-
-.recipe-step-board {
-  padding: 18px;
-  border-radius: 18px;
-  background:
-    linear-gradient(180deg, rgba(255,253,246,.88), rgba(247,237,216,.72));
-  border: 1px solid rgba(185,155,98,.20);
-  min-height: 150px;
-}
-
-.recipe-step-count {
-  color: rgba(139,105,52,.76);
-  font-weight: 900;
-  letter-spacing: .16em;
-  margin-bottom: 10px;
-}
-
-.recipe-step-board p {
-  margin: 0;
-  color: var(--ink);
-  font-size: 1.08rem;
-  line-height: 1.8;
-  font-weight: 750;
-}
-
-.recipe-step-progress {
-  display: flex;
-  gap: 8px;
-  margin-top: 16px;
-}
-
-.recipe-step-progress i {
-  flex: 1;
-  height: 8px;
-  border-radius: 999px;
-  background: rgba(185,155,98,.18);
-}
-
-.recipe-step-progress i.active {
-  background: linear-gradient(90deg, var(--moss), var(--leaf));
-}
-
-.recipe-actions {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-}
-
-.recipe-actions .btn { min-width: 120px; }
-
-.recipe-note-panel {
-  padding: 12px;
-  display: grid;
-  gap: 10px;
-  align-content: start;
-}
-
-.recipe-card-thumb {
-  width: 100%;
-  max-height: 152px;
-  object-fit: cover;
-  object-position: top;
-  border-radius: 16px;
-  border: 1px solid rgba(185,155,98,.18);
-}
-
-.recipe-tags { display: flex; gap: 6px; flex-wrap: wrap; }
-
-.recipe-tags span {
-  padding: 4px 8px;
-  border-radius: 999px;
-  color: var(--moss-dark);
-  background: rgba(222,235,204,.72);
-  border: 1px solid rgba(81,107,85,.12);
-  font-weight: 800;
-  font-size: .72rem;
-}
-
-.recipe-info-box {
-  padding: 10px;
-  border-radius: 14px;
-  background: rgba(255,250,240,.68);
-  border: 1px solid rgba(185,155,98,.14);
-}
-
-.recipe-info-box b {
-  display: block;
-  margin-bottom: 5px;
-  color: var(--moss-dark);
-  letter-spacing: .08em;
-}
-
-.recipe-info-box p,
-.recipe-info-box ul {
-  margin: 0;
-  color: rgba(40,58,47,.68);
-  line-height: 1.65;
-  font-size: .88rem;
-}
-
-.recipe-info-box ul { padding-left: 1.2em; }
-
-.recipe-complete-status {
-  display: block;
-  color: rgba(139,105,52,.72);
-  line-height: 1.6;
-  text-align: center;
-}
-
-@media (max-width: 1120px) {
-  .kitchen-workbench { grid-template-columns: 1fr; }
-  .recipe-list-panel {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    align-items: center;
-    gap: 10px;
-  }
-  .recipe-panel-title { margin: 0; }
-  .recipe-mini-card + .recipe-mini-card { margin-top: 0; }
-  .recipe-note-panel {
-    grid-template-columns: minmax(160px, 220px) 1fr;
-    align-items: start;
-  }
-  .recipe-tags,
-  .recipe-info-box,
-  .recipe-complete-status { grid-column: 2; }
-  .recipe-card-thumb {
-    grid-row: span 5;
-    max-height: 260px;
-  }
-}
-
-@media (max-width: 720px) {
-  .kitchen-workbench {
-    padding: 10px;
-    min-height: auto;
-  }
-  .recipe-list-panel { grid-template-columns: 1fr; }
-  .recipe-hero-card {
-    grid-template-columns: 1fr;
-    text-align: center;
-  }
-  .recipe-hero-img {
-    margin: 0 auto;
-    width: min(190px, 80%);
-  }
-  .recipe-note-panel { grid-template-columns: 1fr; }
-  .recipe-tags,
-  .recipe-info-box,
-  .recipe-complete-status { grid-column: auto; }
-  .recipe-card-thumb {
-    grid-row: auto;
-    max-height: 220px;
-  }
-}
-
-
-/* ======================================================
-   V3.3.6.15：食養廚房版面遮擋修正
-   - 問題：食養廚房主畫面右側被右欄 / 食譜資訊面板擋住
-   - 修正：
-     1. 進入食養廚房時啟用 body.kitchen-mode
-     2. 暫時隱藏右側 side-stack，讓食養廚房使用完整寬度
-     3. 食譜資訊面板不再放在右邊，改放到下方橫向區塊
-     4. 讓中間料理主畫面與背景視覺更完整
-====================================================== */
-
-body.kitchen-mode .main-grid {
-  grid-template-columns: minmax(0, 1fr) !important;
-}
-
-body.kitchen-mode .side-stack {
-  display: none !important;
-}
-
-body.kitchen-mode .activity-card {
-  overflow: visible !important;
-}
-
-body.kitchen-mode .activity-panel {
-  overflow: visible !important;
-}
-
-body.kitchen-mode .kitchen-workbench {
-  grid-template-columns: 240px minmax(0, 1fr) !important;
-  grid-template-areas:
-    "list cooking"
-    "note note";
-  min-height: 560px;
-  background:
-    linear-gradient(90deg, rgba(255,253,246,.82), rgba(255,251,239,.48) 46%, rgba(255,251,239,.20)),
-    var(--kitchen-bg) center / cover no-repeat;
-}
-
-body.kitchen-mode .recipe-list-panel {
-  grid-area: list;
-}
-
-body.kitchen-mode .recipe-cooking-panel {
-  grid-area: cooking;
-  min-height: 370px;
-  align-content: center;
-}
-
-body.kitchen-mode .recipe-note-panel {
-  grid-area: note;
-  grid-template-columns: 180px repeat(3, minmax(0, 1fr));
-  align-items: stretch;
-}
-
-body.kitchen-mode .recipe-note-panel .recipe-card-thumb {
-  max-height: 210px;
-  height: 100%;
-  object-fit: cover;
-  object-position: top;
-}
-
-body.kitchen-mode .recipe-note-panel .recipe-tags {
-  grid-column: 2 / -1;
-  align-self: center;
-}
-
-body.kitchen-mode .recipe-note-panel .recipe-complete-status {
-  grid-column: 2 / -1;
-}
-
-@media (max-width: 1120px) {
-  body.kitchen-mode .side-stack {
-    display: grid !important;
-  }
-
-  body.kitchen-mode .kitchen-workbench {
-    grid-template-columns: 1fr !important;
-    grid-template-areas:
-      "list"
-      "cooking"
-      "note";
-  }
-
-  body.kitchen-mode .recipe-cooking-panel {
-    min-height: auto;
-  }
-
-  body.kitchen-mode .recipe-note-panel {
-    grid-template-columns: minmax(160px, 220px) 1fr;
-  }
-
-  body.kitchen-mode .recipe-note-panel .recipe-tags,
-  body.kitchen-mode .recipe-note-panel .recipe-info-box,
-  body.kitchen-mode .recipe-note-panel .recipe-complete-status {
-    grid-column: 2;
-  }
-}
-
-@media (max-width: 720px) {
-  body.kitchen-mode .recipe-note-panel {
-    grid-template-columns: 1fr;
-  }
-
-  body.kitchen-mode .recipe-note-panel .recipe-tags,
-  body.kitchen-mode .recipe-note-panel .recipe-info-box,
-  body.kitchen-mode .recipe-note-panel .recipe-complete-status {
-    grid-column: auto;
-  }
-}
-
-
-/* ======================================================
-   V3.3.6.16：食養廚房背景圖與食材圖顯示修正
-   - 問題：
-     1. 食養廚房背景誤用食譜卡圖，沒有顯示 kitchen 背景圖
-     2. 青蔥、薑兩種食材圖沒有在畫面中明確顯示
-   - 修正：
-     1. kitchen-workbench 改用 recipe.backgroundImage
-     2. 加入 recipe-ingredient-strip 顯示青蔥與薑
-     3. 降低遮罩不透明度，讓背景圖更清楚
-====================================================== */
-
-.kitchen-workbench {
-  background:
-    linear-gradient(90deg, rgba(255,253,246,.66), rgba(255,251,239,.28) 42%, rgba(255,251,239,.10)),
-    var(--kitchen-bg) center / cover no-repeat !important;
-}
-
-.kitchen-workbench::before {
-  background:
-    radial-gradient(circle at 52% 18%, rgba(255,255,255,.10), transparent 34%),
-    linear-gradient(180deg, rgba(40,32,24,.03), rgba(40,32,24,.10)) !important;
-  opacity: .48 !important;
-}
-
-body.kitchen-mode .kitchen-workbench {
-  background:
-    linear-gradient(90deg, rgba(255,253,246,.58), rgba(255,251,239,.22) 38%, rgba(255,251,239,.06)),
-    var(--kitchen-bg) center / cover no-repeat !important;
-}
-
-.recipe-ingredient-strip {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  padding: 10px 12px;
-  border-radius: 18px;
-  background: rgba(255,253,246,.62);
-  border: 1px solid rgba(185,155,98,.16);
-}
-
-.recipe-ingredient-item {
-  margin: 0;
-  min-width: 92px;
-  display: grid;
-  justify-items: center;
-  gap: 5px;
-}
-
-.recipe-ingredient-item img {
-  width: 82px;
-  height: 82px;
-  object-fit: contain;
-  border-radius: 20px;
-  padding: 6px;
-  background:
-    radial-gradient(circle at 50% 35%, rgba(255,255,255,.92), rgba(246,236,210,.54));
-  border: 1px solid rgba(185,155,98,.16);
-  box-shadow: 0 8px 18px rgba(73,62,40,.10);
-}
-
-.recipe-ingredient-item figcaption {
-  color: var(--moss-dark);
-  font-weight: 900;
-  font-size: .82rem;
-  letter-spacing: .10em;
-}
-
-.recipe-info-ingredients-visual {
-  display: flex;
-  gap: 8px;
-  margin: 2px 0 8px;
-}
-
-.recipe-info-ingredients-visual img {
-  width: 46px;
-  height: 46px;
-  object-fit: contain;
-  border-radius: 14px;
-  padding: 4px;
-  background: rgba(255,255,255,.66);
-  border: 1px solid rgba(185,155,98,.14);
-}
-
-@media (max-width: 720px) {
-  .recipe-ingredient-item img {
-    width: 72px;
-    height: 72px;
-  }
-
-  .recipe-ingredient-item {
-    min-width: 78px;
-  }
-}
-
-
-/* ======================================================
-   V3.3.6.17：食養廚房一般模式簡化配置
-   - 不啟用 kitchen-mode，維持一般頁面布局
-   - 食養廚房畫面清空為：
-     1. 背景圖
-     2. ui/tool-clay-pot.png 放在中下方
-     3. 青蔥、薑兩樣食材放在畫面上
-     4. 背景圖下方為步驟資訊顯示區
-====================================================== */
-
-/* 保險：即使舊 class 殘留，也不要在食養廚房切換全頁模式 */
+/* 保險：食養廚房不再使用全頁 kitchen-mode */
 body.kitchen-mode .main-grid {
   grid-template-columns: minmax(0, 1.65fr) minmax(320px, .85fr) !important;
 }
@@ -5015,191 +4371,6 @@ body.kitchen-mode .side-stack {
   border: 1px solid rgba(185,155,98,.22);
   background: rgba(255,253,246,.82);
   box-shadow: inset 0 0 0 1px rgba(255,255,255,.32);
-}
-
-.kitchen-scene-simple {
-  position: relative;
-  min-height: 430px;
-  border-radius: 24px 24px 0 0;
-  overflow: hidden;
-  background:
-    linear-gradient(180deg, rgba(255,253,246,.03), rgba(40,32,24,.06)),
-    var(--kitchen-bg) center / cover no-repeat;
-}
-
-.kitchen-scene-simple::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(circle at 50% 72%, rgba(255,247,218,.22), transparent 30%),
-    linear-gradient(180deg, rgba(0,0,0,.00), rgba(0,0,0,.10));
-}
-
-.kitchen-main-pot {
-  position: absolute;
-  z-index: 2;
-  left: 50%;
-  bottom: 13%;
-  width: clamp(160px, 29vw, 285px);
-  height: auto;
-  transform: translateX(-50%);
-  filter: drop-shadow(0 18px 28px rgba(46, 34, 20, .28));
-  animation: kitchenPotFloat 4.8s ease-in-out infinite;
-}
-
-@keyframes kitchenPotFloat {
-  0%, 100% { transform: translateX(-50%) translateY(0); }
-  50% { transform: translateX(-50%) translateY(-3px); }
-}
-
-.kitchen-ingredient-scene {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  pointer-events: none;
-}
-
-.kitchen-scene-ingredient {
-  position: absolute;
-  margin: 0;
-  display: grid;
-  justify-items: center;
-  gap: 4px;
-  filter: drop-shadow(0 10px 16px rgba(46, 34, 20, .20));
-}
-
-.kitchen-scene-ingredient img {
-  width: clamp(76px, 12vw, 116px);
-  height: clamp(76px, 12vw, 116px);
-  object-fit: contain;
-  padding: 6px;
-  border-radius: 22px;
-  background: rgba(255,253,246,.64);
-  border: 1px solid rgba(185,155,98,.18);
-  backdrop-filter: blur(3px);
-}
-
-.kitchen-scene-ingredient figcaption {
-  padding: 3px 9px;
-  border-radius: 999px;
-  color: var(--moss-dark);
-  background: rgba(255,253,246,.82);
-  border: 1px solid rgba(185,155,98,.16);
-  font-size: .78rem;
-  font-weight: 900;
-  letter-spacing: .10em;
-}
-
-.kitchen-scene-ingredient-scallion {
-  left: 12%;
-  bottom: 18%;
-}
-
-.kitchen-scene-ingredient-ginger {
-  right: 13%;
-  bottom: 19%;
-}
-
-.kitchen-step-panel-simple {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 14px;
-  align-items: center;
-  padding: 16px;
-  background:
-    linear-gradient(180deg, rgba(255,253,246,.94), rgba(247,238,218,.86));
-  border-top: 1px solid rgba(185,155,98,.20);
-}
-
-.kitchen-step-main h4 {
-  margin: 4px 0 8px;
-  color: var(--moss-dark);
-  font-size: 1.45rem;
-  letter-spacing: .14em;
-}
-
-.kitchen-step-current {
-  margin: 10px 0 0;
-  color: rgba(40,58,47,.78);
-  line-height: 1.75;
-  font-weight: 750;
-}
-
-.kitchen-complete-status {
-  display: block;
-  margin-top: 8px;
-  color: rgba(139,105,52,.72);
-  line-height: 1.5;
-}
-
-.kitchen-actions-simple {
-  justify-content: flex-end;
-  align-self: end;
-}
-
-@media (max-width: 1120px) {
-  .kitchen-scene-simple {
-    min-height: 400px;
-  }
-
-  .kitchen-step-panel-simple {
-    grid-template-columns: 1fr;
-  }
-
-  .kitchen-actions-simple {
-    justify-content: center;
-  }
-}
-
-@media (max-width: 720px) {
-  .kitchen-scene-simple {
-    min-height: 360px;
-    background-position: center;
-  }
-
-  .kitchen-main-pot {
-    bottom: 14%;
-    width: clamp(145px, 46vw, 220px);
-  }
-
-  .kitchen-scene-ingredient img {
-    width: 76px;
-    height: 76px;
-  }
-
-  .kitchen-scene-ingredient-scallion {
-    left: 6%;
-    bottom: 17%;
-  }
-
-  .kitchen-scene-ingredient-ginger {
-    right: 7%;
-    bottom: 17%;
-  }
-
-  .kitchen-step-panel-simple {
-    padding: 13px;
-  }
-
-  .kitchen-step-main h4 {
-    font-size: 1.25rem;
-  }
-}
-
-
-/* ======================================================
-   V3.3.6.18：食養廚房互動流程版
-   - 鍋子下移 20px，取消浮動
-   - 食材貼齊背景圖下緣上方 20px，橫向透空放置
-   - 第三步點選食材，食材縮小入鍋
-   - 鍋子脈動 3 次並發出黃光
-   - 點鍋後十字光散出，鍋子消失，完成品出現
-====================================================== */
-
-.kitchen-stage-simple {
-  overflow: hidden;
 }
 
 .kitchen-scene-simple {
@@ -5245,7 +4416,12 @@ body.kitchen-mode .side-stack {
 
 .kitchen-main-pot.is-ready {
   cursor: pointer;
-  animation: kitchenPotPulse 0.72s ease-in-out 3;
+  animation: none !important;
+}
+
+.kitchen-main-pot.is-ready img {
+  transform-origin: center bottom;
+  animation: kitchenPotImagePulse 0.72s ease-in-out 3 !important;
 }
 
 .kitchen-main-pot.is-ready::after {
@@ -5261,6 +4437,11 @@ body.kitchen-mode .side-stack {
 
 .kitchen-main-pot.is-bursting {
   animation: kitchenPotBurstFade .78s ease forwards;
+}
+
+.kitchen-main-pot.is-bursting img {
+  transform-origin: center bottom;
+  animation: kitchenPotImageBurstFade .78s ease forwards !important;
 }
 
 .kitchen-main-pot.is-hidden {
@@ -5416,37 +4597,6 @@ body.kitchen-mode .side-stack {
   transform: translateX(-50%) scale(1);
 }
 
-@keyframes ingredientIntoPotLeft {
-  0% { transform: translate3d(0, 0, 0) scale(1); opacity: 1; }
-  100% { transform: translate3d(185px, -92px, 0) scale(.12); opacity: 0; }
-}
-
-@keyframes ingredientIntoPotRight {
-  0% { transform: translate3d(0, 0, 0) scale(1); opacity: 1; }
-  100% { transform: translate3d(-185px, -92px, 0) scale(.12); opacity: 0; }
-}
-
-@keyframes kitchenPotPulse {
-  0%, 100% { transform: translateX(-50%) scale(1); }
-  50% { transform: translateX(-50%) scale(1.075); }
-}
-
-@keyframes kitchenGlowPulse {
-  0%, 100% { opacity: .28; transform: scale(.92); }
-  50% { opacity: 1; transform: scale(1.08); }
-}
-
-@keyframes kitchenPotBurstFade {
-  0% { transform: translateX(-50%) scale(1); opacity: 1; }
-  100% { transform: translateX(-50%) scale(.58); opacity: 0; }
-}
-
-@keyframes kitchenCrossScatter {
-  0% { transform: translate(-50%, -50%) scale(.2); opacity: 0; }
-  12% { opacity: 1; }
-  100% { transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(1); opacity: 0; }
-}
-
 .kitchen-step-panel-simple {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
@@ -5457,105 +4607,45 @@ body.kitchen-mode .side-stack {
   border-top: 1px solid rgba(185,155,98,.20);
 }
 
-@media (max-width: 720px) {
-  .kitchen-scene-simple {
-    min-height: 340px;
-  }
-
-  .kitchen-main-pot {
-    bottom: 26px;
-    width: clamp(150px, 43vw, 210px);
-  }
-
-  .kitchen-ingredient-row {
-    gap: clamp(28px, 6vw, 56px);
-    bottom: 20px;
-    width: 96%;
-  }
-
-  .kitchen-scene-ingredient img {
-    width: 72px;
-    height: 72px;
-  }
-
-  .kitchen-finished-dish {
-    bottom: 30px;
-    width: clamp(150px, 43vw, 210px);
-  }
-
-  @keyframes ingredientIntoPotLeft {
-    0% { transform: translate3d(0, 0, 0) scale(1); opacity: 1; }
-    100% { transform: translate3d(108px, -70px, 0) scale(.12); opacity: 0; }
-  }
-
-  @keyframes ingredientIntoPotRight {
-    0% { transform: translate3d(0, 0, 0) scale(1); opacity: 1; }
-    100% { transform: translate3d(-108px, -70px, 0) scale(.12); opacity: 0; }
-  }
+.kitchen-step-main h4 {
+  margin: 4px 0 8px;
+  color: var(--moss-dark);
+  font-size: 1.45rem;
+  letter-spacing: .14em;
 }
 
-
-/* ======================================================
-   V3.3.6.19：鍋子本體縮放三次修正
-   - 問題：食材入鍋後只有黃光縮放，鍋子本體沒有跟著縮放
-   - 修正：將縮放動畫套用到鍋子內部 img，不再只作用在 button 容器
-====================================================== */
-
-.kitchen-main-pot.is-ready {
-  animation: none !important;
+.kitchen-step-current {
+  margin: 10px 0 0;
+  color: rgba(40,58,47,.78);
+  line-height: 1.75;
+  font-weight: 750;
 }
 
-.kitchen-main-pot.is-ready img {
-  transform-origin: center bottom;
-  animation: kitchenPotImagePulse 0.72s ease-in-out 3 !important;
+.kitchen-complete-status {
+  display: block;
+  margin-top: 8px;
+  color: rgba(139,105,52,.72);
+  line-height: 1.5;
 }
 
-.kitchen-main-pot.is-bursting img {
-  transform-origin: center bottom;
-  animation: kitchenPotImageBurstFade .78s ease forwards !important;
+.kitchen-actions-simple {
+  justify-content: flex-end;
+  align-self: end;
 }
 
-@keyframes kitchenPotImagePulse {
-  0%, 100% {
-    transform: scale(1);
-    filter: drop-shadow(0 18px 28px rgba(46, 34, 20, .28));
-  }
-  50% {
-    transform: scale(1.075);
-    filter:
-      drop-shadow(0 18px 28px rgba(46, 34, 20, .24))
-      drop-shadow(0 0 18px rgba(255, 222, 98, .78));
-  }
-}
-
-@keyframes kitchenPotImageBurstFade {
-  0% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(.58);
-    opacity: 0;
-  }
-}
-
-
-/* ======================================================
-   V3.3.6.20：完成料理後切換食譜收藏介面
-   - 按下「完成料理」後：
-     左側顯示「我的食譜」
-     右側顯示大張食譜卡
-====================================================== */
-
+/* 完成料理後：左側我的食譜、右側大張食譜卡 */
 .kitchen-collection-layout {
   display: grid;
   grid-template-columns: 260px minmax(0, 1fr);
   gap: 16px;
   align-items: start;
+  overflow: hidden;
 }
 
 .kitchen-book-list,
 .kitchen-recipe-card-view {
+  min-width: 0;
+  overflow: hidden;
   border-radius: 24px;
   border: 1px solid rgba(185,155,98,.18);
   background: linear-gradient(180deg, rgba(255,253,246,.95), rgba(247,238,218,.86));
@@ -5650,96 +4740,6 @@ body.kitchen-mode .side-stack {
   margin-bottom: 12px;
 }
 
-.kitchen-recipe-showcard {
-  display: grid;
-  grid-template-columns: minmax(280px, 420px) minmax(0, 1fr);
-  gap: 18px;
-  align-items: start;
-}
-
-.kitchen-recipe-showcard-image {
-  width: 100%;
-  border-radius: 22px;
-  border: 1px solid rgba(185,155,98,.18);
-  background: rgba(255,255,255,.62);
-  box-shadow: 0 10px 22px rgba(82, 68, 44, .10);
-}
-
-.kitchen-recipe-showcard-body {
-  display: grid;
-  gap: 14px;
-}
-
-.kitchen-recipe-showcard-title h4 {
-  margin: 0 0 8px;
-  color: var(--moss-dark);
-  font-size: 1.5rem;
-  letter-spacing: .14em;
-}
-
-.kitchen-recipe-meta-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-}
-
-.recipe-step-list-box {
-  padding: 14px 16px;
-  border-radius: 18px;
-  background: rgba(255,255,255,.58);
-  border: 1px solid rgba(185,155,98,.14);
-}
-
-.recipe-step-list-box b {
-  display: inline-block;
-  margin-bottom: 8px;
-  color: var(--moss-dark);
-}
-
-.recipe-step-list-box ol {
-  margin: 0;
-  padding-left: 1.2em;
-  color: rgba(64, 86, 72, .82);
-  line-height: 1.8;
-}
-
-@media (max-width: 980px) {
-  .kitchen-collection-layout {
-    grid-template-columns: 1fr;
-  }
-
-  .kitchen-recipe-showcard {
-    grid-template-columns: 1fr;
-  }
-
-  .kitchen-recipe-meta-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-
-/* ======================================================
-   V3.3.6.21：食譜收藏介面殘留資訊清理
-   - 問題：完成料理後的收藏畫面，左側範圍外疑似出現舊食譜資訊文字
-   - 修正：收藏畫面只保留「左：我的食譜」與「右：大張食譜卡」
-   - 移除收藏畫面中的舊資訊區塊：食材、食養功效、適合時節、料理步驟
-====================================================== */
-
-.kitchen-collection-clean {
-  overflow: hidden;
-}
-
-.kitchen-collection-clean .kitchen-book-list,
-.kitchen-collection-clean .kitchen-recipe-card-view {
-  min-width: 0;
-  overflow: hidden;
-}
-
-.kitchen-recipe-card-only {
-  display: grid;
-  gap: 12px;
-}
-
 .kitchen-recipe-card-stage {
   display: grid;
   justify-items: center;
@@ -5781,16 +4781,273 @@ body.kitchen-mode .side-stack {
   line-height: 1.5;
 }
 
-/* 收藏畫面不再使用舊資訊區，避免舊 CSS grid-column 造成文字外漏 */
-.kitchen-collection-clean .kitchen-recipe-showcard-body,
-.kitchen-collection-clean .kitchen-recipe-meta-grid,
-.kitchen-collection-clean .recipe-info-box,
-.kitchen-collection-clean .recipe-step-list-box {
-  display: none !important;
+@keyframes ingredientIntoPotLeft {
+  0% { transform: translate3d(0, 0, 0) scale(1); opacity: 1; }
+  100% { transform: translate3d(185px, -92px, 0) scale(.12); opacity: 0; }
+}
+
+@keyframes ingredientIntoPotRight {
+  0% { transform: translate3d(0, 0, 0) scale(1); opacity: 1; }
+  100% { transform: translate3d(-185px, -92px, 0) scale(.12); opacity: 0; }
+}
+
+@keyframes kitchenPotImagePulse {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 18px 28px rgba(46, 34, 20, .28));
+  }
+  50% {
+    transform: scale(1.075);
+    filter:
+      drop-shadow(0 18px 28px rgba(46, 34, 20, .24))
+      drop-shadow(0 0 18px rgba(255, 222, 98, .78));
+  }
+}
+
+@keyframes kitchenGlowPulse {
+  0%, 100% { opacity: .28; transform: scale(.92); }
+  50% { opacity: 1; transform: scale(1.08); }
+}
+
+@keyframes kitchenPotBurstFade {
+  0% { transform: translateX(-50%) scale(1); opacity: 1; }
+  100% { transform: translateX(-50%) scale(.58); opacity: 0; }
+}
+
+@keyframes kitchenPotImageBurstFade {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(.58); opacity: 0; }
+}
+
+@keyframes kitchenCrossScatter {
+  0% { transform: translate(-50%, -50%) scale(.2); opacity: 0; }
+  12% { opacity: 1; }
+  100% { transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(1); opacity: 0; }
+}
+
+@media (max-width: 1120px) {
+  .kitchen-scene-simple {
+    min-height: 400px;
+  }
+
+  .kitchen-step-panel-simple {
+    grid-template-columns: 1fr;
+  }
+
+  .kitchen-actions-simple {
+    justify-content: center;
+  }
 }
 
 @media (max-width: 980px) {
+  .kitchen-collection-layout {
+    grid-template-columns: 1fr;
+  }
+
   .kitchen-recipe-card-large {
     max-height: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .kitchen-scene-simple {
+    min-height: 340px;
+    background-position: center;
+  }
+
+  .kitchen-main-pot {
+    bottom: 26px;
+    width: clamp(150px, 43vw, 210px);
+  }
+
+  .kitchen-ingredient-row {
+    gap: clamp(28px, 6vw, 56px);
+    bottom: 20px;
+    width: 96%;
+  }
+
+  .kitchen-scene-ingredient img {
+    width: 72px;
+    height: 72px;
+  }
+
+  .kitchen-finished-dish {
+    bottom: 30px;
+    width: clamp(150px, 43vw, 210px);
+  }
+
+  .kitchen-step-panel-simple {
+    padding: 13px;
+  }
+
+  .kitchen-step-main h4 {
+    font-size: 1.25rem;
+  }
+
+  @keyframes ingredientIntoPotLeft {
+    0% { transform: translate3d(0, 0, 0) scale(1); opacity: 1; }
+    100% { transform: translate3d(108px, -70px, 0) scale(.12); opacity: 0; }
+  }
+
+  @keyframes ingredientIntoPotRight {
+    0% { transform: translate3d(0, 0, 0) scale(1); opacity: 1; }
+    100% { transform: translate3d(-108px, -70px, 0) scale(.12); opacity: 0; }
+  }
+}
+
+
+/* ======================================================
+   V3.3.6.23：修心養性四顆按鈕單列修正
+   - 固定為一排四顆：
+     打坐冥想｜抄經｜食養廚房｜參觀藥園
+====================================================== */
+
+.activity-card .activity-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+}
+
+.activity-card .activity-option {
+  min-height: 136px;
+  padding: 11px 6px;
+}
+
+.activity-card .activity-icon {
+  width: 68px;
+  height: 68px;
+}
+
+.activity-card .activity-thumb {
+  width: 58px;
+  height: 58px;
+}
+
+.activity-card .activity-option strong {
+  font-size: .95rem;
+  white-space: nowrap;
+}
+
+.activity-card .activity-option small {
+  font-size: .74rem;
+  line-height: 1.35;
+}
+
+/* ======================================================
+   V3.3.6.24：手機直式食養廚房步驟文字橫排修正
+   - 手機直式下，步驟資訊區固定單欄且文字橫向閱讀
+   - 操作按鈕移到文字下方，避免擠壓文字寬度
+====================================================== */
+
+@media (max-width: 720px) and (orientation: portrait) {
+  .activity-card .activity-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 6px;
+  }
+
+  .activity-card .activity-option {
+    min-height: 104px;
+    padding: 8px 3px;
+    border-radius: 14px;
+    gap: 5px;
+  }
+
+  .activity-card .activity-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+  }
+
+  .activity-card .activity-thumb {
+    width: 40px;
+    height: 40px;
+  }
+
+  .activity-card .activity-kitchen-icon {
+    font-size: 1.6rem;
+  }
+
+  .activity-card .activity-option strong {
+    font-size: .78rem;
+    letter-spacing: .02em;
+  }
+
+  .activity-card .activity-option small {
+    display: none;
+  }
+
+  .kitchen-step-panel-simple {
+    display: block !important;
+    padding: 14px 13px 15px !important;
+  }
+
+  .kitchen-step-main {
+    display: block !important;
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .kitchen-step-main .recipe-kicker,
+  .kitchen-step-main h4,
+  .kitchen-step-current,
+  .kitchen-complete-status {
+    writing-mode: horizontal-tb !important;
+    text-orientation: mixed !important;
+    white-space: normal !important;
+    word-break: normal !important;
+    overflow-wrap: break-word !important;
+    line-break: auto !important;
+    text-align: left !important;
+  }
+
+  .kitchen-step-main h4 {
+    display: block;
+    width: 100%;
+    margin: 4px 0 7px !important;
+    word-break: keep-all !important;
+  }
+
+  .kitchen-step-main .recipe-benefit {
+    display: inline-flex;
+    width: auto;
+    max-width: 100%;
+    writing-mode: horizontal-tb !important;
+    text-orientation: mixed !important;
+    white-space: nowrap !important;
+  }
+
+  .kitchen-step-current {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 10px 0 0 !important;
+    line-height: 1.75 !important;
+    letter-spacing: .02em;
+  }
+
+  .recipe-step-progress {
+    width: 100% !important;
+    margin-top: 12px !important;
+  }
+
+  .kitchen-complete-status {
+    display: block !important;
+    width: 100% !important;
+    margin-top: 8px !important;
+    line-height: 1.5 !important;
+  }
+
+  .kitchen-actions-simple {
+    display: flex !important;
+    width: 100%;
+    justify-content: center !important;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .kitchen-actions-simple .btn {
+    flex: 1 1 0;
+    min-width: 0;
+    padding-left: 8px;
+    padding-right: 8px;
+    white-space: nowrap;
   }
 }
