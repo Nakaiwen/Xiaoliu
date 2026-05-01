@@ -5051,3 +5051,77 @@ body.kitchen-mode .side-stack {
     white-space: nowrap;
   }
 }
+
+/* ======================================================
+   V3.3.6.25：手機直式四顆功能按鈕文字溢出修正
+   - 問題：手機直式下，四顆功能按鈕的文字介紹超出按鈕本身
+   - 修正：手機直式維持四顆同列，隱藏 small 介紹，縮小 icon 與主標題字級
+====================================================== */
+
+@media (max-width: 720px) and (orientation: portrait) {
+  .activity-card .activity-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 5px !important;
+    align-items: stretch;
+  }
+
+  .activity-card .activity-option {
+    min-width: 0 !important;
+    min-height: 86px !important;
+    max-height: 92px;
+    padding: 7px 2px 6px !important;
+    border-radius: 13px !important;
+    gap: 4px !important;
+    align-content: center !important;
+    justify-items: center !important;
+    overflow: hidden !important;
+  }
+
+  .activity-card .activity-icon {
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 12px !important;
+    margin: 0 !important;
+  }
+
+  .activity-card .activity-thumb {
+    width: 34px !important;
+    height: 34px !important;
+  }
+
+  .activity-card .activity-kitchen-icon {
+    font-size: 1.32rem !important;
+    line-height: 1 !important;
+  }
+
+  .activity-card .activity-option strong {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    font-size: .68rem !important;
+    line-height: 1.15 !important;
+    letter-spacing: 0 !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: clip !important;
+  }
+
+  .activity-card .activity-option small {
+    display: none !important;
+  }
+}
+
+@media (max-width: 390px) and (orientation: portrait) {
+  .activity-card .activity-grid { gap: 4px !important; }
+  .activity-card .activity-option {
+    min-height: 78px !important;
+    max-height: 84px;
+    padding: 6px 1px 5px !important;
+    border-radius: 12px !important;
+  }
+  .activity-card .activity-icon { width: 34px !important; height: 34px !important; }
+  .activity-card .activity-thumb { width: 30px !important; height: 30px !important; }
+  .activity-card .activity-kitchen-icon { font-size: 1.18rem !important; }
+  .activity-card .activity-option strong { font-size: .62rem !important; line-height: 1.12 !important; }
+}
