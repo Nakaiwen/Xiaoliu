@@ -5183,3 +5183,20 @@ body.kitchen-mode .side-stack {
     row-gap: 4px !important;
   }
 }
+
+
+/* ======================================================
+   V3.3.7.0：第四章桃源藥谷地圖與藥草
+   - 四張地圖按鈕保持整齊
+   - 第四章沿用 6 塊土地配置與天氣特效
+====================================================== */
+
+.garden-map-tabs {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+@media (max-width: 720px) {
+  .garden-map-tabs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

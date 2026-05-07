@@ -368,6 +368,126 @@ const HERBS = [
         desc: "玉米穗實飽滿，是日常穀物與食養作物。它讓灶香藥田多了豐收感，也象徵土地的厚實供養。",
         imagePrefix: "corn",
         mapId: "map3"
+      },
+      {
+        id: "mulberryleaf",
+        name: "桑葉",
+        emoji: "🍃",
+        growSeconds: 2700,
+        coinMin: 72,
+        coinMax: 88,
+        expMin: 48,
+        expMax: 60,
+        unlockLevel: 22,
+        tags: ["清潤", "茶飲", "桃源藥谷"],
+        desc: "桑葉葉脈清晰，氣息清潤，像桃源谷中拂過的微風。它是第四章初入藥谷時最親切的花葉藥草。",
+        imagePrefix: "mulberryleaf",
+        mapId: "map4"
+      },
+      {
+        id: "chrysanthemum",
+        name: "菊花",
+        emoji: "🌼",
+        growSeconds: 2880,
+        coinMin: 76,
+        coinMax: 94,
+        expMin: 50,
+        expMax: 64,
+        unlockLevel: 22,
+        tags: ["花茶", "清雅", "桃源藥谷"],
+        desc: "菊花色澤淡雅，花瓣層層舒展。它讓桃源藥谷多了一份清明與安定，也適合日後做成花草茶食譜。",
+        imagePrefix: "chrysanthemum",
+        mapId: "map4"
+      },
+      {
+        id: "jujube",
+        name: "紅棗",
+        emoji: "🔴",
+        growSeconds: 3300,
+        coinMin: 84,
+        coinMax: 106,
+        expMin: 56,
+        expMax: 70,
+        unlockLevel: 23,
+        tags: ["食養", "甜湯", "果實"],
+        desc: "紅棗果色溫潤，是常見的食養食材。它為桃源藥谷添上一點暖紅，也讓清潤花草多了生活滋味。",
+        imagePrefix: "jujube",
+        mapId: "map4"
+      },
+      {
+        id: "osmanthus",
+        name: "桂花",
+        emoji: "🌼",
+        growSeconds: 3900,
+        coinMin: 94,
+        coinMax: 118,
+        expMin: 64,
+        expMax: 78,
+        unlockLevel: 24,
+        tags: ["花香", "茶飲", "甜品"],
+        desc: "桂花花小而香，金黃點點藏在綠葉之間。它適合做茶飲與甜湯，也讓桃源藥谷飄起一縷秋香。",
+        imagePrefix: "osmanthus",
+        mapId: "map4"
+      },
+      {
+        id: "solomonseal",
+        name: "玉竹",
+        emoji: "🌱",
+        growSeconds: 4320,
+        coinMin: 104,
+        coinMax: 132,
+        expMin: 70,
+        expMax: 88,
+        unlockLevel: 25,
+        tags: ["清補", "潤養", "根莖"],
+        desc: "玉竹葉姿柔雅，根莖溫潤如玉。它象徵不急不躁的滋養，是桃源藥谷中安靜生長的清補藥草。",
+        imagePrefix: "solomonseal",
+        mapId: "map4"
+      },
+      {
+        id: "ophiopogon",
+        name: "麥門冬",
+        emoji: "🌾",
+        growSeconds: 4800,
+        coinMin: 116,
+        coinMax: 148,
+        expMin: 78,
+        expMax: 96,
+        unlockLevel: 26,
+        tags: ["潤燥", "生津", "清泉"],
+        desc: "麥門冬葉叢細長，像谷中清泉旁的綠意。它帶著潤燥生津的意象，適合慢慢培養。",
+        imagePrefix: "ophiopogon",
+        mapId: "map4"
+      },
+      {
+        id: "peonyroot",
+        name: "芍藥",
+        emoji: "🌺",
+        growSeconds: 5400,
+        coinMin: 132,
+        coinMax: 168,
+        expMin: 90,
+        expMax: 112,
+        unlockLevel: 27,
+        tags: ["花草", "柔養", "桃源"],
+        desc: "芍藥花色明麗，根部亦有藥用意象。它是桃源藥谷後段的華美花草，象徵柔中有力的調養。",
+        imagePrefix: "peonyroot",
+        mapId: "map4"
+      },
+      {
+        id: "peachblossom",
+        name: "桃花",
+        emoji: "🌸",
+        growSeconds: 6600,
+        coinMin: 160,
+        coinMax: 205,
+        expMin: 110,
+        expMax: 138,
+        unlockLevel: 29,
+        tags: ["桃源", "壓軸", "花木"],
+        desc: "桃花是桃源藥谷的代表植物。當它在谷中盛放，也象徵玩家終於遇見這片世外桃源最核心的風景。",
+        imagePrefix: "peachblossom",
+        mapId: "map4"
       }
 
     ];
@@ -581,7 +701,7 @@ const HERBS = [
         id: "map1",
         name: "初階藥園",
         unlockLevel: 1,
-        background: "assets/shennong/maps/map-starter-garden-background.jpg",
+        background: "assets/shennong/maps/map1-starter-garden-background.jpg",
         plots: [
           { id: 0, name: "左上藥畦", image: "assets/shennong/plots/plot-1-empty.png" },
           { id: 1, name: "中上藥畦", image: "assets/shennong/plots/plot-2-empty.png" },
@@ -595,7 +715,7 @@ const HERBS = [
         id: "map2",
         name: "山谷藥圃",
         unlockLevel: 8,
-        background: "assets/shennong/maps/map-valley-grove-background.jpg",
+        background: "assets/shennong/maps/map2-valley-grove-background.jpg",
         plots: [
           { id: 0, name: "山谷左上藥畦", image: "assets/shennong/plots/plot-1-empty.png" },
           { id: 1, name: "山谷中上藥畦", image: "assets/shennong/plots/plot-2-empty.png" },
@@ -609,7 +729,7 @@ const HERBS = [
         id: "map3",
         name: "灶香藥田",
         unlockLevel: 15,
-        background: "assets/shennong/maps/map-stove-herb-field-background.jpg",
+        background: "assets/shennong/maps/map3-stove-herb-field-background.jpg",
         plots: [
           { id: 0, name: "灶香左上藥畦", image: "assets/shennong/plots/plot-1-empty.png" },
           { id: 1, name: "灶香中上藥畦", image: "assets/shennong/plots/plot-2-empty.png" },
@@ -617,6 +737,20 @@ const HERBS = [
           { id: 3, name: "灶香左下藥畦", image: "assets/shennong/plots/plot-4-empty.png" },
           { id: 4, name: "灶香中下藥畦", image: "assets/shennong/plots/plot-5-empty.png" },
           { id: 5, name: "灶香右下藥畦", image: "assets/shennong/plots/plot-6-empty.png" }
+        ]
+      },
+      {
+        id: "map4",
+        name: "桃源藥谷",
+        unlockLevel: 22,
+        background: "assets/shennong/maps/map4-peach-blossom-valley.jpg",
+        plots: [
+          { id: 0, name: "桃源左上藥畦", image: "assets/shennong/plots/plot-1-empty.png" },
+          { id: 1, name: "桃源中上藥畦", image: "assets/shennong/plots/plot-2-empty.png" },
+          { id: 2, name: "桃源右上藥畦", image: "assets/shennong/plots/plot-3-empty.png" },
+          { id: 3, name: "桃源左下藥畦", image: "assets/shennong/plots/plot-4-empty.png" },
+          { id: 4, name: "桃源中下藥畦", image: "assets/shennong/plots/plot-5-empty.png" },
+          { id: 5, name: "桃源右下藥畦", image: "assets/shennong/plots/plot-6-empty.png" }
         ]
       }
     ];
