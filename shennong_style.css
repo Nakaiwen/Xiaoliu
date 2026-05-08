@@ -2896,8 +2896,9 @@
 }
 
 @media (max-width: 460px) {
+  /* V3.3.7.2：min-height 由 520px 修正為 720px，避免比 720px 斷點 (760px) 還短 */
   .garden-scene {
-    min-height: 520px !important;
+    min-height: 720px !important;
   }
 
   .garden-grid {
@@ -2929,11 +2930,12 @@
   .garden-grid .plot.empty .plot-info,
   .garden-grid .plot.planted .plot-info,
   .garden-grid .plot.harvestable .plot-info {
-    width: min(112px, 96%) !important;
+    width: min(126px, 96%) !important;
   }
 
+  /* V3.3.7.2：plot-time 由 .62rem 修正為 .72rem，提升手機直式可讀性 */
   .garden-grid .plot-time {
-    font-size: .62rem !important;
+    font-size: .72rem !important;
   }
 }
 
@@ -3651,11 +3653,12 @@
 }
 
 @media (max-width: 460px) {
+  /* V3.3.7.2：plot-info 寬度由 112px 提升為 126px，給生長中文字多一點呼吸空間 */
   .garden-grid .plot-info,
   .garden-grid .plot.empty .plot-info,
   .garden-grid .plot.planted .plot-info,
   .garden-grid .plot.harvestable .plot-info {
-    width: min(112px, 96%) !important;
+    width: min(126px, 96%) !important;
   }
 }
 
