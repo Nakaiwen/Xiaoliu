@@ -4163,6 +4163,225 @@
 
 
 /* ======================================================
+   V3.3.7.2：桃花雨特效（map4 桃源藥谷專用氣氛）
+   - 取代春雨在第四章的角色：第四章下桃花雨、結束後一樣有彩虹
+   - 跟春雨並行但互斥：兩者不會同時飄
+   - 視覺：抽象淡粉色圓點、輕巧繪畫感、不擋 UI、不擋土地
+   - 觸發節奏：60s 檢查、15% 機率、持續 4 分鐘（仿春雨）
+   - reload 保留狀態，與春雨同款行為
+   V3.3.7.6：花瓣形狀與飄落軌跡優化
+   - 形狀：圓胖微閃花瓣（一端尖、一端圓），不再是正圓
+   - 飄落：之字形軌跡，左右搖擺，符合無風時自然飄落
+   - 3 個動畫變體（不同擺幅），16 片瓣不會完全同步
+   V3.3.7.7：水滴形花瓣 + 內深邊淡桃花色
+   - 形狀改為 clip-path 自繪水滴（尖端朝上、下端圓胖）
+   - 尺寸 10×14px，更接近真實桃花瓣比例
+   - 配色：內部深桃粉、邊緣淡粉透明，類似真實桃花瓣
+   V3.3.7.8：飄落速度與顏色微調
+   - 速度更慢：JS 時長由 12-22 秒延長為 22-36 秒
+   - 中段不停頓：linear 取代 ease-in-out，避免轉折點減速
+   - 整體顏色淡 15%：所有 alpha 乘以 0.85
+   V3.3.7.9：之字形飄落強化
+   - 三個變體擺幅同步加大 1.8-2 倍
+   - 最大跨度由 60-66px 提升到 95-130px
+   - 視覺上明確呈現「之」字軌跡，不再是微微傾斜
+====================================================== */
+
+.peach-petal-drift {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 5;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 1.4s ease-in-out;
+}
+
+.peach-petal-drift.petal-active {
+  visibility: visible;
+  opacity: 1;
+}
+
+.peach-petal {
+  position: absolute;
+  top: -20px;
+  /* V3.3.7.7：水滴形花瓣，尖端朝上、下端圓胖 */
+  width: 10px;
+  height: 14px;
+  /* clip-path 水滴輪廓：尖端在上 (50% 0)，圓胖底在下 */
+  clip-path: path('M 5 0 C 7.2 3, 10 6.5, 10 9.5 C 10 12.5, 7.8 14, 5 14 C 2.2 14, 0 12.5, 0 9.5 C 0 6.5, 2.8 3, 5 0 Z');
+  /* V3.3.7.7：內深邊淡的桃花色，焦點偏中下（花瓣的腰部最深） */
+  /* V3.3.7.8：整體顏色淡 15%（所有 alpha × 0.85） */
+  background:
+    radial-gradient(ellipse at 50% 62%,
+      rgba(232, 132, 168, 0.81) 0%,
+      rgba(244, 168, 196, 0.75) 28%,
+      rgba(252, 206, 224, 0.63) 58%,
+      rgba(255, 226, 238, 0.36) 84%,
+      rgba(255, 232, 242, 0) 100%);
+  /* V3.3.7.7：微微的外光暈，讓花瓣不那麼乾硬（drop-shadow 跟著 clip-path 走） */
+  /* V3.3.7.8：光暈也淡 15% */
+  filter: drop-shadow(0 0 2px rgba(238, 168, 196, 0.34));
+  opacity: 0;
+  will-change: transform, opacity;
+  animation-name: peachPetalDriftA;
+  /* V3.3.7.8：linear 取代 ease-in-out，避免轉折點減速造成的「停頓感」 */
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  transform-origin: 50% 50%;
+}
+
+/* V3.3.7.6：三種飄落變體 — 透過 JS 隨機指派，避免畫面所有瓣同步 */
+.peach-petal.variant-b {
+  animation-name: peachPetalDriftB;
+}
+
+.peach-petal.variant-c {
+  animation-name: peachPetalDriftC;
+}
+
+/* 變體 A：標準擺幅，先右後左再右 */
+/* V3.3.7.9：擺幅 1.8 倍強化（最大跨度 ~120px），之字感更明顯 */
+@keyframes peachPetalDriftA {
+  0% {
+    transform: translate3d(0, -24px, 0) rotate(0deg);
+    opacity: 0;
+  }
+  8% {
+    opacity: 0.88;
+  }
+  25% {
+    transform: translate3d(70px, 25vh, 0) rotate(80deg);
+  }
+  50% {
+    transform: translate3d(-50px, 52vh, 0) rotate(200deg);
+    opacity: 0.92;
+  }
+  75% {
+    transform: translate3d(60px, 78vh, 0) rotate(320deg);
+  }
+  92% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translate3d(-20px, 112vh, 0) rotate(440deg);
+    opacity: 0;
+  }
+}
+
+/* 變體 B：較大擺幅，先左後右 */
+/* V3.3.7.9：擺幅 1.8-2 倍強化（最大跨度 ~130px），最明顯的之字 */
+@keyframes peachPetalDriftB {
+  0% {
+    transform: translate3d(0, -24px, 0) rotate(0deg);
+    opacity: 0;
+  }
+  8% {
+    opacity: 0.85;
+  }
+  28% {
+    transform: translate3d(-75px, 28vh, 0) rotate(-90deg);
+  }
+  55% {
+    transform: translate3d(55px, 58vh, 0) rotate(-220deg);
+    opacity: 0.9;
+  }
+  78% {
+    transform: translate3d(-65px, 82vh, 0) rotate(-340deg);
+  }
+  92% {
+    opacity: 0.68;
+  }
+  100% {
+    transform: translate3d(25px, 112vh, 0) rotate(-460deg);
+    opacity: 0;
+  }
+}
+
+/* 變體 C：較窄擺幅，溫和飄 */
+/* V3.3.7.9：擺幅 1.8 倍強化（最大跨度 ~95px），三變體中最溫和但依然之字 */
+@keyframes peachPetalDriftC {
+  0% {
+    transform: translate3d(0, -24px, 0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.82;
+  }
+  30% {
+    transform: translate3d(50px, 30vh, 0) rotate(60deg);
+  }
+  55% {
+    transform: translate3d(-45px, 56vh, 0) rotate(180deg);
+    opacity: 0.86;
+  }
+  80% {
+    transform: translate3d(45px, 84vh, 0) rotate(300deg);
+  }
+  92% {
+    opacity: 0.65;
+  }
+  100% {
+    transform: translate3d(-15px, 112vh, 0) rotate(400deg);
+    opacity: 0;
+  }
+}
+
+/* 手機尺寸略縮，避免畫面太繁 */
+@media (max-width: 720px) {
+  .peach-petal {
+    width: 9px;
+    height: 12px;
+  }
+}
+
+@media (max-width: 460px) {
+  .peach-petal {
+    width: 8px;
+    height: 11px;
+  }
+}
+
+
+/* ======================================================
+   V3.3.7.3：測試模式角標
+   - 開發測試專用，URL 加 ?test=1 才會由 JS 動態掛載
+   - 右上角浮動角標，提示當前處於測試模式
+   - 不影響任何遊戲邏輯，純視覺提示
+====================================================== */
+
+.test-mode-badge {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  z-index: 9999;
+  background: linear-gradient(135deg, rgba(122, 64, 85, 0.96), rgba(160, 84, 110, 0.96));
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  box-shadow:
+    0 2px 8px rgba(122, 64, 85, 0.36),
+    0 0 0 1px rgba(255, 255, 255, 0.15) inset;
+  pointer-events: none;
+  user-select: none;
+  opacity: 0.92;
+}
+
+@media (max-width: 460px) {
+  .test-mode-badge {
+    top: 8px;
+    right: 8px;
+    padding: 5px 10px;
+    font-size: 0.72rem;
+  }
+}
+
+
+/* ======================================================
    V3.3.6.8：雨後彩虹與金幣圖示
    - 彩虹改為春雨結束後出現約 1 分鐘
    - 金幣數字前改用 coin.png

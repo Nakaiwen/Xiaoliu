@@ -661,6 +661,30 @@ const HERBS = [
       "丹蔘：常見於本草文化中，適合在遊戲中作為進階藥草知識認識。"
     ];
 
+    // ======================================================
+    // V3.3.7.3：測試模式快速版
+    // - 開啟方式：網址加 ?test=1
+    // - 縮短所有天氣等待與持續時間，方便開發測試
+    // - 視覺風格、動畫速度、機率完全不變
+    // - 右上角會顯示 🧪 測試模式 角標
+    // ======================================================
+    const TEST_MODE = (() => {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        return params.get("test") === "1";
+      } catch (error) {
+        return false;
+      }
+    })();
+
+    // 等比縮約 10 倍的尺度
+    const TEST_MODE_SCALE = 10;
+
+    // 依測試模式回傳對應毫秒數
+    function timeMs(normalMs) {
+      return TEST_MODE ? Math.round(normalMs / TEST_MODE_SCALE) : normalMs;
+    }
+
     const SPRING_RAIN_SETTINGS = {
       lineLength: 20,
       lineWidth: 1,
@@ -674,19 +698,46 @@ const HERBS = [
     };
 
     const SPRING_RAIN_RANDOM = {
-      durationMs: 5 * 60 * 1000,
-      firstDelayMinMs: 20 * 1000,
-      firstDelayMaxMs: 80 * 1000,
-      nextDelayMinMs: 6 * 60 * 1000,
-      nextDelayMaxMs: 16 * 60 * 1000
+      durationMs: timeMs(5 * 60 * 1000),
+      firstDelayMinMs: timeMs(20 * 1000),
+      firstDelayMaxMs: timeMs(80 * 1000),
+      nextDelayMinMs: timeMs(6 * 60 * 1000),
+      nextDelayMaxMs: timeMs(16 * 60 * 1000)
     };
 
     const SPRING_RAIN_STORAGE_KEY = "xiaoliu_shennong_spring_rain_v1";
 
     const POST_RAIN_RAINBOW = {
       showChance: 1,
-      durationMs: 60 * 1000
+      durationMs: timeMs(60 * 1000)
     };
+
+    // V3.3.7.2：桃花雨設定（map4 桃源藥谷專屬天氣）
+    // - 取代春雨在第四章的角色
+    // - 觸發機制完全比照春雨，玩家熟悉的節奏感
+    // - 與春雨永不同框：兩者各管各的地圖
+    // V3.3.7.8：花瓣動畫時長延長 1.6 倍（12-22s → 22-36s），更慢更療癒
+    const PEACH_PETAL_SETTINGS = {
+      desktopCount: 14,
+      mobileCount: 7,
+      mobileBreakpoint: 720,
+      durationMinS: 22,
+      durationMaxS: 36,
+      delayMinS: 0,
+      delayMaxS: 10
+    };
+
+    const PEACH_PETAL_RANDOM = {
+      durationMs: timeMs(4 * 60 * 1000),
+      firstDelayMinMs: timeMs(20 * 1000),
+      firstDelayMaxMs: timeMs(80 * 1000),
+      nextDelayMinMs: timeMs(6 * 60 * 1000),
+      nextDelayMaxMs: timeMs(16 * 60 * 1000)
+    };
+
+    const PEACH_PETAL_STORAGE_KEY = "xiaoliu_shennong_peach_petal_v1";
+
+    const PEACH_PETAL_MAP_ID = "map4";
 
     const MEDITATION_STEPS = [
       "放鬆肩膀，讓身體安住。感覺背脊自然挺直，雙手輕放。",
@@ -795,6 +846,9 @@ const HERBS = [
     let springRainStartTimer = null;
     let springRainStopTimer = null;
     let rainbowTimer = null;
+    // V3.3.7.2：桃花雨計時器
+    let peachPetalStartTimer = null;
+    let peachPetalStopTimer = null;
     let plantTargetPlot = null;
 
     const $ = (id) => document.getElementById(id);
@@ -987,7 +1041,9 @@ const HERBS = [
     function setSpringRainActive(active) {
       const scene = document.querySelector(".garden-scene");
       if (!scene) return;
-      scene.classList.toggle("rain-active", active);
+      // V3.3.7.2：第四章不下春雨，視覺強制關閉（時間軸仍照常記）
+      const visible = active && !isMap4Active();
+      scene.classList.toggle("rain-active", visible);
     }
 
     function randomMs(min, max) {
@@ -1065,7 +1121,10 @@ const HERBS = [
     function stopSpringRain() {
       window.clearTimeout(springRainStopTimer);
       setSpringRainActive(false);
-      maybeShowPostRainRainbow();
+      // V3.3.7.2：第四章期間結束的春雨不要顯示彩虹（玩家此時看不到那場雨）
+      if (!isMap4Active()) {
+        maybeShowPostRainRainbow();
+      }
       scheduleNextSpringRain();
     }
 
@@ -1089,6 +1148,14 @@ const HERBS = [
     }
 
     function restoreSpringRainAfterRefresh() {
+      // V3.3.7.4：測試模式下不沿用 storage 的舊延遲（可能是正常模式留下的長延遲）
+      // 直接重抽用測試模式的縮短時間。正常模式維持原有接續邏輯。
+      if (TEST_MODE) {
+        clearSpringRainState();
+        scheduleNextSpringRain(true);
+        return;
+      }
+
       const rainState = readSpringRainState();
       const now = Date.now();
 
@@ -1105,11 +1172,201 @@ const HERBS = [
       scheduleNextSpringRain(true);
     }
 
+    // ======================================================
+    // V3.3.7.2：桃花雨系統（map4 桃源藥谷專屬天氣）
+    // - 完整仿照春雨架構，行為對稱
+    // - 與春雨永不同框：透過 isMap4Active() 判斷
+    // - 結束時呼叫共用的 maybeShowPostRainRainbow，桃花雨後一樣有彩虹
+    // ======================================================
+
+    function isMap4Active() {
+      return (state.activeMapId || DEFAULT_MAP_ID) === PEACH_PETAL_MAP_ID;
+    }
+
+    function readPeachPetalState() {
+      try {
+        return JSON.parse(localStorage.getItem(PEACH_PETAL_STORAGE_KEY) || "{}");
+      } catch (error) {
+        return {};
+      }
+    }
+
+    function writePeachPetalState(petalState) {
+      try {
+        localStorage.setItem(PEACH_PETAL_STORAGE_KEY, JSON.stringify(petalState));
+      } catch (error) {
+        // localStorage 不可用時，桃花雨仍可照本次頁面計時運作
+      }
+    }
+
+    function clearPeachPetalState() {
+      try {
+        localStorage.removeItem(PEACH_PETAL_STORAGE_KEY);
+      } catch (error) {
+        // ignore
+      }
+    }
+
+    function initPeachPetal() {
+      const layer = document.querySelector(".peach-petal-drift");
+      if (!layer) return;
+      layer.innerHTML = "";
+
+      const isMobile = window.innerWidth <= PEACH_PETAL_SETTINGS.mobileBreakpoint;
+      const count = isMobile
+        ? PEACH_PETAL_SETTINGS.mobileCount
+        : PEACH_PETAL_SETTINGS.desktopCount;
+
+      // V3.3.7.6：隨機指派三個飄落變體，讓畫面所有花瓣不同步
+      const variants = ["", "variant-b", "variant-c"];
+
+      for (let i = 0; i < count; i++) {
+        const petal = document.createElement("span");
+        const variant = variants[Math.floor(Math.random() * variants.length)];
+        petal.className = variant ? `peach-petal ${variant}` : "peach-petal";
+        const leftPct = randomBetween(0, 96);
+        const duration = randomBetween(
+          PEACH_PETAL_SETTINGS.durationMinS,
+          PEACH_PETAL_SETTINGS.durationMaxS
+        );
+        const delay = randomBetween(
+          PEACH_PETAL_SETTINGS.delayMinS,
+          PEACH_PETAL_SETTINGS.delayMaxS
+        );
+        petal.style.left = `${leftPct.toFixed(2)}%`;
+        petal.style.animationDuration = `${duration.toFixed(2)}s`;
+        petal.style.animationDelay = `${(-delay).toFixed(2)}s`;
+        layer.appendChild(petal);
+      }
+    }
+
+    function setPeachPetalActive(active) {
+      const layer = document.querySelector(".peach-petal-drift");
+      if (!layer) return;
+      // 只有在第四章才實際顯示，其他章節即使邏輯上 active，視覺也不顯示
+      const visible = active && isMap4Active();
+      layer.classList.toggle("petal-active", visible);
+    }
+
+    function startPeachPetal(savedEndAt = null) {
+      const now = Date.now();
+      const endAt = savedEndAt && savedEndAt > now
+        ? savedEndAt
+        : now + PEACH_PETAL_RANDOM.durationMs;
+      const remainingMs = Math.max(0, endAt - now);
+
+      window.clearTimeout(peachPetalStartTimer);
+      window.clearTimeout(peachPetalStopTimer);
+
+      initPeachPetal();
+      setPostRainRainbowActive(false);
+      setPeachPetalActive(true);
+      writePeachPetalState({
+        active: true,
+        startedAt: now,
+        endAt
+      });
+
+      peachPetalStopTimer = window.setTimeout(() => {
+        stopPeachPetal();
+      }, remainingMs);
+    }
+
+    function stopPeachPetal() {
+      window.clearTimeout(peachPetalStopTimer);
+      setPeachPetalActive(false);
+      // 桃花雨結束也呼叫共用的彩虹（只在 map4 才看得到，但邏輯一致）
+      if (isMap4Active()) {
+        maybeShowPostRainRainbow();
+      }
+      scheduleNextPeachPetal();
+    }
+
+    function scheduleNextPeachPetal(isFirst = false, fixedDelay = null) {
+      window.clearTimeout(peachPetalStartTimer);
+      const delay = Number.isFinite(fixedDelay)
+        ? Math.max(0, fixedDelay)
+        : isFirst
+          ? randomMs(PEACH_PETAL_RANDOM.firstDelayMinMs, PEACH_PETAL_RANDOM.firstDelayMaxMs)
+          : randomMs(PEACH_PETAL_RANDOM.nextDelayMinMs, PEACH_PETAL_RANDOM.nextDelayMaxMs);
+      const nextStartAt = Date.now() + delay;
+
+      writePeachPetalState({
+        active: false,
+        nextStartAt
+      });
+
+      peachPetalStartTimer = window.setTimeout(() => {
+        startPeachPetal();
+      }, delay);
+    }
+
+    function restorePeachPetalAfterRefresh() {
+      // V3.3.7.4：測試模式下不沿用 storage 的舊延遲（可能是正常模式留下的長延遲）
+      if (TEST_MODE) {
+        clearPeachPetalState();
+        scheduleNextPeachPetal(true);
+        return;
+      }
+
+      const petalState = readPeachPetalState();
+      const now = Date.now();
+
+      if (petalState.active && petalState.endAt && petalState.endAt > now) {
+        startPeachPetal(petalState.endAt);
+        return;
+      }
+
+      if (!petalState.active && petalState.nextStartAt && petalState.nextStartAt > now) {
+        scheduleNextPeachPetal(false, petalState.nextStartAt - now);
+        return;
+      }
+
+      scheduleNextPeachPetal(true);
+    }
+
+    // 切換地圖時呼叫，依當前地圖決定哪套天氣顯示
+    // - 兩套各自的計時器繼續跑（時間軸不變）
+    // - 只調整視覺顯隱
+    function syncWeatherToActiveMap() {
+      if (isMap4Active()) {
+        // 第四章：關春雨視覺、開桃花雨視覺（若邏輯上正在飄）
+        setSpringRainActive(false);
+        setPostRainRainbowActive(false);
+        const petalState = readPeachPetalState();
+        const now = Date.now();
+        if (petalState.active && petalState.endAt && petalState.endAt > now) {
+          setPeachPetalActive(true);
+          // 確保 DOM 上有花瓣，因 initPeachPetal 才會生成
+          const layer = document.querySelector(".peach-petal-drift");
+          if (layer && !layer.children.length) {
+            initPeachPetal();
+          }
+        }
+      } else {
+        // 非第四章：關桃花雨視覺、開春雨視覺（若邏輯上正在飄）
+        setPeachPetalActive(false);
+        const rainState = readSpringRainState();
+        const now = Date.now();
+        if (rainState.active && rainState.endAt && rainState.endAt > now) {
+          setSpringRainActive(true);
+        }
+      }
+    }
+
+    // V3.3.7.5：地圖鎖判斷集中處理（helper）
+    // V3.3.7.10：部署前移除測試模式自動解鎖。地圖一律依玩家等級判斷，與正式體驗一致。
+    function isMapLocked(map) {
+      if (!map) return true;
+      if (map.placeholder) return true;
+      return state.level < map.unlockLevel;
+    }
+
     function renderMapTabs() {
       const tabs = document.querySelector(".garden-map-tabs");
       if (!tabs) return;
       tabs.innerHTML = MAPS.map(map => {
-        const locked = state.level < map.unlockLevel || map.placeholder;
+        const locked = isMapLocked(map);
         const active = map.id === (state.activeMapId || DEFAULT_MAP_ID);
         const label = locked
           ? `${map.name} <small>Lv.${map.unlockLevel} 解鎖</small>`
@@ -1125,7 +1382,7 @@ const HERBS = [
     function switchMap(mapId) {
       const map = MAPS.find(item => item.id === mapId);
       if (!map) return;
-      if (state.level < map.unlockLevel || map.placeholder) {
+      if (isMapLocked(map)) {
         return toast(`${map.name} 尚未解鎖`);
       }
       state.activeMapId = mapId;
@@ -1133,6 +1390,8 @@ const HERBS = [
       getActivePlots();
       saveState();
       renderAll();
+      // V3.3.7.2：切換地圖後同步天氣顯隱（map4 用桃花雨、其他章用春雨）
+      syncWeatherToActiveMap();
       toast(`已前往${map.name}`);
     }
 
@@ -1855,12 +2114,40 @@ const HERBS = [
       window.clearTimeout(springRainStopTimer);
       window.clearTimeout(rainbowTimer);
       scheduleNextSpringRain(true);
+      // V3.3.7.2：reset 時也清理桃花雨
+      clearPeachPetalState();
+      setPeachPetalActive(false);
+      window.clearTimeout(peachPetalStartTimer);
+      window.clearTimeout(peachPetalStopTimer);
+      scheduleNextPeachPetal(true);
       saveState();
       renderAll();
       toast("已重置藥草園");
     });
 
     restoreSpringRainAfterRefresh();
+    // V3.3.7.2：桃花雨 restore + 同步當前地圖的天氣顯隱
+    restorePeachPetalAfterRefresh();
+    syncWeatherToActiveMap();
+
+    // V3.3.7.3：測試模式角標
+    if (TEST_MODE) {
+      const badge = document.createElement("div");
+      badge.className = "test-mode-badge";
+      badge.textContent = "🧪 測試模式";
+      badge.title = "URL 加上 ?test=1 才會出現此角標。移除參數即可關閉。";
+      document.body.appendChild(badge);
+      // 主控台給個提示，方便檢查
+      try {
+        console.info(
+          "%c🧪 神農藥草園 - 測試模式已啟用",
+          "background:#7a4055;color:#fff;padding:4px 10px;border-radius:4px;font-weight:bold;",
+          "\n等待 / 持續時間縮約 " + TEST_MODE_SCALE + " 倍。視覺與機率不變。\n關閉方式：移除網址中的 ?test=1 並重新整理。"
+        );
+      } catch (error) {
+        // ignore
+      }
+    }
 
     setInterval(() => {
       renderStats();
